@@ -1,0 +1,21 @@
+{
+  "name": "btc_trade",
+  "description": "no description",
+  "main": "",
+  "authors": [
+    "Sunfox <egor.sharoha@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "^3.2.1",
+    "angular": "^1.6.6"
+  }
+}

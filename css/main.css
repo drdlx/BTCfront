@@ -1,0 +1,67 @@
+html {
+    color: #222;
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+    vertical-align: middle;
+}
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.header {
+    text-align: center;
+    font-size: 3em;
+    padding: 5px;
+    color: #444;
+}
+
+.wrapper {
+    margin: auto;
+    width: 800px;
+    background-color: rgba(111, 111, 111, 0.1);
+    box-shadow: -2px 2px 0.5em #111;
+    padding: 10px;
+}
+
+.button_pane table {
+    width: 100%;
+    border-spacing: 15px;
+    border-collapse: separate;
+}
+
+.button_pane td {
+    text-align: center;
+    width: 50%;
+}
+
+.button {
+    width: 40%;
+    color: #555;
+}
+
+
+
