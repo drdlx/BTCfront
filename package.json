@@ -4,10 +4,10 @@
   "description": "no description",
   "license": "ISC",
   "devDependencies": {
-    "browser-sync": "^2.18.13",
-    "gulp": "^3.9.1",
-    "gulp-jshint": "^2.0.4",
-    "gulp-sass": "^3.1.0",
-    "jshint": "^2.9.5"
+    "browser-sync": "latest",
+    "gulp": "latest",
+    "gulp-jshint": "latest",
+    "gulp-sass": "latest",
+    "jshint": "latest"
   }
 }

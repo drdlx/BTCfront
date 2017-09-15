@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <title>Покупка</title>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <div w3-include-html="include/head.html"></div>
+    <script>w3.includeHTML()</script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        Покупка
+    </div>
+    <form method="post" id="post_form" action="http://52.243.47.71:3000/pay">
+        <div class="input_block">
+            <label for="paym">Метод оплаты</label>
+            <select name="paym" id="paym">
+                <option>Sberbank</option>
+                <option>Alfa Bank</option>
+                <option>QIWI</option>
+                <option>Yandex.Money</option>
+                <option>QIWI-Yobit</option>
+                <option>Tinkoff</option>
+                <option>Rocket Bank</option>
+            </select>
+        </div>
+        <div class="input_block">
+            <label for="btc">Поступило</label>
+            <input type="number" name="btc" required id="btc" step="0.00000001" value="0" min="0">
+        </div>
+        <div class="input_block">
+            <label for="rub">Расход Р</label>
+            <input type="number" name="rub" required id="rub" step="0.01" min="0">
+        </div>
+        <div class="input_block">
+            <label for="course">Курс сделки</label>
+            <input type="number" name="course" required id="course" step="0.01" min="0">
+        </div>
+        <div class="input_block">
+            <label for="comiss">Комиссия</label>
+            <input type="number" name="comiss" id="comiss" step="0.01" min="0" value="0">
+        </div>
+        <div>
+            <button class="button" type="submit">Отправить</button>
+        </div>
+    </form>
+    <div>
+        <a href="index.html">
+            <button class="button">В меню</button>
+        </a>
+    </div>
+</div>
+<!--<script>
+    $(document).ready(function () {
+        $("#post_form").on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: 'http://52.243.47.71:3000/pay',
+                type: 'post',
+                crossDomain: true,
+                data: $("#post_form").serialize(),
+                success: function () {
+                    alert("ok!");
+                }
+            });
+            console.log($("#post_form").serialize());
+        });
+    });
+</script>-->
+</body>
+</html>

@@ -63,5 +63,17 @@ textarea {
     color: #555;
 }
 
+.input_block {
+    display: inline-block;
+    width: 47%;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 9px;
+    text-align: center;
+    font-family: Tahoma, sans-serif;
+    font-size: 1.25em;
+}
+
 
 
