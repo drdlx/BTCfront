@@ -6,39 +6,29 @@
     <link rel="stylesheet" href="../css/main.css">
     <title>Продажа</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../js/main.js"></script>
 </head>
 <body>
 <div class="wrapper">
     <div class="header">
         Продажа
     </div>
-    <form method="post" id="post_form" action="http://52.243.47.71:3000/sell">
+    <form method="post" id="post_form">
         <div class="input_block">
             <label for="paym">Метод оплаты</label>
-            <select name="paym" id="paym">
-                <option>Sberbank</option>
-                <option>Alfa Bank</option>
-                <option>QIWI</option>
-                <option>Yandex.Money</option>
-                <option>QIWI-Yobit</option>
-                <option>Tinkoff</option>
-                <option>Rocket Bank</option>
-            </select>
+            <select name="paym" id="paym"></select>
         </div>
         <div class="input_block">
             <label for="bitwallet">Счет списания</label>
-            <select name="bitwallet" id="bitwallet">
-                <option>BTC Bot</option>
-                <option>BTC Yobit</option>
-            </select>
+            <select name="bitwallet" id="bitwallet"></select>
         </div>
         <div class="input_block">
             <label for="btc">Расход BTC</label>
-            <input type="number" name="btc" required id="btc" step="0.00000001" value="0" min="0">
+            <input type="number" name="btc" required id="btc" step="0.00000001" min="0">
         </div>
         <div class="input_block">
             <label for="course">Курс сделки</label>
-            <input type="number" name="course" required id="course" step="0.01" value="1" min="0">
+            <input type="number" name="course" required id="course" step="0.01" min="0">
         </div>
         <div class="input_block">
             <label for="comiss">Комиссия</label>
@@ -48,22 +38,32 @@
             <label for="rub">Поступило Р</label>
             <input type="number" name="rub" required id="rub" step="0.01" min="0" disabled>
         </div>
-        <div>
-            <button class="button" type="submit">Отправить</button>
+        <div class="centered">
+            <button class="button submit_button" type="submit">Отправить</button>
         </div>
     </form>
     <div>
         <a href="index.html">
-            <button class="button">В меню</button>
+            <button class="button exit_button">В меню</button>
         </a>
     </div>
 </div>
-<!--<script>
+</body>
+</html>
+
+<script>
     $(document).ready(function () {
+        fillSellect(document.getElementById('paym'), rubAccounts);
+        fillSellect(document.getElementById('bitwallet'), btcAccounts);
+
+        $("#btc").on('change keydown paste input', reCount);
+        $("#course").on('change keydown paste input', reCount);
+        $("#comiss").on('change keydown paste input', reCount);
+
         $("#post_form").on('submit', function (e) {
             e.preventDefault();
             $.ajax({
-                url: 'http://52.243.47.71:3000/pay',
+                url: apiServer + '/sell',
                 type: 'post',
                 crossDomain: true,
                 data: $("#post_form").serialize(),
@@ -71,18 +71,7 @@
                     alert("ok!");
                 }
             });
-            console.log($("#post_form").serialize());
         });
-    });
-</script>-->
-</body>
-</html>
-
-<script>
-    $(document).ready(function () {
-        $("#btc").on('change keydown paste input', reCount);
-        $("#course").on('change keydown paste input', reCount);
-        $("#comiss").on('change keydown paste input', reCount);
     });
 
     function reCount() {

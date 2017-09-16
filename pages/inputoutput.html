@@ -4,39 +4,34 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/main.css">
-    <title>Покупка</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="../js/main.js"></script>
+    <title>Ввод\вывод</title>
 </head>
 <body>
 <div class="wrapper">
     <div class="header">
-        Покупка
+        Ввод\вывод
     </div>
     <form method="post" id="post_form">
         <div class="input_block">
-            <label for="paym">Метод оплаты</label>
+            <label for="direction">Операция</label>
+            <select name="direction" id="direction">
+                <option value="input">Ввод</option>
+                <option value="output">Вывод</option>
+            </select>
+        </div>
+        <div class="input_block">
+            <label for="paym">Счет</label>
             <select name="paym" id="paym"></select>
         </div>
         <div class="input_block">
-            <label for="bitwallet">Счет зачисления</label>
-            <select name="bitwallet" id="bitwallet"></select>
-        </div>
-        <div class="input_block">
-            <label for="btc">Поступило</label>
-            <input type="number" name="btc" required id="btc" step="0.00000001" min="0">
-        </div>
-        <div class="input_block">
-            <label for="course">Курс сделки</label>
-            <input type="number" name="course" required id="course" step="0.01" min="0">
+            <label for="amount">Сумма</label>
+            <input type="number" name="amount" id="amount" required step="0.01" min="0">
         </div>
         <div class="input_block">
             <label for="comiss">Комиссия</label>
             <input type="number" name="comiss" id="comiss" step="0.01" min="0" value="0" min="0">
-        </div>
-        <div class="input_block">
-            <label for="rub">Расход Р</label>
-            <input type="number" name="rub" required id="rub" step="0.01" min="0" disabled>
         </div>
         <div class="centered">
             <button class="button submit_button" type="submit">Отправить</button>
@@ -53,11 +48,6 @@
 <script>
     $(document).ready(function () {
         fillSellect(document.getElementById('paym'), rubAccounts);
-        fillSellect(document.getElementById('bitwallet'), btcAccounts);
-
-        $("#btc").on('change keydown paste input', reCount);
-        $("#course").on('change keydown paste input', reCount);
-        $("#comiss").on('change keydown paste input', reCount);
 
         $("#post_form").on('submit', function (e) {
             e.preventDefault();
@@ -72,12 +62,4 @@
             });
         });
     });
-
-    function reCount() {
-        var btcValue = parseFloat($("#btc").val()),
-            courseValue = parseFloat($("#course").val()),
-            comissValue = parseFloat($("#comiss").val()),
-            result = courseValue * btcValue - comissValue;
-        $("#rub").val(result);
-    }
 </script>

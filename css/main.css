@@ -63,6 +63,23 @@ textarea {
     color: #555;
 }
 
+.exit_button {
+    width: auto;
+    padding: 5px 15px;
+    border-radius: 7px;
+    margin: 15px 0;
+}
+
+.submit_button {
+    width: auto;
+    padding: 5px 15px;
+    margin-top: 10px;
+}
+
+.centered {
+    text-align: center;
+}
+
 .input_block {
     display: inline-block;
     width: 47%;

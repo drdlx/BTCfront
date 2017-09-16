@@ -22,14 +22,20 @@
             <th>Остаток на конец</th>
         </tr>
     </table>
+    <div>
+        <a href="index.html">
+            <button class="button exit_button">В меню</button>
+        </a>
+    </div>
 </div>
 </body>
 </html>
 
 <script>
     $(document).ready(function () {
-        $.getJSON('http://52.243.47.71:3000/report', function (data) {
+        $.getJSON(apiServer + '/report', function (data) {
             var operation_data = '';
+            console.log(data);
             $.each(data, function (key, value) {
                 operation_data += '<tr>';
                 operation_data += '<td>' + value.paym + '</td>';
@@ -41,6 +47,7 @@
                 operation_data += '</tr>';
             });
             $("#report_table").append(operation_data);
+            console.log(operation_data);
         });
     });
 </script>
