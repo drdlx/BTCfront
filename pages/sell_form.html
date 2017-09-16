@@ -15,7 +15,7 @@
     </div>
     <form method="post" id="post_form">
         <div class="input_block">
-            <label for="paym">Метод оплаты</label>
+            <label for="paym">Счет зачисления</label>
             <select name="paym" id="paym"></select>
         </div>
         <div class="input_block">
@@ -23,7 +23,7 @@
             <select name="bitwallet" id="bitwallet"></select>
         </div>
         <div class="input_block">
-            <label for="btc">Расход BTC</label>
+            <label for="btc">Продано BTC</label>
             <input type="number" name="btc" required id="btc" step="0.00000001" min="0">
         </div>
         <div class="input_block">
@@ -71,6 +71,7 @@
                     alert("ok!");
                 }
             });
+            document.getElementById('post_form').reset();
         });
     });
 

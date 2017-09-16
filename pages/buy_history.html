@@ -4,26 +4,28 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/main.css">
-    <title>Отчет</title>
+    <title>История покупок</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="../js/main.js"></script>
 </head>
 <body>
 <div class="wrapper">
     <div class="header">
-        Отчет
+        История операций покупки
     </div>
     <table class="report_table" id="report_table">
         <tr>
-            <th></th>
-            <th>Остаток на начало</th>
-            <th>Расход</th>
-            <th>Приход</th>
-            <th>Ввод\вывод</th>
-            <th>Остаток на конец</th>
+            <th>Счет списания</th>
+            <th>Куплено BTC</th>
+            <th>Курс, Р</th>
+            <th>Потрачено, Р</th>
+            <th>Дата</th>
         </tr>
     </table>
     <div>
+        <a href="buy_form.html">
+            <button class="button exit_button">Назад</button>
+        </a>
         <a href="index.html">
             <button class="button exit_button">В меню</button>
         </a>
@@ -41,10 +43,9 @@
                 operation_data += '<tr>';
                 operation_data += '<td>' + value.paym + '</td>';
                 operation_data += '<td>' + value.btc + '</td>';
-                operation_data += '<td>' + value.rub + '</td>';
                 operation_data += '<td>' + value.course + '</td>';
+                operation_data += '<td>' + value.rub + '</td>';
                 operation_data += '<td>' + value.date.substring(0, value.date.indexOf('T')) + '</td>';
-                operation_data += '<td>' + value.btc + '</td>';
                 operation_data += '</tr>';
             });
             $("#report_table").append(operation_data);
