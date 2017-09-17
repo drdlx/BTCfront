@@ -36,7 +36,7 @@
         </div>
         <div class="input_block">
             <label for="rub">Поступило Р</label>
-            <input type="number" name="rub" required id="rub" step="0.01" min="0" disabled>
+            <input type="number" name="rub" required id="rub" step="0.01" min="0" readonly>
         </div>
         <div class="centered">
             <button class="button submit_button" type="submit">Отправить</button>
@@ -78,8 +78,17 @@
     function reCount() {
         var btcValue = parseFloat($("#btc").val()),
             courseValue = parseFloat($("#course").val()),
-            comissValue = parseFloat($("#comiss").val()),
-            result = courseValue * btcValue - comissValue;
-        $("#rub").val(result);
+            comissValue = parseFloat($("#comiss").val());
+        if (isNaN(btcValue)) {
+            btcValue = 0;
+        }
+        if (isNaN(courseValue)) {
+            courseValue = 0;
+        }
+        if (isNaN(comissValue)) {
+            comissValue = 0;
+        }
+        var result = courseValue * btcValue - comissValue;
+        $("#rub").val(result.toFixed(2));
     }
 </script>
