@@ -69,11 +69,18 @@ textarea {
 
 .button_pane td {
     text-align: center;
-    width: 50%;
 }
-
+.button_pane .menu_header td {
+    text-align: left;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: rgba(59, 95, 134, 0.56);
+    border-bottom: rgba(188, 196, 218, 0.25) solid;
+}
 .button {
-    width: 40%;
+    padding: 10px;
+    width: 140px;
+    height:45px;
     color: #555;
 }
 
