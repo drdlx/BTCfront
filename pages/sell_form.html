@@ -24,23 +24,26 @@
         </div>
         <div class="input_block">
             <label for="course">Курс сделки</label>
-            <input type="number" name="course" required id="course" step="0.01" min="0">
+            <input type="number" name="course" required id="course" step="0.01" min="0" onkeyup="reCount()">
         </div>
         <div class="input_block">
             <label for="btc">Продано BTC</label>
-            <input type="number" name="btc" required id="btc" step="0.00000001" min="0">
+            <input type="number" name="btc" required id="btc" step="0.00000001" min="0" onkeyup="reCount()">
         </div>
         <div class="input_block">
-            <label for="comiss">Комиссия</label>
-            <input type="number" name="comiss" id="comiss" step="0.01" min="0" value="0">
+            <label for="commiss">Комиссия</label>
+            <input type="number" name="commiss" id="commiss" step="0.01" min="0" value="0" onkeyup="reCount()">
         </div>
         <div class="input_block">
             <label for="bot_comiss">Комиссия бота</label>
-            <input type="number" name="bot_comiss" id="bot_comiss" readonly step="0.01" min="0" value="0" min="0">
+            <input type="number" name="bot_comiss" id="bot_comiss" readonly step="0.01" value="0" min="0">
         </div>
         <div class="input_block">
             <label for="rub">Поступило Р</label>
             <input type="number" name="rub" required id="rub" step="0.01" min="0" readonly>
+        </div>
+        <div class="info_block">
+            Общий финрез: <span id="finrez">0</span><span id="deal_finrez"></span>
         </div>
         <div class="centered">
             <button class="button submit_button" type="submit">Отправить</button>
@@ -50,19 +53,26 @@
         <a href="index.html">
             <button class="button exit_button">В меню</button>
         </a>
+        <a href="sell_history.html">
+            <button class="button exit_button">История операций</button>
+        </a>
     </div>
 </div>
 </body>
 </html>
 
 <script>
+
+    var delayTimer, avg;
+
     $(document).ready(function () {
+
+        getAvgCourse(function (data) {
+           avg = data;
+        });
+
         fillSelect(document.getElementById('paym'), rubAccounts);
         fillSelect(document.getElementById('bitwallet'), btcAccounts);
-
-        $("#btc").on('change keydown paste input', reCount);
-        $("#course").on('change keydown paste input', reCount);
-        $("#comiss").on('change keydown paste input', reCount);
 
         $("#post_form").on('submit', function (e) {
             e.preventDefault();
@@ -72,6 +82,9 @@
                 crossDomain: true,
                 data: $("#post_form").serialize(),
                 success: function () {
+                    document.getElementById('post_form').reset();
+                    document.getElementById('finrez').innerHTML = 0;
+                    document.getElementById('deal_finrez').innerHTML = "";
                     alert("ok!");
                 }
             });
@@ -80,22 +93,37 @@
     });
 
     function reCount() {
-        var btcValue = parseFloat($("#btc").val()),
-            courseValue = parseFloat($("#course").val()),
-            comissValue = parseFloat($("#comiss").val()),
-            botcomissValue;
-        if (isNaN(btcValue)) {
-            btcValue = 0;
-        }
-        if (isNaN(courseValue)) {
-            courseValue = 0;
-        }
-        if (isNaN(comissValue)) {
-            comissValue = 0;
-        }
-        botcomissValue = (courseValue * btcValue) * botComission;
-        $("#bot_comiss").val(botcomissValue.toFixed(2));
-        var result = courseValue * btcValue - comissValue - botcomissValue;
-        $("#rub").val(result.toFixed(2));
+        clearTimeout(delayTimer);
+        delayTimer = setTimeout(function () {
+            var btcValue = parseFloat($("#btc").val()),
+                courseValue = parseFloat($("#course").val()),
+                comissValue = parseFloat($("#commiss").val()),
+                botcomissValue;
+            if (isNaN(btcValue)) {
+                btcValue = 0;
+            }
+            if (isNaN(courseValue)) {
+                courseValue = 0;
+            }
+            if (isNaN(comissValue)) {
+                comissValue = 0;
+            }
+            botcomissValue = btcValue * botComission;
+            $("#bot_comiss").val(botcomissValue.toFixed(8));
+            var result = (courseValue * btcValue) - comissValue - (botcomissValue * btcValue);
+            $("#rub").val(result.toFixed(2));
+
+            var finrez = getDealFinrez(result, avg, btcValue, botcomissValue);
+            var finrez_field = document.getElementById('deal_finrez');
+            var finrez_string = "";
+            if (finrez > 0) {
+                finrez_field.setAttribute('class', 'green');
+                finrez_string = "+" + finrez;
+            } else {
+                finrez_field.setAttribute('class', 'red');
+                finrez_string = finrez;
+            }
+            finrez_field.innerHTML = '; Финрез от сделки: ' + finrez_string;
+        }, 1000);
     }
 </script>

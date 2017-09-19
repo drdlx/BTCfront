@@ -24,23 +24,26 @@
         </div>
         <div class="input_block">
             <label for="course">Курс сделки</label>
-            <input type="number" name="course" required id="course" step="0.01" min="0">
+            <input type="number" name="course" required id="course" step="0.01" min="0" onkeyup="reCount()">
         </div>
         <div class="input_block">
             <label for="btc">Поступило</label>
-            <input type="number" name="btc" required id="btc" step="0.00000001" min="0">
+            <input type="number" name="btc" required id="btc" step="0.00000001" min="0" onkeyup="reCount()">
         </div>
         <div class="input_block">
-            <label for="comiss">Комиссия</label>
-            <input type="number" name="comiss" id="comiss" step="0.01" min="0" value="0" min="0">
+            <label for="commiss">Комиссия</label>
+            <input type="number" name="commiss" id="commiss" step="0.01" min="0" value="0" onkeyup="reCount()">
         </div>
         <div class="input_block">
             <label for="bot_comiss">Комиссия бота</label>
-            <input type="number" name="bot_comiss" id="bot_comiss" readonly step="0.01" min="0" value="0" min="0">
+            <input type="number" name="bot_comiss" id="bot_comiss" readonly step="0.01" min="0" value="0">
         </div>
-        <div class="input_block">
+        <div class="input_block middle">
             <label for="rub">Расход Р</label>
             <input type="number" name="rub" required id="rub" step="0.01" min="0" readonly>
+        </div>
+        <div class="info_block">
+            Текущий средний курс: <span id="avg_course"></span><span id="avg_prognosis"></span>
         </div>
         <div class="centered">
             <button class="button submit_button" type="submit">Отправить</button>
@@ -58,13 +61,16 @@
 </body>
 </html>
 <script>
+    var avg, delayTimer;
+
     $(document).ready(function () {
+        getAvgCourse(function (data) {
+            document.getElementById('avg_course').innerHTML = data;
+            avg = data;
+        });
+
         fillSelect(document.getElementById('paym'), rubAccounts);
         fillSelect(document.getElementById('bitwallet'), btcAccounts);
-
-        $("#btc").on('change keydown paste input', reCount);
-        $("#course").on('change keydown paste input', reCount);
-        $("#comiss").on('change keydown paste input', reCount);
 
         $("#post_form").on('submit', function (e) {
             e.preventDefault();
@@ -74,30 +80,68 @@
                 crossDomain: true,
                 data: $("#post_form").serialize(),
                 success: function () {
+                    document.getElementById('post_form').reset();
+                    getAvgCourse(function (data) {
+                        document.getElementById('avg_course').innerHTML = data;
+                        avg = data;
+                    });
+                    document.getElementById('avg_prognosis').innerHTML = "";
                     alert("ok!");
                 }
             });
-            document.getElementById('post_form').reset();
         });
+
+
     });
 
     function reCount() {
-        var btcValue = parseFloat($("#btc").val()),
-            courseValue = parseFloat($("#course").val()),
-            comissValue = parseFloat($("#comiss").val()),
-            botcomissValue;
-        if (isNaN(btcValue)) {
-            btcValue = 0;
-        }
-        if (isNaN(courseValue)) {
-            courseValue = 0;
-        }
-        if (isNaN(comissValue)) {
-            comissValue = 0;
-        }
-        botcomissValue = (courseValue * btcValue) * botComission;
-        $("#bot_comiss").val(botcomissValue.toFixed(2));
-        var result = courseValue * btcValue - comissValue - botcomissValue;
-        $("#rub").val(result.toFixed(2));
+        clearTimeout(delayTimer);
+        delayTimer = setTimeout(function () {
+            var btcValue = parseFloat($("#btc").val()),
+                courseValue = parseFloat($("#course").val()),
+                comissValue = parseFloat($("#commiss").val()),
+                botcomissValue;
+            if (isNaN(btcValue)) {
+                btcValue = 0;
+            }
+            if (isNaN(courseValue)) {
+                courseValue = 0;
+            }
+            if (isNaN(comissValue)) {
+                comissValue = 0;
+            }
+            botcomissValue = btcValue * botComission;
+            $("#bot_comiss").val(botcomissValue.toFixed(8));
+            var rubResult = (courseValue * btcValue) - comissValue - (botcomissValue * btcValue);
+            $("#rub").val(rubResult.toFixed(2));
+
+            var prognosisLine = document.getElementById('avg_prognosis');
+            var totalspent_new,
+                totalbought_new;
+
+            getTotalNormalSpent(function (data) {
+                totalspent_new = data + rubResult;
+                getTotalCryptoBought(function (data) {
+                    totalbought_new = data + btcValue;
+                    getAvgPrognose(totalspent_new, totalbought_new, function (data) {
+                        var percentage = ((data / (avg / 100)) - 100).toFixed(2);
+                        var percentage_string = "";
+                        if (percentage > 0) {
+                            percentage_string = ("+" + percentage);
+                            prognosisLine.setAttribute('class', 'green');
+                        } else {
+                            percentage_string = (percentage);
+                            prognosisLine.setAttribute('class', 'red');
+                        }
+                        prognosisLine.innerHTML = '; Прогнозируемое значение: ' + data + ' (' + percentage_string + '%)';
+                    });
+                });
+            });
+        }, 1000);
+    }
+
+    function getAvgPrognose(spent, bought, callback) {
+        var result = (spent / bought).toFixed(2);
+        callback(result);
     }
 </script>

@@ -23,3 +23,44 @@ function defineReservesSet(select_id) {
         return rubAccounts;
     } else return [];
 }
+
+function getAvgCourse(callback) {
+    var normal = 0, crypto = 0, avg_course = 0;
+    $.getJSON(apiServer + '/reportpay', function (data) {
+        $.each(data, function (key, value) {
+            /*TODO include check for currencies; Right now it is counting everything as currency='BTC'*/
+            crypto += value.btc;
+            normal += value.rub;
+        });
+        avg_course = (normal / crypto).toFixed(2);
+        callback(avg_course);
+    });
+}
+
+function getTotalCryptoBought(callback) {
+    var result = 0;
+    $.getJSON(apiServer + '/reportpay', function (data) {
+        $.each(data, function (key, value) {
+            /*TODO include check for currencies; Right now it is counting everything as currency='BTC'*/
+            result += value.btc;
+        });
+        callback(result);
+    });
+}
+
+function getTotalNormalSpent(callback) {
+    var result = 0;
+    $.getJSON(apiServer + '/reportpay', function (data) {
+        $.each(data, function (key, value) {
+            /*TODO include check for currencies; Right now it is counting everything as currency='BTC'*/
+            result += value.rub;
+        });
+        callback(result);
+    });
+}
+
+function getDealFinrez(income, avg, btc, botcom) {
+    var result;
+    result = (income - (avg * btc) - (botcom * avg)).toFixed(2);
+    return result;
+}

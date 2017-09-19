@@ -10,6 +10,10 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
+body {
+    font-family: Tahoma, sans-serif;
+}
+
 a {
     text-decoration: none;
 }
@@ -94,12 +98,37 @@ textarea {
     display: inline-block;
     width: 47%;
     padding: 10px;
-    margin-top: 5px;
+    margin-top: 7px;
     background-color: rgba(255, 255, 255, 0.75);
     border-radius: 9px;
     text-align: center;
-    font-family: Tahoma, sans-serif;
     font-size: 1.25em;
+}
+
+.middle {
+    margin: 7px auto;
+    display: block;
+}
+
+.info_block {
+    padding: 5px;
+    margin: 5px auto;
+    background-color: rgba(191, 212, 232, 0.75);
+    border-radius: 9px;
+    text-align: center;
+    font-size: 0.95em;
+}
+
+input[readonly] {
+    background-color: rgba(96, 162, 216, 0.23);
+}
+
+.green {
+    color: #05cd00;
+}
+
+.red {
+    color: #cd3100;
 }
 
 .report_table {

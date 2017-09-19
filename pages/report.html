@@ -34,17 +34,17 @@
 
 <script>
     $(document).ready(function () {
-        $.getJSON(apiServer + '/reportpay', function (data) {
+        $.getJSON(apiServer + '/reportfull', function (data) {
             var operation_data = '';
             console.log(data);
             $.each(data, function (key, value) {
                 operation_data += '<tr>';
-                operation_data += '<td>' + value.paym + '</td>';
-                operation_data += '<td>' + value.btc + '</td>';
-                operation_data += '<td>' + value.rub + '</td>';
-                operation_data += '<td>' + value.course + '</td>';
-                operation_data += '<td>' + value.date.substring(0, value.date.indexOf('T')) + '</td>';
-                operation_data += '<td>' + value.btc + '</td>';
+                operation_data += '<td>' + '</td>';
+                operation_data += '<td>' + '</td>';
+                operation_data += '<td>' + '</td>';
+                operation_data += '<td>' + '</td>';
+                operation_data += '<td>' + '</td>';
+                operation_data += '<td>' + '</td>';
                 operation_data += '</tr>';
             });
             $("#report_table").append(operation_data);

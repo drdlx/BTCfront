@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/main.css">
-    <title>История покупок</title>
+    <title>История продаж</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="../js/main.js"></script>
 </head>
 <body>
 <div class="wrapper">
     <div class="header">
-        История операций покупки
+        История операций продажи
     </div>
     <table class="report_table" id="report_table">
         <tr>
-            <th>Счет списания</th>
-            <th>Куплено BTC</th>
+            <th>Резерв начисления</th>
+            <th>Продано BTC</th>
             <th>Курс, Р</th>
-            <th>Потрачено, Р</th>
+            <th>Начисленно, Р</th>
             <th>Дата</th>
         </tr>
     </table>
     <div>
-        <a href="buy_form.html">
+        <a href="sell_form.html">
             <button class="button exit_button">Назад</button>
         </a>
         <a href="index.html">
@@ -36,7 +36,7 @@
 
 <script>
     $(document).ready(function () {
-        $.getJSON(apiServer + '/reportpay', function (data) {
+        $.getJSON(apiServer + '/reportsell', function (data) {
             var operation_data = '';
             console.log(data);
             $.each(data, function (key, value) {
