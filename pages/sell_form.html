@@ -15,24 +15,28 @@
     </div>
     <form method="post" id="post_form">
         <div class="input_block">
-            <label for="paym">Счет зачисления</label>
+            <label for="paym">Резерв зачисления</label>
             <select name="paym" id="paym"></select>
         </div>
         <div class="input_block">
-            <label for="bitwallet">Счет списания</label>
+            <label for="bitwallet">Резерв списания</label>
             <select name="bitwallet" id="bitwallet"></select>
-        </div>
-        <div class="input_block">
-            <label for="btc">Продано BTC</label>
-            <input type="number" name="btc" required id="btc" step="0.00000001" min="0">
         </div>
         <div class="input_block">
             <label for="course">Курс сделки</label>
             <input type="number" name="course" required id="course" step="0.01" min="0">
         </div>
         <div class="input_block">
+            <label for="btc">Продано BTC</label>
+            <input type="number" name="btc" required id="btc" step="0.00000001" min="0">
+        </div>
+        <div class="input_block">
             <label for="comiss">Комиссия</label>
             <input type="number" name="comiss" id="comiss" step="0.01" min="0" value="0">
+        </div>
+        <div class="input_block">
+            <label for="bot_comiss">Комиссия бота</label>
+            <input type="number" name="bot_comiss" id="bot_comiss" readonly step="0.01" min="0" value="0" min="0">
         </div>
         <div class="input_block">
             <label for="rub">Поступило Р</label>
@@ -53,8 +57,8 @@
 
 <script>
     $(document).ready(function () {
-        fillSellect(document.getElementById('paym'), rubAccounts);
-        fillSellect(document.getElementById('bitwallet'), btcAccounts);
+        fillSelect(document.getElementById('paym'), rubAccounts);
+        fillSelect(document.getElementById('bitwallet'), btcAccounts);
 
         $("#btc").on('change keydown paste input', reCount);
         $("#course").on('change keydown paste input', reCount);
@@ -78,7 +82,8 @@
     function reCount() {
         var btcValue = parseFloat($("#btc").val()),
             courseValue = parseFloat($("#course").val()),
-            comissValue = parseFloat($("#comiss").val());
+            comissValue = parseFloat($("#comiss").val()),
+            botcomissValue;
         if (isNaN(btcValue)) {
             btcValue = 0;
         }
@@ -88,7 +93,9 @@
         if (isNaN(comissValue)) {
             comissValue = 0;
         }
-        var result = courseValue * btcValue - comissValue;
+        botcomissValue = (courseValue * btcValue) * botComission;
+        $("#bot_comiss").val(botcomissValue.toFixed(2));
+        var result = courseValue * btcValue - comissValue - botcomissValue;
         $("#rub").val(result.toFixed(2));
     }
 </script>

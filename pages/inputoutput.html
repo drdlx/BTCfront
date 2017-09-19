@@ -22,16 +22,31 @@
             </select>
         </div>
         <div class="input_block">
-            <label for="paym">Счет</label>
-            <select name="paym" id="paym"></select>
+            <label for="amount">Сумма</label>
+            <input type="number" name="amount_before" id="amount_before" required step="0.00000001" min="0">
         </div>
         <div class="input_block">
-            <label for="amount">Сумма</label>
-            <input type="number" name="amount" id="amount" required step="0.01" min="0">
+            <label for="currency">Валюта резерва</label>
+            <select name="currency" id="currency" onchange="fillSelect(document.getElementById('paym'), defineReservesSet('currency'))">
+                <option value="RUB">RUB</option>
+                <option value="BTC">BTC</option>
+            </select>
         </div>
         <div class="input_block">
             <label for="comiss">Комиссия</label>
             <input type="number" name="comiss" id="comiss" step="0.01" min="0" value="0" min="0">
+        </div>
+        <div class="input_block">
+            <label for="paym">Резерв</label>
+            <select name="paym" id="paym"></select>
+        </div>
+        <div class="input_block">
+            <label for="amount">Итого</label>
+            <input type="number" name="amount" id="amount" readonly step="0.01" min="0">
+        </div>
+        <div class="input_block">
+            <label for="description">Описание</label>
+            <input type="text" name="description" id="description">
         </div>
         <div class="centered">
             <button class="button submit_button" type="submit">Отправить</button>
@@ -47,7 +62,10 @@
 </html>
 <script>
     $(document).ready(function () {
-        fillSellect(document.getElementById('paym'), rubAccounts);
+        fillSelect(document.getElementById('paym'), defineReservesSet('currency'));
+
+        $("#amount_before").on('change keydown paste input', reCount);
+        $("#comiss").on('change keydown paste input', reCount);
 
         $("#post_form").on('submit', function (e) {
             e.preventDefault();
@@ -62,4 +80,18 @@
             });
         });
     });
+
+    function reCount() {
+        var amountValue = parseFloat($("#amount_before").val()),
+            comissValue = parseFloat($("#comiss").val());
+        if (isNaN(amountValue)) {
+            amountValue = 0;
+        }
+        if (isNaN(comissValue)) {
+            comissValue = 0;
+        }
+        var result = amountValue - comissValue;
+        console.log(result);
+        $("#amount").val(result.toFixed(2));
+    }
 </script>
