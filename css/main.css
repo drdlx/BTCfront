@@ -131,6 +131,7 @@ input[readonly] {
     color: #cd3100;
 }
 
+
 .report_table {
     background: white;
     border-radius: 3px;
@@ -218,3 +219,9 @@ input[readonly] {
     border-right: 0;
 }
 
+.report_table .overall:nth-child(odd) td {
+    background-color: rgba(89, 208, 0, 0.28);
+}
+.report_table .overall td {
+    background-color: rgba(89, 208, 0, 0.28);
+}
