@@ -43,7 +43,7 @@
             url: apiServer + '/reportfull',
             type: 'GET',
             beforeSend: function (req) {
-              req.setRequestHeader("token", sessionStorage.getItem('token'));
+              req.setRequestHeader("Authorization", 'Bearer ' + sessionStorage.getItem('token'));
             },
             crossDomain: true,
             success: function (data) {

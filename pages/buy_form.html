@@ -77,7 +77,7 @@
             $.ajax({
                 url: apiServer + '/pay',
                 beforeSend: function (req) {
-                  req.setRequestHeader('token', sessionStorage.getItem('token'))
+                    req.setRequestHeader("Authorization", 'Bearer ' + sessionStorage.getItem('token'));
                 },
                 type: 'post',
                 crossDomain: true,
@@ -91,7 +91,7 @@
                     document.getElementById('avg_prognosis').innerHTML = "";
                     alert("ok!");
                 },
-                error : function (err) {
+                error: function (err) {
                     alert(err);
                 }
             });
