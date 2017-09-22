@@ -77,7 +77,7 @@
             $.ajax({
                 url: apiServer + '/pay',
                 beforeSend: function (req) {
-                    req.setRequestHeader("Authorization", 'Bearer ' + sessionStorage.getItem('token'));
+                    req.setRequestHeader("Authorization", sessionStorage.getItem('token'));
                 },
                 type: 'post',
                 crossDomain: true,

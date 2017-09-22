@@ -81,7 +81,7 @@
                 type: 'post',
                 crossDomain: true,
                 beforeSend: function (req) {
-                    req.setRequestHeader("Authorization", 'Bearer ' + sessionStorage.getItem('token'));
+                    req.setRequestHeader("Authorization", sessionStorage.getItem('token'));
                 },
                 data: $("#post_form").serialize(),
                 success: function () {
