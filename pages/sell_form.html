@@ -35,8 +35,8 @@
             <input type="number" name="commiss" id="commiss" step="0.01" min="0" value="0" onkeyup="reCount()">
         </div>
         <div class="input_block">
-            <label for="bot_comiss">Комиссия бота</label>
-            <input type="number" name="bot_comiss" id="bot_comiss" readonly step="0.01" value="0" min="0">
+            <label for="bot_commiss">Комиссия бота</label>
+            <input type="number" name="bot_commiss" id="bot_commiss" readonly step="0.01" value="0" min="0">
         </div>
         <div class="input_block">
             <label for="rub">Поступило Р</label>
@@ -50,7 +50,7 @@
         </div>
     </form>
     <div>
-        <a href="index.html">
+        <a href="menu.html">
             <button class="button exit_button">В меню</button>
         </a>
         <a href="sell_history.html">
@@ -80,6 +80,9 @@
                 url: apiServer + '/sell',
                 type: 'post',
                 crossDomain: true,
+                beforeSend: function (req) {
+                    req.setRequestHeader("token", sessionStorage.getItem('token'));
+                },
                 data: $("#post_form").serialize(),
                 success: function () {
                     document.getElementById('post_form').reset();
@@ -109,8 +112,8 @@
                 comissValue = 0;
             }
             botcomissValue = btcValue * botComission;
-            $("#bot_comiss").val(botcomissValue.toFixed(8));
-            var result = (courseValue * btcValue) - comissValue - (botcomissValue * btcValue);
+            $("#bot_commiss").val(botcomissValue.toFixed(8));
+            var result = courseValue * (btcValue - botcomissValue) - comissValue;
             $("#rub").val(result.toFixed(2));
 
             var finrez = getDealFinrez(result, avg, btcValue, botcomissValue);

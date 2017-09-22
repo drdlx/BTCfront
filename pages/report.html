@@ -28,7 +28,7 @@
         Среднедневной курс BTC: <span class="green" id="avg"></span>
     </div>
     <div>
-        <a href="index.html">
+        <a href="menu.html">
             <button class="button exit_button">В меню</button>
         </a>
     </div>
@@ -38,44 +38,56 @@
 
 <script>
     $(document).ready(function () {
-        $.getJSON(apiServer + '/reportfull', function (data) {
-            var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0;
-            var operation_data = '';
-            console.log(data);
-            $.each(data, function (key, value) {
-                operation_data += '<tr>';
-                operation_data += '<td>' + value.paym + '</td>';
+        console.log(sessionStorage.getItem('token'));
+        $.ajax({
+            url: apiServer + '/reportfull',
+            type: 'GET',
+            beforeSend: function (req) {
+              req.setRequestHeader("token", sessionStorage.getItem('token'));
+            },
+            crossDomain: true,
+            success: function (data) {
+                var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0;
+                var operation_data = '';
+                console.log(data);
+                $.each(data, function (key, value) {
+                    operation_data += '<tr>';
+                    operation_data += '<td>' + value.paym + '</td>';
 
-                operation_data += '<td>' + 0 + '</td>';
-                overallRemains += 0;
+                    operation_data += '<td>' + 0 + '</td>';
+                    overallRemains += 0;
 
-                operation_data += '<td>' + value.consumption + '</td>';
-                overallConsume += value.consumption;
+                    operation_data += '<td>' + value.consumption + '</td>';
+                    overallConsume += value.consumption;
 
-                operation_data += '<td>' + + value.coming + '</td>';
-                overallComing += value.coming;
+                    operation_data += '<td>' + +value.coming + '</td>';
+                    overallComing += value.coming;
 
-                operation_data += '<td>' + 0 + '</td>';
-                overallIO += 0;
+                    operation_data += '<td>' + 0 + '</td>';
+                    overallIO += 0;
 
-                operation_data += '<td>' + value.commiss +'</td>';
-                overallComiss += value.commiss;
+                    operation_data += '<td>' + value.commiss + '</td>';
+                    overallComiss += value.commiss;
+                    operation_data += '</tr>';
+                });
+
+                operation_data += '<tr class="overall">';
+                operation_data += '<td>' + 'ИТОГО:' + '</td>';
+                operation_data += '<td>' + overallRemains + '</td>';
+                operation_data += '<td>' + overallConsume + '</td>';
+                operation_data += '<td>' + +overallComing + '</td>';
+                operation_data += '<td>' + overallIO + '</td>';
+                operation_data += '<td>' + overallComiss + '</td>';
                 operation_data += '</tr>';
-            });
 
-            operation_data += '<tr class="overall">';
-            operation_data += '<td>' + 'ИТОГО:' + '</td>';
-            operation_data += '<td>' + overallRemains + '</td>';
-            operation_data += '<td>' + overallConsume + '</td>';
-            operation_data += '<td>' + + overallComing + '</td>';
-            operation_data += '<td>' + overallIO + '</td>';
-            operation_data += '<td>' + overallComiss +'</td>';
-            operation_data += '</tr>';
+                $("#report_table").append(operation_data);
+            }
+        });
+        /*$.getJSON(apiServer + '/reportfull', function (data) {
 
-            $("#report_table").append(operation_data);
-        });
-        getAvgCourse(function (data) {
-           document.getElementById('avg').innerHTML = data;
-        });
+        });*/
+/*        getAvgCourse(function (data) {
+            document.getElementById('avg').innerHTML = data;
+        });*/
     });
 </script>
