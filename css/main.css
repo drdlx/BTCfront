@@ -160,6 +160,7 @@ input[readonly] {
     text-align: center;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     vertical-align: middle;
+    max-width: 100px;
 }
 
 .report_table th:first-child {
