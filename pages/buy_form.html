@@ -138,7 +138,7 @@
                     prognosisLine.setAttribute('class', 'red');
                 }
                 var newAvrg = data;
-                if (isNaN(data) || isUndefined(data)) {
+                if (isNaN(data) || data.isUndefined) {
                     newAvrg = 0;
                     percentage_string = 0;
                 }
