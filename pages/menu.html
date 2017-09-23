@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/main.css">
     <title>Главная</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../js/main.js"></script>
 </head>
 <body>
 <div class="wrapper">
+    <div>
+        Вы вошли как <span id="username"></span>, <a href="index.html">выход</a>
+    </div>
     <div class="header">
         Главная
     </div>
@@ -68,3 +73,8 @@
 </div>
 </body>
 </html>
+<script>
+    $(document).ready(function (e) {
+        document.getElementById('username').innerHTML = sessionStorage.getItem('username');
+    })
+</script>

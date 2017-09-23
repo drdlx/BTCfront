@@ -10,12 +10,12 @@
 </head>
 <body>
 <div class="wrapper">
-    <form id="login">
+    <form id="loginform">
         <div class="input_block middle">
-            <input type="text" placeholder="username" id="body.login">
+            <input type="text" placeholder="username" name="login" id="login">
         </div>
         <div class="input_block middle">
-            <input type="password" placeholder="password" id="body.password">
+            <input type="password" placeholder="password" name="password" id="password">
         </div>
         <div class="centered">
             <div id="loading_bar"></div>
@@ -27,25 +27,34 @@
 </html>
 
 <script>
+    $(document).ready(function () {
+        sessionStorage.setItem('token', '');
+        sessionStorage.setItem('username', '');
+    });
     $("#submit").click(function () {
         $("#submit").hide();
         $("#loading_bar").html("<img src='../img/ajax-load.gif' width='10%'>");
 
-        $("#login").on('submit', function (e) {
+        $("#loginform").on('submit', function (e) {
             e.preventDefault();
             $.ajax({
                 url : apiServer + '/auth',
                 type : 'post',
                 crossDomain : true,
-                data : $("#login").serialize(),
+                data : $("#loginform").serialize(),
                 success : function (data) {
-                    document.getElementById('login').reset();
-                    sessionStorage.setItem('username', $("#body.login").val());
-                    sessionStorage.setItem('token', data.replace(/"/g, ""));
-                    window.location = "menu.html"
+                    if (data.length > 50) {
+                        sessionStorage.setItem('username', $("#login").val());
+                        sessionStorage.setItem('token', data.replace(/"/g, ""));
+                        window.location = "menu.html"
+                    } else {
+                        $("#loading_bar").text("Wrong login/password, try again");
+                        $("#submit").show();
+                        document.getElementById('loginform').reset();
+                    }
                 },
                 error: function () {
-                    $("#loading_bar").text("Invalid  username or password");
+                    $("#loading_bar").text("Something went wrong, contact the administrator");
                     $("#submit").show();
                 }
             });

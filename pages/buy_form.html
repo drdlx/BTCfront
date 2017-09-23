@@ -43,7 +43,8 @@
             <input type="number" name="rub" required id="rub" step="0.01" min="0" readonly>
         </div>
         <div class="info_block">
-            Текущий средний курс: <span id="avg_course"></span><span id="avg_prognosis"></span>
+            Текущий ср. курс: <span id="avg_course"></span><span id="avg_prognosis"></span><span id="finrez"></span><span
+            id="deal_finrez" class="red"></span>
         </div>
         <div class="centered">
             <button class="button submit_button" type="submit">Отправить</button>
@@ -61,12 +62,14 @@
 </body>
 </html>
 <script>
-    var avg, delayTimer;
+    var avg, delayTimer, spentTotal, boughtTotal;
 
     $(document).ready(function () {
-        getAvgCourse(function (data) {
-            document.getElementById('avg_course').innerHTML = data;
-            avg = data;
+        getFullPaymentData(function (data) {
+            document.getElementById('avg_course').innerHTML = data.avg;
+            avg = parseFloat(data.avg);
+            spentTotal = parseFloat(data.rub);
+            boughtTotal = parseFloat(data.btc);
         });
 
         fillSelect(document.getElementById('paym'), rubAccounts);
@@ -76,17 +79,19 @@
             e.preventDefault();
             $.ajax({
                 url: apiServer + '/pay',
-                beforeSend: function (req) {
-                    req.setRequestHeader("Authorization", sessionStorage.getItem('token'));
+                headers: {
+                    'authorization': sessionStorage.getItem('token')
                 },
                 type: 'post',
                 crossDomain: true,
                 data: $("#post_form").serialize(),
                 success: function () {
                     document.getElementById('post_form').reset();
-                    getAvgCourse(function (data) {
-                        document.getElementById('avg_course').innerHTML = data;
-                        avg = data;
+                    getFullPaymentData(function (data) {
+                        document.getElementById('avg_course').innerHTML = data.avg;
+                        avg = parseFloat(data.avg);
+                        spentTotal = parseFloat(data.rub);
+                        boughtTotal = parseFloat(data.btc);
                     });
                     document.getElementById('avg_prognosis').innerHTML = "";
                     alert("ok!");
@@ -96,8 +101,6 @@
                 }
             });
         });
-
-
     });
 
     function reCount() {
@@ -105,7 +108,7 @@
         delayTimer = setTimeout(function () {
             var btcValue = parseFloat($("#btc").val()),
                 courseValue = parseFloat($("#course").val()),
-                comissValue = parseFloat($("#commiss").val()),
+                comissValue = parseFloat($("#comiss").val()),
                 botcomissValue;
             if (isNaN(btcValue)) {
                 btcValue = 0;
@@ -118,36 +121,38 @@
             }
             botcomissValue = btcValue * botComission;
             $("#bot_commiss").val(botcomissValue.toFixed(8));
-            var rubResult = (courseValue * btcValue) - comissValue - (botcomissValue * btcValue);
+            var rubResult = (courseValue * btcValue);
             $("#rub").val(rubResult.toFixed(2));
 
             var prognosisLine = document.getElementById('avg_prognosis');
-            var totalspent_new,
-                totalbought_new;
 
-            getTotalNormalSpent(function (data) {
-                totalspent_new = data + rubResult;
-                getTotalCryptoBought(function (data) {
-                    totalbought_new = data + btcValue;
-                    getAvgPrognose(totalspent_new, totalbought_new, function (data) {
-                        var percentage = ((data / (avg / 100)) - 100).toFixed(2);
-                        var percentage_string = "";
-                        if (percentage > 0) {
-                            percentage_string = ("+" + percentage);
-                            prognosisLine.setAttribute('class', 'green');
-                        } else {
-                            percentage_string = (percentage);
-                            prognosisLine.setAttribute('class', 'red');
-                        }
-                        prognosisLine.innerHTML = '; Прогнозируемое значение: ' + data + ' (' + percentage_string + '%)';
-                    });
-                });
+            //prognosis field setter
+            getAvgPrognose(rubResult, btcValue, boughtTotal, function (data) {
+                var percentage = ((data / (avg / 100)) - 100).toFixed(2);
+                var percentage_string = "";
+                if (percentage > 0) {
+                    percentage_string = ("+" + percentage);
+                    prognosisLine.setAttribute('class', 'green');
+                } else {
+                    percentage_string = (percentage);
+                    prognosisLine.setAttribute('class', 'red');
+                }
+                var newAvrg = data;
+                if (isNaN(data) || isUndefined(data)) {
+                    newAvrg = 0;
+                    percentage_string = 0;
+                }
+                prognosisLine.innerHTML = '; Новый ср. курс: ' + newAvrg.toFixed(2) + ' (' + percentage_string + '%)';
             });
+
+
+            var finrez = getDealFinrez(0, avg, 0, botcomissValue, comissValue);
+            document.getElementById('deal_finrez').innerHTML = '; Финрез сделки: ' + finrez;
         }, 1000);
     }
 
-    function getAvgPrognose(spent, bought, callback) {
-        var result = (spent / bought).toFixed(2);
+    function getAvgPrognose(spent, bought, totalB, callback) {
+        var result = ((totalB * avg) + spent) / (totalB + bought);
         callback(result);
     }
 </script>

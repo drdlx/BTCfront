@@ -63,12 +63,14 @@
 
 <script>
 
-    var delayTimer, avg;
+    var delayTimer, avg, totalFinrez;
 
     $(document).ready(function () {
 
-        getAvgCourse(function (data) {
-           avg = data;
+        getGlobalStatsFull(function (data) {
+            avg = data.avgCourse;
+            totalFinrez = data.totalFinrez;
+            document.getElementById('finrez').innerHTML = totalFinrez;
         });
 
         fillSelect(document.getElementById('paym'), rubAccounts);
@@ -80,18 +82,20 @@
                 url: apiServer + '/sell',
                 type: 'post',
                 crossDomain: true,
-                beforeSend: function (req) {
-                    req.setRequestHeader("Authorization", sessionStorage.getItem('token'));
+                headers: {
+                    'authorization': sessionStorage.getItem('token')
                 },
                 data: $("#post_form").serialize(),
                 success: function () {
                     document.getElementById('post_form').reset();
-                    document.getElementById('finrez').innerHTML = 0;
+                    getFullPaymentData(function (data) {
+                        totalFinrez = data.totalFinrez;
+                        document.getElementById('finrez').innerHTML = totalFinrez;
+                    });
                     document.getElementById('deal_finrez').innerHTML = "";
                     alert("ok!");
                 }
             });
-            document.getElementById('post_form').reset();
         });
     });
 
@@ -113,10 +117,10 @@
             }
             botcomissValue = btcValue * botComission;
             $("#bot_commiss").val(botcomissValue.toFixed(8));
-            var result = courseValue * (btcValue - botcomissValue) - comissValue;
-            $("#rub").val(result.toFixed(2));
+            var rubValue = courseValue * btcValue;
+            $("#rub").val(rubValue.toFixed(2));
 
-            var finrez = getDealFinrez(result, avg, btcValue, botcomissValue);
+            var finrez = getDealFinrez(rubValue, avg, btcValue, botcomissValue, comissValue);
             var finrez_field = document.getElementById('deal_finrez');
             var finrez_string = "";
             if (finrez > 0) {
@@ -126,6 +130,7 @@
                 finrez_field.setAttribute('class', 'red');
                 finrez_string = finrez;
             }
+            if (isNaN(finrez) || finrez.isUndefined) { finrez_string = 0 }
             finrez_field.innerHTML = '; Финрез от сделки: ' + finrez_string;
         }, 1000);
     }
