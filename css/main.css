@@ -56,9 +56,10 @@ textarea {
 .wrapper {
     margin: auto;
     width: 800px;
-    background-color: rgba(111, 111, 111, 0.1);
-    box-shadow: -2px 2px 0.5em #111;
+    box-shadow: -2px 2px 0.5em rgba(0, 0, 0, 0.5);
     padding: 10px;
+    background: rgba(159, 202, 255, 0.1) url("../img/bright-squares.png") no-repeat;
+    background-size: 100%;
 }
 .button_pane table {
     width: 100%;
@@ -71,10 +72,11 @@ textarea {
 }
 .button_pane .menu_header td {
     text-align: left;
-    font-size: 1.4em;
+    font-size: 1.35em;
     font-weight: bold;
     color: rgba(59, 95, 134, 0.56);
-    border-bottom: rgba(188, 196, 218, 0.25) solid;
+    border-bottom: rgba(145, 168, 202, 0.7) solid;
+    border-radius: 6%;
 }
 .button {
     padding: 10px;
@@ -105,8 +107,8 @@ textarea {
     width: 47%;
     padding: 10px;
     margin-top: 7px;
-    background-color: rgba(255, 255, 255, 0.75);
-    border-radius: 9px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
     text-align: center;
     font-size: 1.25em;
 }
@@ -126,7 +128,10 @@ textarea {
 }
 
 input[readonly] {
-    background-color: rgba(96, 162, 216, 0.23);
+    background-color: rgba(246, 255, 206, 0.36);
+    border: rgba(125, 96, 19, 0.3) outset 2px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .green {
