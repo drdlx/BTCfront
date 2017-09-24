@@ -1,0 +1,77 @@
+<!doctype html>
+<script src="../js/privilege.js"></script>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/main.css">
+    <title>Регистрация</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../js/main.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        Регистрация
+    </div>
+    <form method="post" id="post_form">
+        <div class="input_block middle">
+            <label for="login">Логин</label>
+            <input type="text" name="login" id="login" required>
+        </div>
+        <div class="input_block middle">
+            <label for="password">Пароль</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        <div class="input_block middle">
+            <label for="password-repeat">Повторите пароль</label>
+            <input type="password" name="password-repeat" id="password-repeat" required>
+        </div>
+        <div class="input_block middle">
+            <label for="privilege">Уровень доступа</label>
+            <select name="privilege" id="privilege" required>
+                <option value="false">Пользователь</option>
+                <option value="true">Администратор</option>
+            </select>
+        </div>
+        <div id="error-msg" class="centered red"></div>
+        <div class="centered">
+            <button class="button submit_button" type="submit">Отправить</button>
+        </div>
+    </form>
+    <div>
+        <a href="menu.html">
+            <button class="button exit_button">В меню</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $("#post_form").on('submit', function (e) {
+            e.preventDefault();
+            var password = $("#password").val(),
+                rePassword = $("#password-repeat").val();
+
+            if (password !== rePassword) {
+                document.getElementById('error-msg').innerHTML = 'Пароли не совпадают';
+            } else {
+                $.ajax({
+                    url : apiServer + '/createNewUser',
+                    type: 'post',
+                    headers: { 'authorization' : sessionStorage.getItem('token')},
+                    data: $("#post_form").serialize(),
+                    success: function (data) {
+                        alert('Пользователь ' + $("#login").val() + ' был создан');
+                        document.getElementById('error-msg').innerHTML = '';
+                        document.getElementById('post_form').reset();
+                    },
+                    error: function (err) {
+                        document.getElementById('error-msg').innerHTML = 'Что-то пошло не так, ' + err;
+                        document.getElementById('post_form').reset();
+                    }
+                });
+            }
+        });
+    });
+</script>

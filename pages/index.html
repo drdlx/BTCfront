@@ -30,6 +30,7 @@
     $(document).ready(function () {
         sessionStorage.setItem('token', null);
         sessionStorage.setItem('username', null);
+        sessionStorage.setItem('permission', null);
     });
     $("#submit").click(function () {
         $("#submit").hide();
@@ -44,8 +45,10 @@
                 data : $("#loginform").serialize(),
                 success : function (data) {
                     if (data.length > 50) {
+                        var parsedData = data.split(' ');
                         sessionStorage.setItem('username', $("#login").val());
-                        sessionStorage.setItem('token', data.replace(/"/g, ""));
+                        sessionStorage.setItem('token', parsedData[0].replace(/"/g, ""));
+                        sessionStorage.setItem('permission', parsedData[1]);
                         window.location = "menu.html"
                     } else {
                         $("#loading_bar").text("Wrong login/password, try again");

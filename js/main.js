@@ -30,19 +30,19 @@ function getFullPaymentData(callback) {
     $.ajax({
         url: apiServer + '/reportpay',
         type: 'get',
-        headers: { 'authorization' : sessionStorage.getItem('token')},
+        headers: {'authorization': sessionStorage.getItem('token')},
         crossDomain: true,
         success: function (data) {
             $.each(data, function (key, value) {
-                currentAvg = ((totalBtc * currentAvg) + value.rub)/(totalBtc + value.btc);
+                currentAvg = ((totalBtc * currentAvg) + value.rub) / (totalBtc + value.btc);
                 totalBtc += value.btc - value.bot_commiss;
                 totalRub -= value.rub + value.commiss;
             });
             var result = {
-                'data' : data,
-                'avg' : currentAvg.toFixed(2),
-                'btc' : totalBtc.toFixed(8),
-                'rub' : totalRub.toFixed(2)
+                'data': data,
+                'avg': currentAvg.toFixed(2),
+                'btc': totalBtc.toFixed(8),
+                'rub': totalRub.toFixed(2)
             };
             callback(result);
         }
@@ -53,11 +53,11 @@ function getFullSalesData(callback) {
     $.ajax({
         url: apiServer + '/reportsell',
         type: 'get',
-        headers: { 'authorization' : sessionStorage.getItem('token')},
+        headers: {'authorization': sessionStorage.getItem('token')},
         crossDomain: true,
         success: function (data) {
             var result = {
-                'data' : data
+                'data': data
             };
             callback(result);
         }
@@ -84,24 +84,27 @@ function getDealFinrez(income, avgCourse, btcOutcome, botCommiss, comiss) {
 }
 
 function getGlobalStatsFull(callback) {
-    var fullList, payList, sellList;
+    var fullList, payList = null, sellList = null;
     //pays
-    $.ajax({
-        url: apiServer + '/reportpay',
-        type: 'GET',
-        crossDomain: true,
-        headers: {
-            'authorization': sessionStorage.getItem('token')
-        },
-        success: function (data) {
-            payList = data;
-            $.each(payList, function (key, value) {
-                value.operation = 'pay'
-            });
-        }
-    }).done(function () {
-        //sells
-        $.ajax({
+    function pays() {
+        return $.ajax({
+            url: apiServer + '/reportpay',
+            type: 'GET',
+            crossDomain: true,
+            headers: {
+                'authorization': sessionStorage.getItem('token')
+            },
+            success: function (data) {
+                payList = data;
+                $.each(payList, function (key, value) {
+                    value.operation = 'pay'
+                });
+            }
+        });
+    }
+    //sells
+    function sells() {
+        return $.ajax({
             url: apiServer + "/reportSell",
             crossDomain: true,
             type: 'GET',
@@ -111,42 +114,42 @@ function getGlobalStatsFull(callback) {
             success: function (data) {
                 sellList = data;
                 $.each(sellList, function (key, value) {
-                   value.operation = 'sell';
+                    value.operation = 'sell';
                 });
             }
-        }).done(function () {
-
-            //merging both lists and sorting result
-            fullList = payList.concat(sellList);
-            fullList.sort(function (a, b) {
-                return a.date > b.date ? 1 : -1;
-            });
-
-            //processing data
-            var totalFinrez = 0, totalRub = 0, totalBtc = 0, currentAvg = 0;
-            $.each(fullList, function (key, value) {
-                if (value.operation === "sell") {
-                    totalFinrez += getDealFinrez(value.rub, currentAvg, value.btc, value.bot_commiss, value.commiss);
-                    totalBtc -= value.btc + value.bot_commiss;
-                    totalRub += value.rub - value.commiss;
-                }
-                else if (value.operation === 'pay') {
-                    currentAvg = ((totalBtc * currentAvg) + value.rub)/(totalBtc + value.btc);
-                    totalBtc += value.btc - value.bot_commiss;
-                    totalRub -= value.rub + value.commiss;
-                    totalFinrez += getDealFinrez(0, currentAvg, 0, value.bot_commiss, value.commiss);
-                }
-            });
-
-            //sending data to the callback function
-            var result = {
-                'avgCourse' : currentAvg.toFixed(2),
-                'totalBtc' : totalBtc.toFixed(8),
-                'totalRub' : totalRub.toFixed(2),
-                'totalFinrez' : totalFinrez.toFixed(2)
-            };
-            callback(result);
         });
-    });
+    }
 
+    $.when(pays(), sells()).done(function (a1, a2) {
+        //merging both lists and sorting result
+        fullList = payList.concat(sellList);
+        fullList.sort(function (a, b) {
+            return a.date > b.date ? 1 : -1;
+        });
+
+        //processing data
+        var totalFinrez = 0, totalRub = 0, totalBtc = 0, currentAvg = 0;
+        $.each(fullList, function (key, value) {
+            if (value.operation === "sell") {
+                totalFinrez += getDealFinrez(value.rub, currentAvg, value.btc, value.bot_commiss, value.commiss);
+                totalBtc -= value.btc + value.bot_commiss;
+                totalRub += value.rub - value.commiss;
+            }
+            else if (value.operation === 'pay') {
+                currentAvg = ((totalBtc * currentAvg) + value.rub) / (totalBtc + value.btc);
+                totalBtc += value.btc - value.bot_commiss;
+                totalRub -= value.rub + value.commiss;
+                totalFinrez += getDealFinrez(0, currentAvg, 0, value.bot_commiss, value.commiss);
+            }
+        });
+
+        //sending data to the callback function
+        var result = {
+            'avgCourse': currentAvg.toFixed(2),
+            'totalBtc': totalBtc.toFixed(8),
+            'totalRub': totalRub.toFixed(2),
+            'totalFinrez': totalFinrez.toFixed(2)
+        };
+        callback(result);
+    });
 }

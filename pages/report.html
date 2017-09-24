@@ -31,6 +31,23 @@
             Общий финрез: <span class="green" id="finrez"></span>
             Всего Р: <span class="green" id="rub"></span>
             Всего BTC: <span class="green" id="btc"></span>
+            <script>
+                getGlobalStatsFull(function (data) {
+                    document.getElementById('avg').innerHTML = data.avgCourse;
+                    document.getElementById('finrez').innerHTML = data.totalFinrez;
+                    document.getElementById('rub').innerHTML = data.totalRub;
+                    document.getElementById('btc').innerHTML = data.totalBtc;
+                    if (data.totalFinrez < 0) {
+                        document.getElementById('finrez').setAttribute('class', 'red');
+                    }
+                    if (data.totalRub < 0) {
+                        document.getElementById('rub').setAttribute('class', 'red');
+                    }
+                    if (data.totalBtc < 0) {
+                        document.getElementById('btc').setAttribute('class', 'red');
+                    }
+                });
+            </script>
         </p>
     </div>
     <div>
@@ -44,14 +61,12 @@
 
 <script>
     $(document).ready(function () {
-        console.log(sessionStorage.getItem('token'));
+        var request = (sessionStorage.getItem('permission') === 'true') ? '/admin/reportfull' : '/reportfull';
+        console.log(request);
         $.ajax({
-            url: apiServer + '/reportfull',
+            url: apiServer + request,
             type: 'GET',
             crossDomain: true,
-            /*            beforeSend: function (req) {
-                            req.setRequestHeader("authorization", sessionStorage.getItem('token'));
-                        },*/
             headers: {
                 "authorization": sessionStorage.getItem('token')
             },
@@ -59,7 +74,19 @@
                 var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0;
                 var operation_data = '';
                 console.log(data);
-                $.each(data, function (key, value) {
+                var sortedData = data.sort(function (a, b) {
+                    return a.user < b.user;
+                });
+                var currentUser = '', colCount = 6;
+                //---------------------------------------
+                $.each(sortedData, function (key, value) {
+                    if ((currentUser !== value.user) && (sessionStorage.getItem('permission') === 'true')) {
+                        currentUser = value.user;
+                        operation_data += '<tr class="report-user-header">';
+                        operation_data += '<td colspan="' + colCount +'">' + currentUser + "</td>";
+                        operation_data += '</tr>';
+                    }
+
                     operation_data += '<tr>';
                     operation_data += '<td>' + value.paym + '</td>';
 
@@ -90,21 +117,6 @@
                 operation_data += '</tr>';
 
                 $("#report_table").append(operation_data);
-            }
-        });
-        getGlobalStatsFull(function (data) {
-            document.getElementById('avg').innerHTML = data.avgCourse;
-            document.getElementById('finrez').innerHTML = data.totalFinrez;
-            document.getElementById('rub').innerHTML = data.totalRub;
-            document.getElementById('btc').innerHTML = data.totalBtc;
-            if (data.totalFinrez < 0) {
-                document.getElementById('finrez').setAttribute('class', 'red');
-            }
-            if (data.totalRub < 0) {
-                document.getElementById('rub').setAttribute('class', 'red');
-            }
-            if (data.totalBtc < 0) {
-                document.getElementById('btc').setAttribute('class', 'red');
             }
         });
     });

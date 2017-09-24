@@ -69,6 +69,18 @@
                     </a>
                 </td>
             </tr>
+            <tr class="menu_header hidden">
+                <td colspan="5">
+                    Администрирование
+                </td>
+            </tr>
+            <tr class="hidden">
+                <td>
+                    <a href="registration.html">
+                        <button class="button">Добавить пользователя</button>
+                    </a>
+                </td>
+            </tr>
         </table>
     </div>
 </div>
@@ -77,5 +89,11 @@
 <script>
     $(document).ready(function (e) {
         document.getElementById('username').innerHTML = sessionStorage.getItem('username');
+        if (sessionStorage.getItem('permission') === 'true') {
+            var list = document.getElementsByClassName('hidden');
+            while (list.length > 0) {
+                list[0].classList.remove('hidden');
+            }
+        }
     })
 </script>
