@@ -3,7 +3,7 @@ if (sessionStorage.getItem('token') === 'null' && sessionStorage.getItem('userna
 } else {
     var priv = sessionStorage.getItem('permission');
 
-    if (window.location.pathname.includes('registration') && priv !== 'true') {
+    if (window.location.pathname.includes('registration') && priv !== 'admin') {
         window.location = 'menu.html';
     }
 }

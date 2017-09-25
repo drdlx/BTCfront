@@ -61,7 +61,7 @@
 
 <script>
     $(document).ready(function () {
-        var request = (sessionStorage.getItem('permission') === 'true') ? '/admin/reportfull' : '/reportfull';
+        var request = (sessionStorage.getItem('permission') === 'admin') ? '/admin/reportfull' : '/reportfull';
         console.log(request);
         $.ajax({
             url: apiServer + request,
@@ -80,7 +80,7 @@
                 var currentUser = '', colCount = 6;
                 //---------------------------------------
                 $.each(sortedData, function (key, value) {
-                    if ((currentUser !== value.user) && (sessionStorage.getItem('permission') === 'true')) {
+                    if ((currentUser !== value.user) && (sessionStorage.getItem('permission') === 'admin')) {
                         currentUser = value.user;
                         operation_data += '<tr class="report-user-header">';
                         operation_data += '<td colspan="' + colCount +'">' + currentUser + "</td>";

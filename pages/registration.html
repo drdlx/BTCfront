@@ -29,8 +29,8 @@
         <div class="input_block middle">
             <label for="privilege">Уровень доступа</label>
             <select name="privilege" id="privilege" required>
-                <option value="false">Пользователь</option>
-                <option value="true">Администратор</option>
+                <option value="user">Пользователь</option>
+                <option value="admin">Администратор</option>
             </select>
         </div>
         <div id="error-msg" class="centered red"></div>
@@ -57,21 +57,28 @@
                 document.getElementById('error-msg').innerHTML = 'Пароли не совпадают';
             } else {
                 $.ajax({
-                    url : apiServer + '/createNewUser',
+                    url: apiServer + '/createNewUser',
                     type: 'post',
-                    headers: { 'authorization' : sessionStorage.getItem('token')},
+                    headers: {'authorization': sessionStorage.getItem('token')},
                     data: $("#post_form").serialize(),
+                    statusCode: {
+                        409: function () {
+                            document.getElementById('error-msg').innerHTML = 'Пользователь уже существует';
+                        }
+                    },
                     success: function (data) {
+                        console.log(data);
                         alert('Пользователь ' + $("#login").val() + ' был создан');
                         document.getElementById('error-msg').innerHTML = '';
                         document.getElementById('post_form').reset();
                     },
-                    error: function (err) {
-                        document.getElementById('error-msg').innerHTML = 'Что-то пошло не так, ' + err;
+                    error: function () {
+                        document.getElementById('error-msg').innerHTML = 'Что-то пошло не так';
                         document.getElementById('post_form').reset();
                     }
                 });
             }
+
         });
     });
 </script>

@@ -47,8 +47,8 @@
             </tr>
             <tr>
                 <td>
-                    <a href="">
-                        <button class="button">placeholder</button>
+                    <a href="create_reserve.html">
+                        <button class="button hidden">Добавить резерв</button>
                     </a>
                 </td>
                 <td>
@@ -89,7 +89,7 @@
 <script>
     $(document).ready(function (e) {
         document.getElementById('username').innerHTML = sessionStorage.getItem('username');
-        if (sessionStorage.getItem('permission') === 'true') {
+        if (sessionStorage.getItem('permission') === 'admin') {
             var list = document.getElementsByClassName('hidden');
             while (list.length > 0) {
                 list[0].classList.remove('hidden');

@@ -44,20 +44,19 @@
                 crossDomain : true,
                 data : $("#loginform").serialize(),
                 success : function (data) {
-                    if (data.length > 50) {
-                        var parsedData = data.split(' ');
+                    if (Object.keys(data).length >= 2) {
                         sessionStorage.setItem('username', $("#login").val());
-                        sessionStorage.setItem('token', parsedData[0].replace(/"/g, ""));
-                        sessionStorage.setItem('permission', parsedData[1]);
+                        sessionStorage.setItem('token', data.token.replace(/"/g, ""));
+                        sessionStorage.setItem('permission', data.privilege);
                         window.location = "menu.html"
                     } else {
-                        $("#loading_bar").text("Wrong login/password, try again");
+                        $("#loading_bar").text("Something went wrong, contact the administrator");
                         $("#submit").show();
                         document.getElementById('loginform').reset();
                     }
                 },
                 error: function () {
-                    $("#loading_bar").text("Something went wrong, contact the administrator");
+                    $("#loading_bar").text("Wrong login/password, try again");
                     $("#submit").show();
                 }
             });
