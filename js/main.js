@@ -64,16 +64,50 @@ function getFullSalesData(callback) {
     });
 }
 
-function getAvgCourse(callback) {
-    var normal = 0, crypto = 0, avg_course = 0;
-    $.getJSON(apiServer + '/reportpay', function (data) {
-        $.each(data, function (key, value) {
-            /*TODO include check for currencies; Right now it is counting everything as currency='BTC'*/
-            crypto += value.btc;
-            normal += value.rub;
-        });
-        avg_course = (normal / crypto).toFixed(2);
-        callback(avg_course);
+function getReserveList(callback) {
+    $.ajax({
+        url: apiServer + '/reserves',
+        type: 'get',
+        headers: { 'authorization' : sessionStorage.getItem('token')},
+        success: function (data) {
+            callback(data);
+        }
+    });
+}
+
+function getCurrencyList(callback) {
+    $.ajax({
+        url: apiServer + '/currency',
+        type: 'get',
+        headers: { 'authorization' : sessionStorage.getItem('token')},
+        success: function (data) {
+            callback(data);
+            return data;
+        }
+    });
+}
+
+function getBankList(callback) {
+    $.ajax({
+        url: apiServer + '/banks',
+        type: 'get',
+        headers: { 'authorization' : sessionStorage.getItem('token')},
+        success: function (data) {
+            callback(data);
+            return data;
+        }
+    });
+}
+
+function getAntiagentList(callback) {
+    $.ajax({
+        url: apiServer + '/anti_agent',
+        type: 'get',
+        headers: { 'authorization' : sessionStorage.getItem('token')},
+        success: function (data) {
+            callback(data);
+            return data;
+        }
     });
 }
 
@@ -121,6 +155,7 @@ function getGlobalStatsFull(callback) {
     }
 
     $.when(pays(), sells()).done(function (a1, a2) {
+
         //merging both lists and sorting result
         fullList = payList.concat(sellList);
         fullList.sort(function (a, b) {

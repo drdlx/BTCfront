@@ -1,0 +1,73 @@
+<!doctype html>
+<script src="../js/privilege.js"></script>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/main.css">
+    <title>Справочник резервов</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../js/main.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">Справочник резервов</div>
+    <div>
+        Доступные резервы:
+    </div>
+    <span id="empty_notification"></span>
+    <table class="handbook_table preload" id="handbook_table">
+        <tr>
+            <th>Имя</th>
+            <th>Банк</th>
+            <th>Валюта</th>
+            <th>Владелец</th>
+            <th>Ответственный</th>
+        </tr>
+    </table>
+    <div>
+        <a href="menu.html">
+            <button class="button exit_button">В меню</button>
+        </a>
+    </div>
+    <div id="add_reserve">
+        <script>$("#add_reserve").hide();</script>
+        <div>
+            Добавить новый резерв
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        var reserves = [];
+        getReserveList(function (data) {
+            console.log(data);
+            if (sessionStorage.getItem('permission') === 'admin') {
+                reserves = data;
+                $("#add_reserve").show();
+            } else {
+                $.each(data, function (key, value) {
+                    if (value.responsible === sessionStorage.getItem('username')) {
+                        reserves += value;
+                    }
+                })
+            }
+        });
+        if (reserves.length === 0) {
+            $("#empty_notification").innerHTML = "Нет доступных резервов";
+        } else {
+            var operational_data = "";
+            $.each(reserves, function (key, value) {
+                operational_data += '<tr>';
+                operational_data += '<td>' + value.title + '</td>';
+                operational_data += '<td>' + value.bank + '</td>';
+                operational_data += '<td>' + value.currency + '</td>';
+                operational_data += '<td>' + value.owner + '</td>';
+                operational_data += '<td>' + value.responsible + '</td>';
+                operational_data += '</tr>';
+            });
+            $(".preload").removeClass('preload');
+        }
+    });
+</script>

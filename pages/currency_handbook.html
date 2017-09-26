@@ -1,0 +1,105 @@
+<!doctype html>
+<script src="../js/privilege.js"></script>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/main.css">
+    <title>Справочник валют</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../js/main.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">Справочник валют</div>
+    <div class="centered">
+        <div>
+            Доступные валюты
+        </div>
+        <span id="empty_notification"></span>
+        <table class="handbook_table preload" id="handbook_table">
+    </table>
+    </div>
+    <div id="add_currency">
+        <script>$("#add_currency").hide();</script>
+        <button class="button middle" id="add_button">Добавить новую валюту</button>
+        <form id="add_form" class="handbook_form">
+            <div class="input_block middle">
+                <input type="text" maxlength="3" minlength="3" required placeholder="ABC" id="currency" name="currency">
+                <label for="currency">Код валюты</label>
+            </div>
+            <div class="input_block middle">
+                <input type="checkbox" value="false" id="isCrypto" name="isCrypto">
+                <label for="isCrypto">Криптовалюта</label>
+            </div>
+            <div class="centered">
+                <div id="error-msg"></div>
+                <button class="button submit_button" type="submit">Отправить</button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <a href="menu.html">
+            <button class="button exit_button">В меню</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        if (sessionStorage.getItem('permission') === 'admin') {
+            $("#add_form").hide();
+            $("#add_button").click(function () {
+                $("#add_form").toggle(500);
+            });
+            $("#add_currency").show();
+            $("#add_form").on('submit', function (e) {
+                e.preventDefault();
+                var currencyVal = $("#currency").val().toUpperCase(),
+                    isCryptoVal = ($("#isCrypto").is(':checked')) ? 'true' : 'false';
+                $.ajax({
+                    url: apiServer + '/currency_add',
+                    type: 'post',
+                    headers: {'authorization': sessionStorage.getItem('token')},
+                    data: "currency=" + currencyVal + "&isCrypto=" + isCryptoVal,
+                    success: function (data) {
+                        alert("валюта " + $("#currency").val() + " добавлена");
+                        $("#error-msg").html("");
+                        document.getElementById('add_form').reset();
+                        buildTable();
+                    },
+                    error: function (err) {
+                        $("#error-msg").html("Ошибка при добавлении валюты");
+                        document.getElementById('add_form').reset();
+                    }
+                });
+            });
+        }
+        buildTable();
+    });
+
+    function buildTable() {
+        getCurrencyList(function (data) {
+            console.log(data);
+            var currencies = data;
+            if (currencies.length === 0) {
+                $("#empty_notification").html("Нет созданных валют");
+            } else {
+                $("#empty_notification").html("");
+                $("#handbook_table").html('<tr>\n' +
+                    '<th>Валюта</th>\n' +
+                    '<th>Крипто</th>\n' +
+                    '</tr>');
+                var operational_data = "";
+                $.each(currencies, function (key, value) {
+                    operational_data += '<tr>';
+                    operational_data += '<td>' + value.currency + '</td>';
+                    operational_data += '<td>' + value.isCrypto + '</td>';
+                    operational_data += '</tr>';
+                });
+                $("#handbook_table").append(operational_data);
+                $(".preload").removeClass('preload');
+            }
+        });
+    }
+</script>
