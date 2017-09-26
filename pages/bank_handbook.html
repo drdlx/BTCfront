@@ -1,0 +1,131 @@
+<!doctype html>
+<script src="../js/privilege.js"></script>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <title>Справочник банков</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="../js/vendor/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap-multiselect.css" type="text/css">
+    <script type="text/javascript" src="../js/vendor/bootstrap-multiselect.js"></script>
+    <script src="../js/main.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">Справочник банков</div>
+    <div class="centered">
+        <div>
+            Доступные банки
+        </div>
+        <span id="empty_notification"></span>
+        <table class="handbook_table preload" id="handbook_table">
+        </table>
+    </div>
+    <div id="add_bank">
+        <script>$("#add_bank").hide();</script>
+        <button class="button middle" id="add_button">Добавить новый банк</button>
+        <form id="add_form" class="handbook_form">
+            <div class="input_block middle">
+                <label for="bank">Наименование</label>
+                <input type="text" maxlength="15" minlength="3" required placeholder="имя банка" id="bank" name="bank">
+            </div>
+            <div class="input_block middle">
+                <label for="currency">Доступные валюты</label>
+                <select multiple="multiple" id="currency" name="currency[]" class="form-controll">
+                </select>
+            </div>
+            <div class="centered">
+                <div id="error-msg"></div>
+                <button class="button submit_button" type="submit">Отправить</button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <a href="menu.html">
+            <button class="button exit_button">В меню</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        if (sessionStorage.getItem('permission') === 'admin') {
+            $("#add_form").hide();
+            $("#add_button").click(function () {
+                $("#add_form").toggle(500);
+            });
+            $("#add_bank").show();
+            fillCurrencySelect();
+            $("#add_form").on('submit', function (e) {
+                e.preventDefault();
+                var bankNameVal = $("#bank").val(),
+                    currencyVal = "";
+                $.each($("#currency").val(), function (key, value) {
+                    currencyVal += value + ',';
+                });
+                currencyVal = currencyVal.substring(0, currencyVal.length - 1);
+                $.ajax({
+                    url: apiServer + '/banks_add',
+                    type: 'post',
+                    headers: {'authorization': sessionStorage.getItem('token')},
+                    data: "bank=" + bankNameVal + "&currency=" + currencyVal,
+                    success: function (data) {
+                        alert("Банк " + $("#bank").val() + " добавлен");
+                        $("#error-msg").html("");
+                        document.getElementById('add_form').reset();
+                        buildTable();
+                    },
+                    error: function (err) {
+                        $("#error-msg").html("Ошибка при добавлении банка");
+                        document.getElementById('add_form').reset();
+                    }
+                });
+            });
+        }
+        buildTable();
+    });
+
+    function buildTable() {
+        getBankList(function (data) {
+            console.log(data);
+            var banks = data;
+            if (banks.length === 0) {
+                $("#empty_notification").html("Нет созданных банков");
+            } else {
+                $("#empty_notification").html("");
+                $("#handbook_table").html('<tr>\n' +
+                    '<th>Банк</th>\n' +
+                    '<th>Валюты</th>\n' +
+                    '</tr>');
+                var operational_data = "";
+                $.each(banks, function (key, value) {
+                    operational_data += '<tr>';
+                    operational_data += '<td>' + value.bank + '</td>';
+                    operational_data += '<td>' + value.currency + '</td>';
+                    operational_data += '</tr>';
+                });
+                $("#handbook_table").append(operational_data);
+                $(".preload").removeClass('preload');
+            }
+        });
+    }
+
+    function fillCurrencySelect() {
+        getCurrencyList(function (data) {
+            $.each(data, function (key, value) {
+                var opt_data = "<option value=\"";
+                opt_data  += value.currency + "\" >";
+                opt_data += value.currency;
+                opt_data += "</option>";
+                $("#currency").append(opt_data);
+            });
+            $("#currency").multiselect({
+                nonSelectedText: 'Выберите валюты'
+            });
+        });
+    }
+</script>
