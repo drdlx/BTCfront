@@ -284,12 +284,12 @@ input[readonly] {
     text-align: center;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     vertical-align: middle;
-    max-width: 100px;
+    max-width: 130px;
 }
 
 .handbook_table td {
     background: rgba(166, 169, 46, 0.1);
-    padding: 5px;
+    padding: 5px 15px;
     text-align: center;
     vertical-align: middle;
     font-size: 16px;
@@ -302,3 +302,12 @@ input[readonly] {
     padding: 10px;
     border-radius: 5px;
 }
+
+input:invalid:not(:placeholder-shown) {
+    background-color: rgba(255, 0, 0, 0.08);
+}
+
+input:valid:not(:placeholder-shown) {
+    background-color: rgba(41, 255, 0, 0.28);
+}
+

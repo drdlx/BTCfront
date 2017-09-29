@@ -3,9 +3,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/main.css">
     <title>Справочник резервов</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="../js/vendor/bootstrap.min.js"></script>
     <script src="../js/main.js"></script>
 </head>
 <body>
@@ -16,58 +19,163 @@
     </div>
     <span id="empty_notification"></span>
     <table class="handbook_table preload" id="handbook_table">
-        <tr>
-            <th>Имя</th>
-            <th>Банк</th>
-            <th>Валюта</th>
-            <th>Владелец</th>
-            <th>Ответственный</th>
-        </tr>
     </table>
+    <div id="add_reserve">
+        <script>$("#add_reserve").hide();</script>
+        <button class="button middle" id="add_button">Добавить новый резерв</button>
+        <form id="add_form" class="handbook_form">
+            <div class="input_block middle">
+                <label for="title">Отображаемое имя</label>
+                <input type="text" maxlength="15" minlength="3" required placeholder="имя резерва" id="title"
+                       name="title">
+            </div>
+            <div class="input_block middle">
+                <label for="bank">Банк</label>
+                <select id="bank" name="bank" required
+                        onchange="fillSelect(document.getElementById('currency'), 'bank')">
+                </select>
+            </div>
+            <div class="input_block middle">
+                <label for="currency">Валюта</label>
+                <select id="currency" name="currency" required disabled>
+                </select>
+            </div>
+            <div class="input_block middle">
+                <label for="owner">Владелец</label>
+                <select id="owner" name="owner" required>
+                </select>
+            </div>
+            <div class="input_block middle">
+                <label for="responsible">Ответственный</label>
+                <select id="responsible" name="responsible" required>
+                </select>
+            </div>
+            <div class="centered">
+                <div id="error-msg"></div>
+                <button class="button submit_button" type="submit">Отправить</button>
+            </div>
+        </form>
+    </div>
     <div>
         <a href="menu.html">
             <button class="button exit_button">В меню</button>
         </a>
-    </div>
-    <div id="add_reserve">
-        <script>$("#add_reserve").hide();</script>
-        <div>
-            Добавить новый резерв
-        </div>
     </div>
 </div>
 </body>
 </html>
 <script>
     $(document).ready(function () {
-        var reserves = [];
+        if (sessionStorage.getItem('permission') === 'admin') {
+            $("#add_form").hide();
+            $("#add_button").click(function () {
+                $("#add_form").toggle(500);
+            });
+            $("#add_reserve").show();
+            fillBanksSelect();
+            fillOwnerSelect();
+            fillResponsibleSelect();
+            $("#add_form").on('submit', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: apiServer + '/reserves_add',
+                    type: 'post',
+                    headers: {'authorization': sessionStorage.getItem('token')},
+                    data: $("#add_form").serialize(),
+                    success: function (data) {
+                        alert("Резерв " + $("#title").val() + " добавлен");
+                        $("#error-msg").html("");
+                        document.getElementById('add_form').reset();
+                        buildTable();
+                    },
+                    error: function (err) {
+                        $("#error-msg").html("Ошибка при добавлении резерва");
+                        document.getElementById('add_form').reset();
+                    }
+                });
+            });
+        }
+        buildTable();
+    });
+
+    function buildTable() {
         getReserveList(function (data) {
             console.log(data);
-            if (sessionStorage.getItem('permission') === 'admin') {
-                reserves = data;
-                $("#add_reserve").show();
+            var reserves = data;
+            if (reserves.length === 0) {
+                $("#empty_notification").innerHTML = "Нет доступных резервов";
             } else {
-                $.each(data, function (key, value) {
-                    if (value.responsible === sessionStorage.getItem('username')) {
-                        reserves += value;
-                    }
-                })
+                $("#empty_notification").html("");
+                $("#handbook_table").html('<tr>\n' +
+                    '<th>Отображаемое имя</th>\n' +
+                    '<th>Банк</th>\n' +
+                    '<th>Валюта</th>\n' +
+                    '<th>Владелец</th>\n' +
+                    '<th>Ответственный</th>\n' +
+                    '</tr>');
+                var operational_data = "";
+                $.each(reserves, function (key, value) {
+                    operational_data += '<tr>';
+                    operational_data += '<td>' + transformValue(value.title) + '</td>';
+                    operational_data += '<td>' + transformValue(value.bank) + '</td>';
+                    operational_data += '<td>' + transformValue(value.currency) + '</td>';
+                    operational_data += '<td>' + transformValue(value.owner) + '</td>';
+                    operational_data += '<td>' + transformValue(value.responsible) + '</td>';
+                    operational_data += '</tr>';
+                });
+                $("#handbook_table").append(operational_data);
+                $(".preload").removeClass('preload');
             }
         });
-        if (reserves.length === 0) {
-            $("#empty_notification").innerHTML = "Нет доступных резервов";
-        } else {
-            var operational_data = "";
-            $.each(reserves, function (key, value) {
-                operational_data += '<tr>';
-                operational_data += '<td>' + value.title + '</td>';
-                operational_data += '<td>' + value.bank + '</td>';
-                operational_data += '<td>' + value.currency + '</td>';
-                operational_data += '<td>' + value.owner + '</td>';
-                operational_data += '<td>' + value.responsible + '</td>';
-                operational_data += '</tr>';
-            });
-            $(".preload").removeClass('preload');
-        }
-    });
+    }
+
+    function fillBanksSelect() {
+        getBankList(function (data) {
+            if (data.length > 0) {
+                $.each(data, function (key, value) {
+                    var opt_data = "<option value=\"";
+                    opt_data += value.bank + "\" >";
+                    opt_data += value.bank;
+                    opt_data += "</option>";
+                    $("#bank").append(opt_data);
+                });
+            } else {
+                $("#bank").attr('disabled', 'disabled');
+            }
+        });
+    }
+
+    function fillOwnerSelect() {
+        getAntiagentList(function (data) {
+            var select = document.getElementById('owner');
+            for (var j = select.options.length; j >= 0; j--) {
+                select.remove(j);
+            }
+            for (var i = 0; i < data.length; i++) {
+                var opt = document.createElement("option");
+                opt.innerHTML = data[i].agentname;
+                select.appendChild(opt);
+            }
+        });
+    }
+
+    function fillResponsibleSelect() {
+        getAntiagentList(function (data) {
+            var select = document.getElementById('responsible');
+            for (var j = select.options.length; j >= 0; j--) {
+                select.remove(j);
+            }
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].internal === true) {
+                    var opt = document.createElement("option");
+                    opt.innerHTML = data[i].agentname;
+                    select.appendChild(opt);
+                }
+            }
+        });
+    }
+
+    function transformValue(value) {
+        return ((value != null) && ($.trim(value).length > 0) ? value : '-');
+    }
 </script>

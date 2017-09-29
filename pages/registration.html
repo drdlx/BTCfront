@@ -69,7 +69,11 @@
                         }
                     },
                     success: function (data) {
-                        console.log(data);
+                        alert('Пользователь ' + $("#login").val() + ' был создан');
+                        document.getElementById('error-msg').innerHTML = '';
+                        document.getElementById('post_form').reset();
+                    },
+                    /*success: function (data) {
                         //if user created, duplicating his data to agent
                         $.ajax({
                             url: apiServer + '/anti_agent_add',
@@ -78,6 +82,7 @@
                             data: "agentname=" + $("#login").val() + "&internal=true",
                             success: function (data1) {
                                 alert('Пользователь ' + $("#login").val() + ' был создан');
+                                console.log("agentname=" + $("#login").val() + "&internal=true");
                                 document.getElementById('error-msg').innerHTML = '';
                                 document.getElementById('post_form').reset();
                             },
@@ -86,7 +91,7 @@
                                 document.getElementById('post_form').reset();
                             }
                         });
-                    },
+                    },*/
                     //unexpected error handler
                     error: function () {
                         document.getElementById('error-msg').innerHTML = 'Что-то пошло не так в ходе добавления нового пользователя';

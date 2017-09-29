@@ -104,8 +104,8 @@
                 var operational_data = "";
                 $.each(banks, function (key, value) {
                     operational_data += '<tr>';
-                    operational_data += '<td>' + value.bank + '</td>';
-                    operational_data += '<td>' + value.currency + '</td>';
+                    operational_data += '<td>' + transformValue(value.bank) + '</td>';
+                    operational_data += '<td>' + transformValue(value.currency) + '</td>';
                     operational_data += '</tr>';
                 });
                 $("#handbook_table").append(operational_data);
@@ -127,5 +127,9 @@
                 nonSelectedText: 'Выберите валюты'
             });
         });
+    }
+
+    function transformValue(value) {
+        return ((value != null) && (value !="")) ? value : '-';
     }
 </script>

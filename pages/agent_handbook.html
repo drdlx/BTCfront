@@ -1,0 +1,130 @@
+<!doctype html>
+<script src="../js/privilege.js"></script>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <title>Справочник контрагентов</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../js/main.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">Справочник контрагентов</div>
+    <div class="centered">
+        <div>
+            Существующие контрагенты
+        </div>
+        <span id="empty_notification"></span>
+        <table class="handbook_table preload" id="handbook_table">
+        </table>
+    </div>
+    <div id="add_agent">
+        <script>$("#add_agent").hide();</script>
+        <button class="button middle" id="add_button">Добавить нового контрагента</button>
+        <form id="add_form" class="handbook_form">
+            <div class="input_block middle">
+                <label for="agentname">Отображаемое имя</label>
+                <input type="text" maxlength="15" minlength="3" required placeholder="Отображаемое имя" id="agentname" name="agentname">
+            </div>
+            <div class="input_block middle">
+                <label for="First_Name">Имя</label>
+                <input type="text" id="First_Name" name="First_Name" maxlength="15" minlength="2" placeholder="Имя">
+            </div>
+            <div class="input_block middle">
+                <label for="Last_Name">Фамилия</label>
+                <input type="text" id="Last_Name" name="Last_Name" maxlength="15" minlength="2" placeholder="Фамилия">
+            </div>
+            <div class="input_block middle">
+                <label for="call">Номер телефона (х-ххх-ххх-хххх)</label>
+                <input type="tel" id="call" name="call" maxlength="14" minlength="11" placeholder="7-123-456-7890" pattern="[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}">
+            </div>
+            <div class="input_block middle">
+                <label for="mail">e-mail</label>
+                <input type="email" id="mail" name="mail" placeholder="mail@mb.com">
+            </div>
+            <div class="centered">
+                <div id="error-msg"></div>
+                <button class="button submit_button" type="submit">Отправить</button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <a href="menu.html">
+            <button class="button exit_button">В меню</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        if (sessionStorage.getItem('permission') === 'admin') {
+            $("#add_form").hide();
+            $("#add_button").click(function () {
+                $("#add_form").toggle(500);
+            });
+            $("#add_agent").show();
+            $("#add_form").on('submit', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: apiServer + '/anti_agent_add',
+                    type: 'post',
+                    headers: {'authorization': sessionStorage.getItem('token')},
+                    data: $("#add_form").serialize() + "&internal=false",
+                    success: function (data) {
+                        console.log($("#add_form").serialize());
+                        alert("Контрагент " + $("#agentname").val() + " добавлен");
+                        $("#error-msg").html("");
+                        document.getElementById('add_form').reset();
+                        buildTable();
+                    },
+                    error: function (err) {
+                        $("#error-msg").html("Ошибка при добавлении агента");
+                        document.getElementById('add_form').reset();
+                    }
+                });
+            });
+        }
+        buildTable();
+    });
+
+    function buildTable() {
+        getAntiagentList(function (data) {
+            console.log(data);
+            var agents = data;
+            if (agents.length === 0) {
+                $("#empty_notification").html("Нет добавленных агентов");
+            } else {
+                $("#empty_notification").html("");
+                $("#handbook_table").html('<tr>\n' +
+                    '<th>Отображаемое имя</th>\n' +
+                    '<th>Пользователь</th>\n' +
+                    '<th>Имя</th>\n' +
+                    '<th>Фамилия</th>\n' +
+                    '<th>Телефон</th>\n' +
+                    '<th>E-mail</th>\n' +
+                    '</tr>');
+                var operational_data = "";
+                $.each(agents, function (key, value) {
+                    operational_data += '<tr>';
+                    operational_data += '<td>' + value.agentname + '</td>';
+                    var internalStr = ((value.internal === true) ? 'Да' : 'Нет');
+                    operational_data += '<td>' + internalStr + '</td>';
+                    operational_data += '<td>' + transformValue(value.First_Name) + '</td>';
+                    operational_data += '<td>' + transformValue(value.Last_Name) + '</td>';
+                    operational_data += '<td>' + transformValue(value.call) + '</td>';
+                    operational_data += '<td>' + transformValue(value.mail) + '</td>';
+                    operational_data += '</tr>';
+                });
+                $("#handbook_table").append(operational_data);
+                $(".preload").removeClass('preload');
+            }
+        });
+    }
+
+    function transformValue(value) {
+        return ((value != null) && (value !="")) ? value : '-';
+    }
+</script>
