@@ -17,11 +17,11 @@
     <form method="post" id="post_form">
         <div class="input_block">
             <label for="paym">Резерв зачисления</label>
-            <select name="paym" id="paym"></select>
+            <select name="paym" id="paym" required></select>
         </div>
         <div class="input_block">
             <label for="bitwallet">Резерв списания</label>
-            <select name="bitwallet" id="bitwallet"></select>
+            <select name="bitwallet" id="bitwallet" required></select>
         </div>
         <div class="input_block">
             <label for="course">Курс сделки</label>
@@ -44,10 +44,10 @@
             <input type="number" name="rub" required id="rub" step="0.01" min="0" readonly>
         </div>
         <div class="info_block">
-            Общий финрез: <span id="finrez">0</span><span id="deal_finrez"></span>
+            Текущий ср. курс: <span id="avg_course"></span><span id="deal_finrez"></span>
         </div>
         <div class="centered">
-            <button class="button submit_button" type="submit">Отправить</button>
+            <button class="button submit_button" type="submit" id="submit_button" disabled>Отправить</button>
         </div>
     </form>
     <div>
@@ -64,17 +64,40 @@
 
 <script>
 
-    var delayTimer, avg, totalFinrez;
+    var delayTimer, avg, totalFinrez, xtraData;
 
     $(document).ready(function () {
         getGlobalStatsFull(function (data) {
             avg = data.avgCourse;
             totalFinrez = data.totalFinrez;
-            document.getElementById('finrez').innerHTML = totalFinrez;
+            document.getElementById('avg_course').innerHTML = avg;
         });
 
-        fillSelect(document.getElementById('paym'), rubAccounts);
-        fillSelect(document.getElementById('bitwallet'), btcAccounts);
+        var currencies;
+        getCurrencyList(function (data) {
+            currencies = data;
+        });
+
+        var rubAccounts =[], btcAccounts = [];
+        getReserveList(function (data) {
+            $.each(data, function (key, value) {
+                if (value.responsible === username) {
+                    var currency = value.currency;
+                    $.each(currencies, function (key1, value1) {
+                        if (currency === value1.currency) {
+                            if (value1.isCrypto === 'true') {
+                                btcAccounts.push(value.title);
+                            } else {
+                                rubAccounts.push(value.title);
+                            }
+                        }
+                    })
+                }
+            });
+
+            fillSelectFromArray(document.getElementById('paym'), rubAccounts);
+            fillSelectFromArray(document.getElementById('bitwallet'), btcAccounts);
+        });
 
         $("#post_form").on('submit', function (e) {
             e.preventDefault();
@@ -83,16 +106,16 @@
                 type: 'post',
                 crossDomain: true,
                 headers: {
-                    'authorization': sessionStorage.getItem('token')
+                    'authorization': localStorage.getItem('token')
                 },
-                data: $("#post_form").serialize(),
+                data: $("#post_form").serialize() + xtraData,
                 success: function () {
                     document.getElementById('post_form').reset();
                     getFullPaymentData(function (data) {
                         totalFinrez = data.totalFinrez;
-                        document.getElementById('finrez').innerHTML = totalFinrez;
                     });
                     document.getElementById('deal_finrez').innerHTML = "";
+                    $("#submit_button").prop("disabled", true);
                     alert("ok!");
                 }
             });
@@ -132,6 +155,8 @@
             }
             if (isNaN(finrez) || finrez.isUndefined) { finrez_string = 0 }
             finrez_field.innerHTML = '; Финрез от сделки: ' + finrez_string;
+            xtraData = "$cur_fin_res=" + finrez + "&average_course=" + avg;
+            $("#submit_button").prop("disabled", false);
         }, 1000);
     }
 </script>

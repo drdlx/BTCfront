@@ -61,7 +61,7 @@
                 $.ajax({
                     url: apiServer + '/createNewUser',
                     type: 'post',
-                    headers: {'authorization': sessionStorage.getItem('token')},
+                    headers: {'authorization': localStorage.getItem('token')},
                     data: $("#post_form").serialize(),
                     statusCode: {
                         409: function () {
@@ -78,7 +78,7 @@
                         $.ajax({
                             url: apiServer + '/anti_agent_add',
                             type: 'post',
-                            headers: {'authorization': sessionStorage.getItem('token')},
+                            headers: {'authorization': localStorage.getItem('token')},
                             data: "agentname=" + $("#login").val() + "&internal=true",
                             success: function (data1) {
                                 alert('Пользователь ' + $("#login").val() + ' был создан');

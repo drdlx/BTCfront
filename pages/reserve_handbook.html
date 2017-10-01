@@ -14,12 +14,12 @@
 <body>
 <div class="wrapper">
     <div class="header">Справочник резервов</div>
-    <div>
-        Доступные резервы:
+    <div class="centered">
+        <div>Доступные резервы:</div>
+        <span id="empty_notification"></span>
+        <table class="handbook_table preload" id="handbook_table">
+        </table>
     </div>
-    <span id="empty_notification"></span>
-    <table class="handbook_table preload" id="handbook_table">
-    </table>
     <div id="add_reserve">
         <script>$("#add_reserve").hide();</script>
         <button class="button middle" id="add_button">Добавить новый резерв</button>
@@ -32,7 +32,7 @@
             <div class="input_block middle">
                 <label for="bank">Банк</label>
                 <select id="bank" name="bank" required
-                        onchange="fillSelect(document.getElementById('currency'), 'bank')">
+                        onchange="fillSelectWithCurrencies(document.getElementById('currency'), 'bank')">
                 </select>
             </div>
             <div class="input_block middle">
@@ -66,7 +66,7 @@
 </html>
 <script>
     $(document).ready(function () {
-        if (sessionStorage.getItem('permission') === 'admin') {
+        if (localStorage.getItem('permission') === 'admin') {
             $("#add_form").hide();
             $("#add_button").click(function () {
                 $("#add_form").toggle(500);
@@ -80,7 +80,7 @@
                 $.ajax({
                     url: apiServer + '/reserves_add',
                     type: 'post',
-                    headers: {'authorization': sessionStorage.getItem('token')},
+                    headers: {'authorization': localStorage.getItem('token')},
                     data: $("#add_form").serialize(),
                     success: function (data) {
                         alert("Резерв " + $("#title").val() + " добавлен");
@@ -103,7 +103,7 @@
             console.log(data);
             var reserves = data;
             if (reserves.length === 0) {
-                $("#empty_notification").innerHTML = "Нет доступных резервов";
+                $("#empty_notification").html("Нет доступных резервов");
             } else {
                 $("#empty_notification").html("");
                 $("#handbook_table").html('<tr>\n' +

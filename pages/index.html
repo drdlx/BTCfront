@@ -28,9 +28,9 @@
 
 <script>
     $(document).ready(function () {
-        sessionStorage.setItem('token', null);
-        sessionStorage.setItem('username', null);
-        sessionStorage.setItem('permission', null);
+        localStorage.setItem('token', null);
+        localStorage.setItem('username', null);
+        localStorage.setItem('permission', null);
     });
     $("#submit").click(function () {
         $("#submit").hide();
@@ -45,9 +45,9 @@
                 data : $("#loginform").serialize(),
                 success : function (data) {
                     if (Object.keys(data).length >= 2) {
-                        sessionStorage.setItem('username', $("#login").val());
-                        sessionStorage.setItem('token', data.token.replace(/"/g, ""));
-                        sessionStorage.setItem('permission', data.privilege);
+                        localStorage.setItem('username', $("#login").val());
+                        localStorage.setItem('token', data.token.replace(/"/g, ""));
+                        localStorage.setItem('permission', data.privilege);
                         window.location = "menu.html"
                     } else {
                         $("#loading_bar").text("Something went wrong, contact the administrator");

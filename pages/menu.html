@@ -98,8 +98,8 @@
 </html>
 <script>
     $(document).ready(function (e) {
-        document.getElementById('username').innerHTML = sessionStorage.getItem('username');
-        if (sessionStorage.getItem('permission') === 'admin') {
+        document.getElementById('username').innerHTML = localStorage.getItem('username');
+        if (localStorage.getItem('permission') === 'admin') {
             var list = document.getElementsByClassName('hidden');
             while (list.length > 0) {
                 list[0].classList.remove('hidden');

@@ -1,10 +1,8 @@
 var apiServer = 'http://52.243.47.71:3000';
-var rubAccounts = ['Sberbank', 'Alfa-Bank', 'QIWI', 'Yandex.Money', 'QIWI-Yobit', 'Tinkoff', 'Rocketbank'];
-var btcAccounts = ['BTC bot', 'BTC Yobit'];
-var botComission = 0.008;
+var botComission = 0.0098;
 
 
-function fillSelect(select, sourceSelect) {
+function fillSelectWithCurrencies(select, sourceSelect) {
     var sselect = document.getElementById(sourceSelect);
     var bank = sselect.options[sselect.selectedIndex].value;
     var currencies = '';
@@ -26,8 +24,17 @@ function fillSelect(select, sourceSelect) {
     });
 }
 
-function defineReservesSet(select_id) {
-
+function fillSelectFromArray(select, array) {
+    select.removeAttribute('disabled');
+    for (var j = select.options.length; j >= 0; j--) {
+        select.remove(j);
+    }
+    for (var i = 0; i < array.length; i++) {
+        var opt = document.createElement("option");
+        opt.innerHTML = array[i];
+        opt.value = array[i];
+        select.appendChild(opt);
+    }
 }
 
 function getFullPaymentData(callback) {
@@ -35,7 +42,7 @@ function getFullPaymentData(callback) {
     $.ajax({
         url: apiServer + '/reportpay',
         type: 'get',
-        headers: {'authorization': sessionStorage.getItem('token')},
+        headers: {'authorization': localStorage.getItem('token')},
         crossDomain: true,
         success: function (data) {
             $.each(data, function (key, value) {
@@ -58,7 +65,7 @@ function getFullSalesData(callback) {
     $.ajax({
         url: apiServer + '/reportsell',
         type: 'get',
-        headers: {'authorization': sessionStorage.getItem('token')},
+        headers: {'authorization': localStorage.getItem('token')},
         crossDomain: true,
         success: function (data) {
             var result = {
@@ -73,7 +80,7 @@ function getReserveList(callback) {
     $.ajax({
         url: apiServer + '/reserves',
         type: 'get',
-        headers: { 'authorization' : sessionStorage.getItem('token')},
+        headers: {'authorization': localStorage.getItem('token')},
         success: function (data) {
             callback(data);
         }
@@ -84,7 +91,7 @@ function getCurrencyList(callback) {
     $.ajax({
         url: apiServer + '/currency',
         type: 'get',
-        headers: { 'authorization' : sessionStorage.getItem('token')},
+        headers: {'authorization': localStorage.getItem('token')},
         success: function (data) {
             callback(data);
             return data;
@@ -96,7 +103,7 @@ function getBankList(callback) {
     $.ajax({
         url: apiServer + '/banks',
         type: 'get',
-        headers: { 'authorization' : sessionStorage.getItem('token')},
+        headers: {'authorization': localStorage.getItem('token')},
         success: function (data) {
             callback(data);
             return data;
@@ -108,7 +115,7 @@ function getAntiagentList(callback) {
     $.ajax({
         url: apiServer + '/anti_agent',
         type: 'get',
-        headers: { 'authorization' : sessionStorage.getItem('token')},
+        headers: {'authorization': localStorage.getItem('token')},
         success: function (data) {
             callback(data);
             return data;
@@ -116,8 +123,9 @@ function getAntiagentList(callback) {
     });
 }
 
-function getGlobalStatsFull(callback) {
+function getAvgCourse(callback) {
     var fullList, payList = null, sellList = null;
+
     //pays request
     function pays() {
         return $.ajax({
@@ -125,9 +133,10 @@ function getGlobalStatsFull(callback) {
             type: 'GET',
             crossDomain: true,
             headers: {
-                'authorization': sessionStorage.getItem('token')
+                'authorization': localStorage.getItem('token'),
             },
             success: function (data) {
+                console.log(data);
                 payList = data;
                 $.each(payList, function (key, value) {
                     value.operation = 'pay'
@@ -135,6 +144,7 @@ function getGlobalStatsFull(callback) {
             }
         });
     }
+
     //sells request
     function sells() {
         return $.ajax({
@@ -142,7 +152,7 @@ function getGlobalStatsFull(callback) {
             crossDomain: true,
             type: 'GET',
             headers: {
-                'authorization': sessionStorage.getItem('token')
+                'authorization': localStorage.getItem('token'),
             },
             success: function (data) {
                 sellList = data;
@@ -152,6 +162,55 @@ function getGlobalStatsFull(callback) {
             }
         });
     }
+
+    $.when(pays(), sells()).done(function (a1, a2) {
+        fullList = payList.concat(sellList);
+        fullList.sort(function (a, b) {
+            return a.date > b.date ? -1 : 1;
+        });
+        callback(fullList[0].average_course);
+    });
+}
+
+function getGlobalStatsFull(callback) {
+    var fullList, payList = null, sellList = null;
+
+    //pays request
+    function pays() {
+        return $.ajax({
+            url: apiServer + '/reportpay',
+            type: 'GET',
+            crossDomain: true,
+            headers: {
+                'authorization': localStorage.getItem('token')
+            },
+            success: function (data) {
+                payList = data;
+                $.each(payList, function (key, value) {
+                    value.operation = 'pay'
+                });
+            }
+        });
+    }
+
+    //sells request
+    function sells() {
+        return $.ajax({
+            url: apiServer + "/reportSell",
+            crossDomain: true,
+            type: 'GET',
+            headers: {
+                'authorization': localStorage.getItem('token')
+            },
+            success: function (data) {
+                sellList = data;
+                $.each(sellList, function (key, value) {
+                    value.operation = 'sell';
+                });
+            }
+        });
+    }
+
     //каждой записи добавляю новое поле с типом операции - operation, чтобы их можно было отличить
 
     $.when(pays(), sells()).done(function (a1, a2) {

@@ -16,38 +16,20 @@
     </div>
     <form method="post" id="post_form">
         <div class="input_block">
-            <label for="direction">Операция</label>
-            <select name="direction" id="direction">
-                <option value="input">Ввод</option>
-                <option value="output">Вывод</option>
-            </select>
+            <label for="source">Источник</label>
+            <select id="source" name="source" required onchange="fillOutputSelect(this.value)"></select>
         </div>
         <div class="input_block">
-            <label for="amount">Сумма</label>
-            <input type="number" name="amount_before" id="amount_before" required step="0.00000001" min="0">
+            <label for="destination">Назначение</label>
+            <select id="destination" name="destination" required></select>
         </div>
-        <div class="input_block">
-            <label for="currency">Валюта резерва</label>
-            <select name="currency" id="currency" onchange="fillSelect(document.getElementById('paym'), defineReservesSet('currency'))">
-                <option value="RUB">RUB</option>
-                <option value="BTC">BTC</option>
-            </select>
+        <div class="input_block middle">
+            <label for="transaction">Сумма</label>
+            <input type="number" name="transaction" id="transaction" min="0" placeholder="0" required>
         </div>
-        <div class="input_block">
-            <label for="comiss">Комиссия</label>
-            <input type="number" name="comiss" id="comiss" step="0.01" min="0" value="0" min="0">
-        </div>
-        <div class="input_block">
-            <label for="paym">Резерв</label>
-            <select name="paym" id="paym"></select>
-        </div>
-        <div class="input_block">
-            <label for="amount">Итого</label>
-            <input type="number" name="amount" id="amount" readonly step="0.01" min="0">
-        </div>
-        <div class="input_block">
-            <label for="description">Описание</label>
-            <input type="text" name="description" id="description">
+        <div class="input_block middle">
+            <label for="commiss">Комиссия</label>
+            <input type="number" name="commiss" id="commiss" step="0.01" min="0" value="0" required>
         </div>
         <div class="centered">
             <button class="button submit_button" type="submit">Отправить</button>
@@ -62,37 +44,77 @@
 </body>
 </html>
 <script>
+    var currencies, userReserves =[], sourceList = [], agents = [], selectedCurrency;
     $(document).ready(function () {
-        fillSelect(document.getElementById('paym'), defineReservesSet('currency'));
-
-        $("#amount_before").on('change keydown paste input', reCount);
-        $("#comiss").on('change keydown paste input', reCount);
+        getCurrencyList(function (data) {
+            currencies = data;
+        });
+        getReserveList(function (data) {
+            console.log(data);
+            $.each(data, function (key, value) {
+                if (value.responsible === username) {
+                    userReserves.push(value);
+                    sourceList.push(value.title);
+                }
+            });
+            getAntiagentList(function (data1) {
+                console.log(data1);
+                $.each(data1, function (key1, value1) {
+                    agents.push(value1);
+                    sourceList.push(value1.agentname);
+                });
+                console.log(sourceList);
+                fillSelectFromArray(document.getElementById('source'), sourceList);
+            });
+        });
 
         $("#post_form").on('submit', function (e) {
             e.preventDefault();
             $.ajax({
-                url: apiServer + '/pay',
+                url: apiServer + '/',
                 type: 'post',
                 crossDomain: true,
                 data: $("#post_form").serialize(),
                 success: function () {
+                    $("#post_form").reset();
                     alert("ok!");
                 }
             });
         });
     });
 
-    function reCount() {
-        var amountValue = parseFloat($("#amount_before").val()),
-            comissValue = parseFloat($("#comiss").val());
-        if (isNaN(amountValue)) {
-            amountValue = 0;
+    function fillOutputSelect(inputValue) {
+        var found = false;
+        //checking if an input is a reserve
+        for (var i = 0; i < userReserves.length; i++) {
+            if (userReserves[i].title === inputValue) {
+                selectedCurrency = userReserves[i].currency;
+                var result1 = [];
+                $.each(agents, function (key, value) {
+                    result1.push(value.agentname);
+                });
+                $.each(userReserves, function (key, value) {
+                    if ((value.title !== inputValue) && (value.currency === selectedCurrency)) {
+                        result1.push(value.title);
+                    }
+                });
+                fillSelectFromArray(document.getElementById('destination'), result1);
+                found = true;
+                break;
+            }
         }
-        if (isNaN(comissValue)) {
-            comissValue = 0;
+        //checking if an input is an agent
+        if (!found) {
+            for (var j = 0; j < agents.length; j++) {
+                if (agents[j].agentname === inputValue) {
+                    var result = [];
+                    $.each(userReserves, function (key, value) {
+                       result.push(value.title);
+                    });
+                    fillSelectFromArray(document.getElementById('destination'), result);
+                    break;
+                }
+            }
         }
-        var result = amountValue - comissValue;
-        console.log(result);
-        $("#amount").val(result.toFixed(2));
     }
 </script>

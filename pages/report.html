@@ -61,14 +61,14 @@
 
 <script>
     $(document).ready(function () {
-        var request = (sessionStorage.getItem('permission') === 'admin') ? '/admin/reportfull' : '/reportfull';
+        var request = (localStorage.getItem('permission') === 'admin') ? '/admin/reportfull' : '/reportfull';
         console.log(request);
         $.ajax({
             url: apiServer + request,
             type: 'GET',
             crossDomain: true,
             headers: {
-                "authorization": sessionStorage.getItem('token')
+                "authorization": localStorage.getItem('token')
             },
             success: function (data) {
                 var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0;
@@ -80,7 +80,7 @@
                 var currentUser = '', colCount = 6;
                 //---------------------------------------
                 $.each(sortedData, function (key, value) {
-                    if ((currentUser !== value.user) && (sessionStorage.getItem('permission') === 'admin')) {
+                    if ((currentUser !== value.user) && (localStorage.getItem('permission') === 'admin')) {
                         currentUser = value.user;
                         operation_data += '<tr class="report-user-header">';
                         operation_data += '<td colspan="' + colCount +'">' + currentUser + "</td>";

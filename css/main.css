@@ -100,6 +100,10 @@ textarea {
     margin-top: 10px;
 }
 
+.submit_button:disabled {
+    background-color: rgb(167, 167, 167);
+    border: rgba(17, 17, 17, 0.41) outset 1px;
+}
 .centered {
     text-align: center;
 }

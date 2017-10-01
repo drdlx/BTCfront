@@ -47,7 +47,7 @@
 </html>
 <script>
     $(document).ready(function () {
-        if (sessionStorage.getItem('permission') === 'admin') {
+        if (localStorage.getItem('permission') === 'admin') {
             $("#add_form").hide();
             $("#add_button").click(function () {
                 $("#add_form").toggle(500);
@@ -60,7 +60,7 @@
                 $.ajax({
                     url: apiServer + '/currency_add',
                     type: 'post',
-                    headers: {'authorization': sessionStorage.getItem('token')},
+                    headers: {'authorization': localStorage.getItem('token')},
                     data: "currency=" + currencyVal + "&isCrypto=" + isCryptoVal,
                     success: function (data) {
                         alert("валюта " + $("#currency").val() + " добавлена");

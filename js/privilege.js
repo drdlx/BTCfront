@@ -1,6 +1,9 @@
-var username = sessionStorage.getItem('username'),
-    token = sessionStorage.getItem('token'),
-    priv = sessionStorage.getItem('permission');
+/*var username = localStorage.getItem('username'),
+    token = localStorage.getItem('token'),
+    priv = localStorage.getItem('permission');*/
+var username = localStorage.getItem('username'),
+    token = localStorage.getItem('token'),
+    priv = localStorage.getItem('permission');
 var adminPages = ["registration"];
 
 if ((token === 'null' || token === null) && (username === 'null' || username === null)) {
