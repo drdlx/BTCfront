@@ -90,17 +90,17 @@
                     operation_data += '<tr>';
                     operation_data += '<td>' + value.paym + '</td>';
 
-                    operation_data += '<td>' + 0 + '</td>';
-                    overallRemains += 0;
+                    operation_data += '<td>' + value.remainder + '</td>';
+                    overallRemains += value.remainder;
 
                     operation_data += '<td>' + value.consumption + '</td>';
                     overallConsume += value.consumption;
 
-                    operation_data += '<td>' + +value.coming + '</td>';
+                    operation_data += '<td>' + value.coming + '</td>';
                     overallComing += value.coming;
 
-                    operation_data += '<td>' + 0 + '</td>';
-                    overallIO += 0;
+                    operation_data += '<td>' + value.transaction + '</td>';
+                    overallIO += value.transaction;
 
                     operation_data += '<td>' + value.commiss + '</td>';
                     overallComiss += value.commiss;
