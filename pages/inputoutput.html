@@ -39,6 +39,9 @@
         <a href="menu.html">
             <button class="button exit_button">В меню</button>
         </a>
+        <a href="inputoutput_history.html">
+            <button class="button exit_button">История операций</button>
+        </a>
     </div>
 </div>
 </body>
@@ -71,12 +74,13 @@
         $("#post_form").on('submit', function (e) {
             e.preventDefault();
             $.ajax({
-                url: apiServer + '/',
+                url: apiServer + '/translate',
                 type: 'post',
                 crossDomain: true,
+                headers: { 'authorization' : localStorage.getItem('token')},
                 data: $("#post_form").serialize(),
                 success: function () {
-                    $("#post_form").reset();
+                    document.getElementById('post_form').reset();
                     alert("ok!");
                 }
             });

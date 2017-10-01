@@ -110,6 +110,7 @@
                 },
                 data: $("#post_form").serialize() + xtraData,
                 success: function () {
+                    console.log($("#post_form").serialize() + xtraData);
                     document.getElementById('post_form').reset();
                     getFullPaymentData(function (data) {
                         totalFinrez = data.totalFinrez;
@@ -155,7 +156,7 @@
             }
             if (isNaN(finrez) || finrez.isUndefined) { finrez_string = 0 }
             finrez_field.innerHTML = '; Финрез от сделки: ' + finrez_string;
-            xtraData = "$cur_fin_res=" + finrez + "&average_course=" + avg;
+            xtraData = "&cur_fin_res=" + finrez + "&average_course=" + avg;
             $("#submit_button").prop("disabled", false);
         }, 1000);
     }

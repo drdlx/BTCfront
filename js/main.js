@@ -76,6 +76,21 @@ function getFullSalesData(callback) {
     });
 }
 
+function getFullTransferData(callback) {
+    $.ajax({
+        url: apiServer + '/reporttranslate',
+        type: 'get',
+        headers: {'authorization': localStorage.getItem('token')},
+        crossDomain: true,
+        success: function (data) {
+            var result = {
+                'data': data
+            };
+            callback(result);
+        }
+    });
+}
+
 function getReserveList(callback) {
     $.ajax({
         url: apiServer + '/reserves',
@@ -133,10 +148,10 @@ function getAvgCourse(callback) {
             type: 'GET',
             crossDomain: true,
             headers: {
-                'authorization': localStorage.getItem('token'),
+                'authorization': localStorage.getItem('token')
             },
+            data: "&last=true",
             success: function (data) {
-                console.log(data);
                 payList = data;
                 $.each(payList, function (key, value) {
                     value.operation = 'pay'
@@ -148,12 +163,13 @@ function getAvgCourse(callback) {
     //sells request
     function sells() {
         return $.ajax({
-            url: apiServer + "/reportSell",
+            url: apiServer + "/reportsell",
             crossDomain: true,
             type: 'GET',
             headers: {
-                'authorization': localStorage.getItem('token'),
+                'authorization': localStorage.getItem('token')
             },
+            data: "&last=true",
             success: function (data) {
                 sellList = data;
                 $.each(sellList, function (key, value) {
@@ -162,13 +178,19 @@ function getAvgCourse(callback) {
             }
         });
     }
-
+    console.log("before when");
     $.when(pays(), sells()).done(function (a1, a2) {
+        console.log("inside");
         fullList = payList.concat(sellList);
         fullList.sort(function (a, b) {
             return a.date > b.date ? -1 : 1;
         });
-        callback(fullList[0].average_course);
+        console.log(fullList);
+        if (fullList.length > 0) {
+            callback(fullList[0].average_course);
+        } else {
+            callback([]);
+        }
     });
 }
 

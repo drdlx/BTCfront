@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<script src="../js/privilege.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <title>История переводов</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../js/main.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        История операций ввода\вывода
+    </div>
+    <table class="report_table" id="report_table">
+        <tr>
+            <th>Источник</th>
+            <th>Назначение</th>
+            <th>Сумма</th>
+            <th>Комиссия</th>
+            <th>Дата</th>
+        </tr>
+    </table>
+    <div>
+        <a href="inputoutput.html">
+            <button class="button exit_button">Назад</button>
+        </a>
+        <a href="menu.html">
+            <button class="button exit_button">В меню</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+        getFullTransferData(function (data) {
+            var operation_data = '';
+            console.log(data);
+            $.each(data.data, function (key, value) {
+                operation_data += '<tr>';
+                operation_data += '<td>' + value.source + '</td>';
+                operation_data += '<td>' + value.destination + '</td>';
+                operation_data += '<td>' + value.transaction + '</td>';
+                operation_data += '<td>' + value.commiss + '</td>';
+                operation_data += '<td>' + value.date.substring(0, value.date.indexOf('T')) + '</td>';
+                operation_data += '</tr>';
+            });
+            $("#report_table").append(operation_data);
+        });
+    });
+</script>
