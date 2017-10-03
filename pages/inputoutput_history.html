@@ -14,14 +14,8 @@
     <div class="header">
         История операций ввода\вывода
     </div>
-    <table class="report_table" id="report_table">
-        <tr>
-            <th>Источник</th>
-            <th>Назначение</th>
-            <th>Сумма</th>
-            <th>Комиссия</th>
-            <th>Дата</th>
-        </tr>
+    <div class="centered" id="loading"><img src="../img/loader.gif"></div>
+    <table class="transfer_table" id="report_table">
     </table>
     <div>
         <a href="inputoutput.html">
@@ -36,20 +30,75 @@
 </html>
 
 <script>
+    var agents = null, reserves = null;
     $(document).ready(function () {
-        getFullTransferData(function (data) {
-            var operation_data = '';
-            console.log(data);
-            $.each(data.data, function (key, value) {
-                operation_data += '<tr>';
-                operation_data += '<td>' + value.source + '</td>';
-                operation_data += '<td>' + value.destination + '</td>';
-                operation_data += '<td>' + value.transaction + '</td>';
-                operation_data += '<td>' + value.commiss + '</td>';
-                operation_data += '<td>' + value.date.substring(0, value.date.indexOf('T')) + '</td>';
-                operation_data += '</tr>';
+        getAntiagentList(function (data) {
+            agents = data;
+            getReserveList(function (data) {
+                reserves = data;
+                getFullTransferData(function (data) {
+                    var operation_data = '';
+                    console.log(data);
+                    $.each(data.data, function (key, value) {
+                        var source = {};
+                        getParticipantData(value.source, function (data) {
+                            source = data;
+                            operation_data += '<tr>';
+                            operation_data += '<td><div class="transfer_participant">' +
+                                '<span class="transfer_data"><i class="fa fa-male" aria-hidden="true"></i>' + source.agent + '</span>';
+                            if (source.reserve !== null) {
+                                operation_data += '<span class="transfer_data"><i class="fa fa-credit-card" aria-hidden="true"></i>' + source.reserve + '</span>';
+                            }
+                            operation_data += '</div></td>';
+                            var commiss = value.commiss;
+                            var comStr = (commiss > 0) ? " (+" + commiss + ")" : "";
+                            operation_data += '<td class="transfer_arrow"><img src="../img/arrow.png" width="50px">' + value.transaction + '<span class="red">' + comStr + "</span>" + '</td>';
+
+                            var destination = {};
+                            getParticipantData(value.destination, function (data) {
+                                destination = data;
+                                operation_data += '<td><div class="transfer_participant">' +
+                                    '<span class="transfer_data"><i class="fa fa-male" aria-hidden="true"></i>' + destination.agent + '</span>';
+                                if (destination.reserve !== null) {
+                                    operation_data += '<span class="transfer_data"><i class="fa fa-credit-card" aria-hidden="true"></i>' + destination.reserve + '</span>';
+                                }
+                                operation_data += '</div></td>';
+                                operation_data += '<td>' + value.date.substring(0, value.date.indexOf('T')) + '</td>';
+                                operation_data += '</tr>';
+                            });
+                        });
+                    });
+                    $("#loading").prop('class', 'hidden');
+                    $("#report_table").append(operation_data);
+                });
             });
-            $("#report_table").append(operation_data);
         });
     });
+
+    function getParticipantData(input, callback) {
+        var agent, reserve = null;
+        var found = false;
+        //check if input is an agent
+        $.each(agents, function (key, value) {
+            if (input === value.agentname) {
+                agent = input;
+                found = true;
+            }
+        });
+        if (!found) {
+            $.each(reserves, function (key, value) {
+                if (input === value.title) {
+                    reserve = input;
+                    agent = value.owner;
+                    found = true;
+                }
+            });
+        }
+
+        var result = {
+            reserve: reserve,
+            agent: agent
+        };
+        callback(result);
+    }
 </script>

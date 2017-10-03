@@ -337,3 +337,44 @@ input:valid:not(:placeholder-shown) {
     display: inline-block;
 }
 
+.transfer_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+.transfer_table tr {
+    border-bottom: rgba(23, 22, 12, 0.42) solid 1px;
+}
+
+.transfer_table tr td {
+    background-color: rgba(29, 29, 29, 0.11);
+    width: 25%;
+}
+
+.transfer_participant {
+    width: 100%;
+    text-align: center;
+    padding: 5px 0;
+}
+
+.transfer_table tr td:nth-child(odd) {
+    background-color: rgba(43, 35, 12, 0.19);
+}
+
+.transfer_table span.transfer_data {
+    width: 100%;
+    display: block;
+    line-height: 1.5em;
+}
+.transfer_arrow {
+    text-align: center;
+    color: green;
+    width: 25%;
+    vertical-align: middle;
+}
+
+.transfer_table tr td:last-child {
+    width: 15%;
+    text-align: center;
+}
