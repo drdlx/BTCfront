@@ -8,6 +8,8 @@
     <title>Справочник контрагентов</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="../js/main.js"></script>
+    <script src="../js/vendor/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div class="wrapper">
@@ -75,7 +77,7 @@
                     data: $("#add_form").serialize() + "&internal=false",
                     success: function (data) {
                         console.log($("#add_form").serialize());
-                        alert("Контрагент " + $("#agentname").val() + " добавлен");
+                        swal("Успех", "Контрагент " + $("#agentname").val() + " добавлен", "success");
                         $("#error-msg").html("");
                         document.getElementById('add_form').reset();
                         buildTable();
@@ -106,17 +108,28 @@
                     '<th>Телефон</th>\n' +
                     '<th>E-mail</th>\n' +
                     '</tr>');
+                var idNum = 0;
+                var xtraTools = "";
                 var operational_data = "";
                 $.each(agents, function (key, value) {
-                    operational_data += '<tr>';
-                    operational_data += '<td>' + value.agentname + '</td>';
+                    operational_data += '<tr id="tr' + idNum + "\">";
+                    operational_data += '<td id="td' + idNum + "\">" + value.agentname + '</td>';
+
                     var internalStr = ((value.internal === true) ? 'Да' : 'Нет');
                     operational_data += '<td>' + internalStr + '</td>';
                     operational_data += '<td>' + transformValue(value.First_Name) + '</td>';
                     operational_data += '<td>' + transformValue(value.Last_Name) + '</td>';
                     operational_data += '<td>' + transformValue(value.call) + '</td>';
-                    operational_data += '<td>' + transformValue(value.mail) + '</td>';
+
+                    if (priv === 'admin') {
+                        xtraTools = '<a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
+                            '<i class="fa fa-times" aria-hidden="true"></i></a>';
+                    }
+
+                    operational_data += '<td>' + transformValue(value.mail) + xtraTools + '</td>';
                     operational_data += '</tr>';
+
+                    idNum++;
                 });
                 $("#handbook_table").append(operational_data);
                 $(".preload").removeClass('preload');
@@ -126,5 +139,33 @@
 
     function transformValue(value) {
         return ((value != null) && (value !="")) ? value : '-';
+    }
+
+    function removeEntry(id) {
+        console.log("clicked on row #" + id);
+        swal({
+            title: "Удаление",
+            text: "Вы действительно хотите удалить запись " + document.getElementById("td" + id).innerHTML + "?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true
+        })
+            .then(function (isPressed) {
+                if (isPressed) {
+                    $.ajax({
+                        url: apiServer + '/anti_agent_del',
+                        type: 'post',
+                        headers: {'authorization': token},
+                        data: "&agentname=" + document.getElementById("td" + id).innerHTML,
+                        success: function (data) {
+                            swal("Запись успешно удалена", {icon: "success"});
+                            $("#tr" + id).toggle(400);
+                        },
+                        error: function (err) {
+                            swal("Ошибка при удалении записи", {icon: "warning"});
+                        }
+                    });
+                }
+            });
     }
 </script>

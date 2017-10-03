@@ -7,6 +7,8 @@
     <title>Регистрация</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="../js/main.js"></script>
+    <script src="../js/vendor/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div class="wrapper">
@@ -69,29 +71,10 @@
                         }
                     },
                     success: function (data) {
-                        alert('Пользователь ' + $("#login").val() + ' был создан');
+                        swol("Успех", 'Пользователь ' + $("#login").val() + ' был создан');
                         document.getElementById('error-msg').innerHTML = '';
                         document.getElementById('post_form').reset();
                     },
-                    /*success: function (data) {
-                        //if user created, duplicating his data to agent
-                        $.ajax({
-                            url: apiServer + '/anti_agent_add',
-                            type: 'post',
-                            headers: {'authorization': localStorage.getItem('token')},
-                            data: "agentname=" + $("#login").val() + "&internal=true",
-                            success: function (data1) {
-                                alert('Пользователь ' + $("#login").val() + ' был создан');
-                                console.log("agentname=" + $("#login").val() + "&internal=true");
-                                document.getElementById('error-msg').innerHTML = '';
-                                document.getElementById('post_form').reset();
-                            },
-                            error: function () {
-                                document.getElementById('error-msg').innerHTML = 'Что-то пошло не так в ходе добавления контрагента';
-                                document.getElementById('post_form').reset();
-                            }
-                        });
-                    },*/
                     //unexpected error handler
                     error: function () {
                         document.getElementById('error-msg').innerHTML = 'Что-то пошло не так в ходе добавления нового пользователя';

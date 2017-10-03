@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="../css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="../js/main.js"></script>
+    <script src="../js/vendor/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Ввод\вывод</title>
 </head>
 <body>
@@ -53,7 +55,6 @@
             currencies = data;
         });
         getReserveList(function (data) {
-            console.log(data);
             $.each(data, function (key, value) {
                 if (value.responsible === username) {
                     userReserves.push(value);
@@ -61,12 +62,10 @@
                 }
             });
             getAntiagentList(function (data1) {
-                console.log(data1);
                 $.each(data1, function (key1, value1) {
                     agents.push(value1);
                     sourceList.push(value1.agentname);
                 });
-                console.log(sourceList);
                 fillSelectFromArray(document.getElementById('source'), sourceList);
             });
         });
@@ -81,7 +80,10 @@
                 data: $("#post_form").serialize(),
                 success: function () {
                     document.getElementById('post_form').reset();
-                    alert("ok!");
+                    swal("Успех", "Операция перевода была добавлена", "success");
+                },
+                error: function () {
+                    swal("Упс", "Что-то пошло не так", "error");
                 }
             });
         });

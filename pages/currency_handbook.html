@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="../css/main.css">
     <title>Справочник валют</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../js/vendor/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="../js/main.js"></script>
 </head>
 <body>
@@ -17,7 +19,7 @@
         </div>
         <span id="empty_notification"></span>
         <table class="handbook_table preload" id="handbook_table">
-    </table>
+        </table>
     </div>
     <div id="add_currency">
         <script>$("#add_currency").hide();</script>
@@ -63,7 +65,7 @@
                     headers: {'authorization': localStorage.getItem('token')},
                     data: "currency=" + currencyVal + "&isCrypto=" + isCryptoVal,
                     success: function (data) {
-                        alert("валюта " + $("#currency").val() + " добавлена");
+                        swal("Успех", "Валюта " + $("#currency").val() + " добавлена", "success");
                         $("#error-msg").html("");
                         document.getElementById('add_form').reset();
                         buildTable();
@@ -86,20 +88,60 @@
                 $("#empty_notification").html("Нет созданных валют");
             } else {
                 $("#empty_notification").html("");
+
                 $("#handbook_table").html('<tr>\n' +
                     '<th>Валюта</th>\n' +
                     '<th>Крипто</th>\n' +
                     '</tr>');
                 var operational_data = "";
+                var idNum = 0;
+                var xtraTools = "";
                 $.each(currencies, function (key, value) {
-                    operational_data += '<tr>';
-                    operational_data += '<td>' + value.currency + '</td>';
-                    operational_data += '<td>' + value.isCrypto + '</td>';
+                    operational_data += '<tr id="tr' + idNum + "\">";
+                    operational_data += '<td id="td' + idNum + "\">" + value.currency + '</td>';
+
+                    if (priv === 'admin') {
+                        xtraTools = '<a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
+                            '<i class="fa fa-times" aria-hidden="true"></i></a>';
+                    }
+
+                    var transformedBool = (value.isCrypto === 'true') ? "Да" : "Нет";
+                    operational_data += '<td>' + transformedBool + xtraTools + '</td>';
                     operational_data += '</tr>';
+
+                    idNum += 1;
                 });
                 $("#handbook_table").append(operational_data);
                 $(".preload").removeClass('preload');
             }
         });
+    }
+
+    function removeEntry(id) {
+        console.log("clicked on row #" + id);
+        swal({
+            title: "Удаление",
+            text: "Вы действительно хотите удалить запись " + document.getElementById("td" + id).innerHTML + "?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true
+        })
+            .then(function (isPressed) {
+                if (isPressed) {
+                    $.ajax({
+                        url: apiServer + '/currency_del',
+                        type: 'post',
+                        headers: {'authorization': token},
+                        data: "&currency=" + document.getElementById("td" + id).innerHTML,
+                        success: function (data) {
+                            swal("Запись успешно удалена", {icon: "success"});
+                            $("#tr" + id).toggle(400);
+                        },
+                        error: function (err) {
+                            swal("Ошибка при удалении записи", {icon: "warning"});
+                        }
+                    });
+                }
+            });
     }
 </script>
