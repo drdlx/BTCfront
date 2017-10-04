@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 html {
     color: #222;
     font-size: 1em;
@@ -11,7 +12,7 @@ input::-webkit-inner-spin-button {
 }
 
 body {
-    font-family: Tahoma, sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 a {
@@ -90,6 +91,16 @@ textarea {
     width: 140px;
     height: 45px;
     color: #555;
+    font: inherit;
+    line-height: 1em;
+    text-shadow: 1px 1px 1px rgba(113, 136, 140, 0.68);
+}
+
+.button:hover {
+    color: #eaf5ff;
+    background-color: #424242;
+    transition-duration: 0.4s;
+    text-shadow: 1px 1px 1px rgba(144, 224, 255, 0.52);
 }
 
 .exit_button {
@@ -324,13 +335,13 @@ input:valid:not(:placeholder-shown) {
 
 .handbook_table tr td a.delete_button {
     position: relative;
-    right: -60%;
     float: right;
     display: none;
     text-indent: -100%;
     white-space: nowrap;
     color: red;
     cursor: pointer;
+    text-align: right;
 }
 
 .handbook_table tr:hover td a.delete_button {
