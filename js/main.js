@@ -91,6 +91,21 @@ function getFullTransferData(callback) {
     });
 }
 
+function getUnacceptedTransferData(callback) {
+    $.ajax({
+        url: apiServer + '/checktranslate',
+        type: 'get',
+        headers: {'authorization': localStorage.getItem('token')},
+        crossDomain: true,
+        success: function (data) {
+            var result = {
+                'data': data
+            };
+            callback(result);
+        }
+    });
+}
+
 function getReserveList(callback) {
     $.ajax({
         url: apiServer + '/reserves',

@@ -25,7 +25,7 @@
         </div>
         <div class="input_block">
             <label for="destination">Назначение</label>
-            <select id="destination" name="destination" required></select>
+            <select id="destination" name="destination" required onchange="checkOutput(this.value)"></select>
         </div>
         <div class="input_block middle">
             <label for="description">Описание</label>
@@ -55,7 +55,8 @@
 </body>
 </html>
 <script>
-    var currencies, userReserves =[], sourceList = [], agents = [], selectedCurrency;
+    var currencies, userReserves = [], sourceList = [], agents = [], selectedCurrency, fulfilled = false,
+        sourceType = "", destType = "";
     $(document).ready(function () {
         getCurrencyList(function (data) {
             currencies = data;
@@ -82,8 +83,8 @@
                 url: apiServer + '/translate',
                 type: 'post',
                 crossDomain: true,
-                headers: { 'authorization' : localStorage.getItem('token')},
-                data: $("#post_form").serialize(),
+                headers: {'authorization': localStorage.getItem('token')},
+                data: $("#post_form").serialize() + "&fulfilled=" + fulfilled,
                 success: function () {
                     document.getElementById('post_form').reset();
                     swal("Успех", "Операция перевода была добавлена", "success");
@@ -112,6 +113,7 @@
                 });
                 fillSelectFromArray(document.getElementById('destination'), result1);
                 found = true;
+                sourceType = 'reserve';
                 break;
             }
         }
@@ -121,12 +123,37 @@
                 if (agents[j].agentname === inputValue) {
                     var result = [];
                     $.each(userReserves, function (key, value) {
-                       result.push(value.title);
+                        result.push(value.title);
                     });
                     fillSelectFromArray(document.getElementById('destination'), result);
+                    sourceType = 'agent';
                     break;
                 }
             }
+        }
+    }
+
+    function checkOutput(outputValue) {
+        var found = false;
+        //checking if an output is a reserve
+        for (var i = 0; i < userReserves.length; i++) {
+            if (userReserves[i].title === outputValue) {
+                found = true;
+                destType = 'reserve';
+                break;
+            }
+        }
+        //checking if an input is an agent
+        if (!found) {
+            for (var j = 0; j < agents.length; j++) {
+                if (agents[j].agentname === outputValue && agents[j].internal === false) {
+                    destType = 'agent';
+                    break;
+                }
+            }
+        }
+        if ((sourceType === 'reserve' || sourceType === 'agent') && destType === 'reserve') {
+            fulfilled = true;
         }
     }
 </script>
