@@ -8,6 +8,7 @@
     <title>История переводов</title>
     <script src="../js/vendor/jquery-3.2.1.min.js"></script>
     <script src="../js/main.js"></script>
+    <script src="../js/vendor/sweetalert.min.js"></script>
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
@@ -17,11 +18,15 @@
         История операций ввода\вывода
     </div>
     <div class="centered" id="loading"><img src="../img/loader.gif"></div>
-    <div class="centered">Ожидают подтверждения</div>
     <table class="transfer_table" id="unaccepted_table">
+        <tr>
+            <th colspan="4" class="hidden">Ожидают подтверждения</th>
+        </tr>
     </table>
-    <div class="centered">Подтверждены</div>
     <table class="transfer_table" id="report_table">
+        <tr>
+            <th colspan="4" class="hidden">Завершенные операции</th>
+        </tr>
     </table>
     <div>
         <a href="inputoutput.html">
@@ -36,7 +41,7 @@
 </html>
 
 <script>
-    var agents = null, reserves = null, unaccepted = null, requestsCount = 2;
+    var agents = null, reserves = null, unacceptedList = [], requestsCount = 3, loadingTimer = 10;
     $(document).ready(function () {
         getAntiagentList(function (data) {
             agents = data;
@@ -46,41 +51,22 @@
             reserves = data;
             requestsCount--;
         });
+        getUnacceptedTransferData(function (data) {
+            unacceptedList = data;
+            requestsCount--;
+        });
         getFullTransferData(function (data) {
-            while (requestsCount > 0) {}
-            var operation_data = '';
-            console.log(data);
-            $.each(data.data, function (key, value) {
-                var source = {};
-                getParticipantData(value.source, function (data) {
-                    source = data;
-                    operation_data += '<tr>';
-                    operation_data += '<td><div class="transfer_participant">' +
-                        '<span class="transfer_data"><i class="fa fa-male" aria-hidden="true"></i>' + source.agent + '</span>';
-                    if (source.reserve !== null) {
-                        operation_data += '<span class="transfer_data"><i class="fa fa-credit-card" aria-hidden="true"></i>' + source.reserve + '</span>';
-                    }
-                    operation_data += '</div></td>';
-                    var commiss = value.commiss;
-                    var comStr = (commiss > 0) ? " (+" + commiss + ")" : "";
-                    operation_data += '<td class="transfer_arrow"><img src="../img/arrow.png" width="50px">' + value.transaction + '<span class="red">' + comStr + "</span>" + '</td>';
-
-                    var destination = {};
-                    getParticipantData(value.destination, function (data) {
-                        destination = data;
-                        operation_data += '<td><div class="transfer_participant">' +
-                            '<span class="transfer_data"><i class="fa fa-male" aria-hidden="true"></i>' + destination.agent + '</span>';
-                        if (destination.reserve !== null) {
-                            operation_data += '<span class="transfer_data"><i class="fa fa-credit-card" aria-hidden="true"></i>' + destination.reserve + '</span>';
-                        }
-                        operation_data += '</div></td>';
-                        operation_data += '<td>' + value.date.substring(0, value.date.indexOf('T')) + '</td>';
-                        operation_data += '</tr>';
-                    });
-                });
-            });
+            if (requestsCount > 0) {
+                setTimeout(function () {
+                }, 2000);
+            }
+            if (requestsCount === 0) {
+                fillTable(unacceptedList, "#unaccepted_table");
+                fillTable(data, "#report_table");
+            } else {
+                $("#loading").html("Ошибка при загрузке истории");
+            }
             $("#loading").prop('class', 'hidden');
-            $("#report_table").append(operation_data);
         });
     });
 
@@ -109,5 +95,135 @@
             agent: agent
         };
         callback(result);
+    }
+
+    var unacceptedID = {}, acceptedID = {};
+
+    function fillTable(data, targetID) {
+        if (data.data.length > 0) {
+            var operation_data = '';
+            var rowNumber = 0;
+            $.each(data.data, function (key, value) {
+                rowNumber++;
+                var source = {};
+                getParticipantData(value.source, function (data) {
+                    var xtraData = "";
+                    source = data;
+                    operation_data += '<tr id="' + targetID.substring(1, targetID.length) + "_tr" + rowNumber + '\">';
+                    operation_data += '<td><div class="transfer_participant">' +
+                        '<span class="transfer_data"><i class="fa fa-male" aria-hidden="true"></i>' + source.agent + '</span>';
+                    if (source.reserve !== null) {
+                        operation_data += '<span class="transfer_data"><i class="fa fa-credit-card" aria-hidden="true"></i>' + source.reserve + '</span>';
+                    }
+                    operation_data += '</div></td>';
+                    var destination = {};
+                    getParticipantData(value.destination, function (data) {
+                        destination = data;
+                        //======forming comission string and getting a currency========
+                        var commiss = value.commiss;
+                        var comStr = (commiss > 0) ? " (+" + commiss + ")" : "";
+                        var curStr = "";
+                        //====trying to get currency from source
+                        if (source.reserve !== null) {
+                            for (var j = 0; j < reserves.length; j++) {
+                                if (reserves[j].title === source.reserve) {
+                                    curStr = reserves[j].currency;
+                                    break;
+                                }
+                            }
+                        }
+                        //====if we have failed, then we are got to get currency from destination
+                        if (curStr === "" && destination.reserve !== null) {
+                            for (var n = 0; n < reserves.length; n++) {
+                                if (reserves[n].title === destination.reserve) {
+                                    curStr = reserves[n].currency;
+                                    break;
+                                }
+                            }
+                        }
+                        operation_data += '<td class="transfer_arrow"><img src="../img/arrow.png" width="50px">' + value.transaction + '<span class="red">' + comStr + "</span> " + curStr +'</td>';
+
+                        operation_data += '<td><div class="transfer_participant">' +
+                            '<span class="transfer_data"><i class="fa fa-male" aria-hidden="true"></i>' + destination.agent + '</span>';
+                        if (destination.reserve !== null) {
+                            operation_data += '<span class="transfer_data"><i class="fa fa-credit-card" aria-hidden="true"></i>' + destination.reserve + '</span>';
+                        }
+                        operation_data += '</div></td>';
+
+                        if (targetID === '#unaccepted_table') {
+                            xtraData = '<button class="accept" onclick="acceptEntry(' + rowNumber + ", \'" + source.reserve + "\')\">" +
+                                '<i class="fa fa-chevron-down" aria-hidden="true">Подтвердить</i></button>';
+                            xtraData += '<button class="decline" onclick="declineEntry(' + rowNumber + ")\"" + '">' +
+                                '<i class="fa fa-times" aria-hidden="true">Отклонить</i></button>';
+                            unacceptedID["" + rowNumber] = value._id;
+                        }
+                        if (targetID === '#report_table') {
+                            acceptedID["" + rowNumber] = value._id;
+                        }
+
+                        operation_data += '<td>' + value.date.substring(0, value.date.indexOf('T')) + xtraData + '</td>';
+                        operation_data += '</tr>';
+                    });
+                });
+            });
+            $(targetID + " tr th").removeClass("hidden");
+            $(targetID).append(operation_data);
+        }
+    }
+
+    function addRow() {
+
+    }
+
+    function acceptEntry(id, sourceReserve) {
+        var currency = "", userReservesOptions = {};
+        for (var j = 0; j < reserves.length; j++) {
+            if (reserves[j].title === sourceReserve) {
+                currency = reserves[j].currency;
+                break;
+            }
+        }
+        for (var i = 0; i < reserves.length; i++) {
+            if (reserves[i].currency === currency && reserves[i].owner === username) {
+                userReservesOptions[reserves[i].title] = reserves[i].title;
+            }
+        }
+        swal({
+            title: 'Подтверждение операции',
+            text: "Выберите целевой резерв",
+            input: 'select',
+            inputOptions: userReservesOptions,
+            inputPlaceholder: 'Выберите резерв',
+            showCancelButton: true,
+            inputValidator: function (value) {
+                return new Promise(function (resolve, reject) {
+                    if (value !== '') {
+                        resolve()
+                    } else {
+                        reject('Выберите любой резерв')
+                    }
+                })
+            }
+        }).then(function (isPressed) {
+            if (isPressed) {
+                $.ajax({
+                    url: apiServer + '/confirmation',
+                    type: 'post',
+                    headers: {'authorization': token},
+                    data: "&id=" + unacceptedID[id] + "&fulfilled=true&destination=" + isPressed,
+                    success: function (data) {
+                        swal("Успех", "Перевод был подтвержден", "success");
+                        $("#unaccepted_table_tr" + id).detach().appendTo($("#report_table"));
+                    },
+                    error: function (err) {
+                        swal("Упс","Ошибка при подтверждении перевода", "error");
+                    }
+                });
+            }
+        });
+    }
+
+    function declineEntry(id) {
+
     }
 </script>

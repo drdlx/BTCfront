@@ -351,7 +351,7 @@ input:valid:not(:placeholder-shown) {
 .transfer_table {
     width: 100%;
     border-collapse: collapse;
-    margin: 10px 0;
+    margin: 20px 0;
 }
 
 .transfer_table tr {
@@ -361,6 +361,7 @@ input:valid:not(:placeholder-shown) {
 .transfer_table tr td {
     background-color: rgba(29, 29, 29, 0.11);
     width: 25%;
+    transition-duration: 0.5s;
 }
 
 .transfer_participant {
@@ -388,4 +389,54 @@ input:valid:not(:placeholder-shown) {
 .transfer_table tr td:last-child {
     width: 15%;
     text-align: center;
+}
+
+#report_table tr td button.accept {
+    display: none;
+}
+
+#report_table tr td button.decline {
+    display: none;
+}
+
+#unaccepted_table tr td button.accept {
+     position: absolute;
+     display: none;
+     color: #007700;
+     cursor: pointer;
+     margin-left: auto;
+     margin-right: auto;
+     left: 60%;
+     transform: translateY(-76%);
+     padding: 10px 50px;
+     border-radius: 7px;
+     border: 2px solid #007700;
+     background-color: #c6ffb6;
+     font-size: 19px;
+ }
+
+#unaccepted_table tr td button.decline {
+    position: absolute;
+    display: none;
+    color: #85000b;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+    right: 60%;
+    transform: translateY(-76%);
+    padding: 10px 50px;
+    border-radius: 7px;
+    border: 2px solid #85000b;
+    background-color: #ffa191;
+    font-size: 19px;
+}
+
+#unaccepted_table tr:hover td button {
+    display: block;
+    transition-duration: 0.5s;
+}
+
+#unaccepted_table tr:hover td {
+    background-color: rgba(88, 88, 88, 0);
+    transition-duration: 0.5s;
 }

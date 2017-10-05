@@ -57,6 +57,10 @@ function getFullPaymentData(callback) {
                 'rub': totalRub.toFixed(2)
             };
             callback(result);
+            return result;
+        },
+        error: function (err) {
+            return err.status;
         }
     });
 }
@@ -72,6 +76,10 @@ function getFullSalesData(callback) {
                 'data': data
             };
             callback(result);
+            return result;
+        },
+        error: function (err) {
+            return err.status;
         }
     });
 }
@@ -87,6 +95,10 @@ function getFullTransferData(callback) {
                 'data': data
             };
             callback(result);
+            return result;
+        },
+        error: function (err) {
+            return err.status;
         }
     });
 }
@@ -102,6 +114,10 @@ function getUnacceptedTransferData(callback) {
                 'data': data
             };
             callback(result);
+            return result;
+        },
+        error: function (err) {
+            return err.status;
         }
     });
 }
@@ -113,6 +129,10 @@ function getReserveList(callback) {
         headers: {'authorization': localStorage.getItem('token')},
         success: function (data) {
             callback(data);
+            return data;
+        },
+        error: function (err) {
+            return err.status;
         }
     });
 }
@@ -125,6 +145,9 @@ function getCurrencyList(callback) {
         success: function (data) {
             callback(data);
             return data;
+        },
+        error: function (err) {
+            return err.status;
         }
     });
 }
@@ -137,6 +160,9 @@ function getBankList(callback) {
         success: function (data) {
             callback(data);
             return data;
+        },
+        error: function (err) {
+            return err.status;
         }
     });
 }
@@ -149,6 +175,9 @@ function getAntiagentList(callback) {
         success: function (data) {
             callback(data);
             return data;
+        },
+        error: function (err) {
+            return err.status;
         }
     });
 }

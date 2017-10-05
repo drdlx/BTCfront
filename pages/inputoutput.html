@@ -71,7 +71,9 @@
             getAntiagentList(function (data1) {
                 $.each(data1, function (key1, value1) {
                     agents.push(value1);
-                    sourceList.push(value1.agentname);
+                    if (value1.internal === false) {
+                        sourceList.push(value1.agentname);
+                    }
                 });
                 fillSelectFromArray(document.getElementById('source'), sourceList);
             });
