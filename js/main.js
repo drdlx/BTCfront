@@ -27,7 +27,11 @@ function fillSelectWithCurrencies(select, sourceSelect) {
 function fillSelectFromArray(select, array) {
     select.removeAttribute('disabled');
     for (var j = select.options.length; j >= 0; j--) {
-        select.remove(j);
+        if (j !== select.selectedIndex) {
+            select.remove(j);
+        } else {
+            select.options[j].text = ".....";
+        }
     }
     for (var i = 0; i < array.length; i++) {
         var opt = document.createElement("option");
@@ -39,7 +43,7 @@ function fillSelectFromArray(select, array) {
 
 function getFullPaymentData(callback) {
     var totalRub = 0, totalBtc = 0, currentAvg = 0;
-    $.ajax({
+    return $.ajax({
         url: apiServer + '/reportpay',
         type: 'get',
         headers: {'authorization': localStorage.getItem('token')},
@@ -57,16 +61,15 @@ function getFullPaymentData(callback) {
                 'rub': totalRub.toFixed(2)
             };
             callback(result);
-            return result;
         },
         error: function (err) {
-            return err.status;
+            callback(err.status);
         }
     });
 }
 
 function getFullSalesData(callback) {
-    $.ajax({
+    return $.ajax({
         url: apiServer + '/reportsell',
         type: 'get',
         headers: {'authorization': localStorage.getItem('token')},
@@ -76,16 +79,15 @@ function getFullSalesData(callback) {
                 'data': data
             };
             callback(result);
-            return result;
         },
         error: function (err) {
-            return err.status;
+            callback(err.status);
         }
     });
 }
 
 function getFullTransferData(callback) {
-    $.ajax({
+    return $.ajax({
         url: apiServer + '/reporttranslate',
         type: 'get',
         headers: {'authorization': localStorage.getItem('token')},
@@ -95,16 +97,15 @@ function getFullTransferData(callback) {
                 'data': data
             };
             callback(result);
-            return result;
         },
         error: function (err) {
-            return err.status;
+            callback(err.status);
         }
     });
 }
 
 function getUnacceptedTransferData(callback) {
-    $.ajax({
+    return $.ajax({
         url: apiServer + '/checktranslate',
         type: 'get',
         headers: {'authorization': localStorage.getItem('token')},
@@ -114,70 +115,65 @@ function getUnacceptedTransferData(callback) {
                 'data': data
             };
             callback(result);
-            return result;
         },
         error: function (err) {
-            return err.status;
+            callback(err.status);
         }
     });
 }
 
 function getReserveList(callback) {
-    $.ajax({
+    return $.ajax({
         url: apiServer + '/reserves',
         type: 'get',
         headers: {'authorization': localStorage.getItem('token')},
         success: function (data) {
             callback(data);
-            return data;
         },
         error: function (err) {
-            return err.status;
+            callback(err.status);
         }
     });
 }
 
 function getCurrencyList(callback) {
-    $.ajax({
+    return $.ajax({
         url: apiServer + '/currency',
         type: 'get',
         headers: {'authorization': localStorage.getItem('token')},
         success: function (data) {
             callback(data);
-            return data;
         },
         error: function (err) {
-            return err.status;
+            callback(err.status);
         }
     });
 }
 
 function getBankList(callback) {
-    $.ajax({
+    return $.ajax({
         url: apiServer + '/banks',
         type: 'get',
         headers: {'authorization': localStorage.getItem('token')},
         success: function (data) {
             callback(data);
-            return data;
         },
         error: function (err) {
-            return err.status;
+            callback(err.status);
         }
     });
 }
 
 function getAntiagentList(callback) {
-    $.ajax({
+    return $.ajax({
         url: apiServer + '/anti_agent',
         type: 'get',
         headers: {'authorization': localStorage.getItem('token')},
         success: function (data) {
             callback(data);
-            return data;
         },
         error: function (err) {
-            return err.status;
+            callback(err.status);
         }
     });
 }
@@ -321,3 +317,5 @@ function getDealFinrez(income, avgCourse, btcOutcome, botCommiss, comiss) {
     result = (income - (avgCourse * btcOutcome) - (botCommiss * avgCourse) - comiss).toFixed(2);
     return parseFloat(result);
 }
+
+

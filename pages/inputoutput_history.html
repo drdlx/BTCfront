@@ -8,7 +8,7 @@
     <title>История переводов</title>
     <script src="../js/vendor/jquery-3.2.1.min.js"></script>
     <script src="../js/main.js"></script>
-    <script src="../js/vendor/sweetalert.min.js"></script>
+    <script src="../js/vendor/sweetalert2.all.min.js"></script>
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
@@ -18,6 +18,7 @@
         История операций ввода\вывода
     </div>
     <div class="centered" id="loading"><img src="../img/loader.gif"></div>
+    <div class="centered" id="message"></div>
     <table class="transfer_table" id="unaccepted_table">
         <tr>
             <th colspan="4" class="hidden">Ожидают подтверждения</th>
@@ -41,31 +42,26 @@
 </html>
 
 <script>
-    var agents = null, reserves = null, unacceptedList = [], requestsCount = 3, loadingTimer = 10;
+    var agents = null, reserves = null, unacceptedList = [], acceptedList = [], requCount = 3;
     $(document).ready(function () {
-        getAntiagentList(function (data) {
+        var q1 = getAntiagentList(function (data) {
             agents = data;
-            requestsCount--;
+            requCount--;
         });
-        getReserveList(function (data) {
+        var q2 = getReserveList(function (data) {
             reserves = data;
-            requestsCount--;
+            requCount--;
         });
-        getUnacceptedTransferData(function (data) {
+        var q3 = getUnacceptedTransferData(function (data) {
             unacceptedList = data;
-            requestsCount--;
+            requCount--;
         });
-        getFullTransferData(function (data) {
-            if (requestsCount > 0) {
-                setTimeout(function () {
-                }, 2000);
-            }
-            if (requestsCount === 0) {
-                fillTable(unacceptedList, "#unaccepted_table");
-                fillTable(data, "#report_table");
-            } else {
-                $("#loading").html("Ошибка при загрузке истории");
-            }
+        var q4 = getFullTransferData(function (data) {
+            acceptedList = data;
+        });
+        $.when(q1, q2, q3, q4).done(function () {
+            fillTable(unacceptedList, "#unaccepted_table");
+            fillTable(acceptedList, "#report_table");
             $("#loading").prop('class', 'hidden');
         });
     });
@@ -141,7 +137,7 @@
                                 }
                             }
                         }
-                        operation_data += '<td class="transfer_arrow"><img src="../img/arrow.png" width="50px">' + value.transaction + '<span class="red">' + comStr + "</span> " + curStr +'</td>';
+                        operation_data += '<td class="transfer_arrow"><img src="../img/arrow.png" width="50px">' + value.transaction + '<span class="red">' + comStr + "</span> " + curStr + '</td>';
 
                         operation_data += '<td><div class="transfer_participant">' +
                             '<span class="transfer_data"><i class="fa fa-male" aria-hidden="true"></i>' + destination.agent + '</span>';
@@ -153,7 +149,7 @@
                         if (targetID === '#unaccepted_table') {
                             xtraData = '<button class="accept" onclick="acceptEntry(' + rowNumber + ", \'" + source.reserve + "\')\">" +
                                 '<i class="fa fa-chevron-down" aria-hidden="true">Подтвердить</i></button>';
-                            xtraData += '<button class="decline" onclick="declineEntry(' + rowNumber + ")\"" + '">' +
+                            xtraData += '<button class="decline" onclick="declineEntry(' + rowNumber + ")\"" + '>' +
                                 '<i class="fa fa-times" aria-hidden="true">Отклонить</i></button>';
                             unacceptedID["" + rowNumber] = value._id;
                         }
@@ -168,11 +164,9 @@
             });
             $(targetID + " tr th").removeClass("hidden");
             $(targetID).append(operation_data);
+        } else if (targetID === '#report_table') {
+            $("#message").html("Завершенных операций пока нет");
         }
-    }
-
-    function addRow() {
-
     }
 
     function acceptEntry(id, sourceReserve) {
@@ -214,9 +208,13 @@
                     success: function (data) {
                         swal("Успех", "Перевод был подтвержден", "success");
                         $("#unaccepted_table_tr" + id).detach().appendTo($("#report_table"));
+                        delete unacceptedID[id];
+                        if (Object.keys(unacceptedID).length === 0) {
+                            $("#unaccepted_table").hide(200);
+                        }
                     },
                     error: function (err) {
-                        swal("Упс","Ошибка при подтверждении перевода", "error");
+                        swal("Упс", "Ошибка при подтверждении перевода", "error");
                     }
                 });
             }
@@ -224,6 +222,31 @@
     }
 
     function declineEntry(id) {
-
+        swal({
+            title: 'Подтверждение операции',
+            text: "Вы действительно хотите отклонить этот перевод?",
+            type: "question",
+            showCancelButton: true
+        }).then(function (pressed) {
+            if (pressed) {
+                $.ajax({
+                    url: apiServer + '/confirmation',
+                    type: 'post',
+                    headers: {'authorization': token},
+                    data: "&id=" + unacceptedID[id] + "&fulfilled=false",
+                    success: function () {
+                        swal("Успех", "Перевод был отклонен", "success");
+                        $("#unaccepted_table_tr" + id).hide();
+                        delete unacceptedID[id];
+                        if (Object.keys(unacceptedID).length === 0) {
+                            $("#unaccepted_table").hide(200);
+                        }
+                    },
+                    error: function (err) {
+                        swal("Упс", "Ошибка при отмене перевода", "error");
+                    }
+                });
+            }
+        });
     }
 </script>

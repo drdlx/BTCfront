@@ -21,11 +21,15 @@
     <form method="post" id="post_form">
         <div class="input_block">
             <label for="source">Источник</label>
-            <select id="source" name="source" required onchange="fillOutputSelect(this.value)"></select>
+            <select id="source" name="source" required onchange="fillOutputSelect(this.value)">
+                <option disabled selected value="" hidden>Загрузка...</option>
+            </select>
         </div>
         <div class="input_block">
             <label for="destination">Назначение</label>
-            <select id="destination" name="destination" required onchange="checkOutput(this.value)"></select>
+            <select id="destination" name="destination" required onchange="checkOutput(this.value)">
+                <option disabled selected value="" hidden>Выберите источник</option>
+            </select>
         </div>
         <div class="input_block middle">
             <label for="description">Описание</label>
