@@ -20,11 +20,15 @@
     <form method="post" id="post_form">
         <div class="input_block">
             <label for="paym">Резерв для оплаты</label>
-            <select name="paym" id="paym" required></select>
+            <select name="paym" id="paym" required>
+                <option disabled selected value="" hidden>Загрузка...</option>
+            </select>
         </div>
         <div class="input_block">
             <label for="bitwallet">Резерв зачисления</label>
-            <select name="bitwallet" id="bitwallet" required></select>
+            <select name="bitwallet" id="bitwallet" required>
+                <option disabled selected value="" hidden>Загрузка...</option>
+            </select>
         </div>
         <div class="input_block">
             <label for="course">Курс сделки</label>

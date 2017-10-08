@@ -29,27 +29,31 @@
             <div class="input_block middle">
                 <label for="title">Отображаемое имя</label>
                 <input type="text" maxlength="15" minlength="3" required placeholder="имя резерва" id="title"
-                       name="title">
+                       name="title" class="validate" pattern="^[a-zA-Z]{1}[a-zA-Z-_]+$">
             </div>
             <div class="input_block middle">
                 <label for="bank">Банк</label>
                 <select id="bank" name="bank" required
                         onchange="fillSelectWithCurrencies(document.getElementById('currency'), 'bank')">
+                    <option disabled selected value="" hidden>Загрузка...</option>
                 </select>
             </div>
             <div class="input_block middle">
                 <label for="currency">Валюта</label>
                 <select id="currency" name="currency" required disabled>
+                    <option disabled selected value="" hidden>Выберите банк...</option>
                 </select>
             </div>
             <div class="input_block middle">
                 <label for="owner">Владелец</label>
                 <select id="owner" name="owner" required>
+                    <option disabled selected value="" hidden>Загрузка...</option>
                 </select>
             </div>
             <div class="input_block middle">
                 <label for="responsible">Ответственный</label>
                 <select id="responsible" name="responsible" required>
+                    <option disabled selected value="" hidden>Загрузка...</option>
                 </select>
             </div>
             <div class="centered">
@@ -115,19 +119,24 @@
                     '<th>Владелец</th>\n' +
                     '<th>Ответственный</th>\n' +
                     '</tr>');
-                var idNum = 0;
-                var xtraTools = "";
-                var operational_data = "";
+                var idNum = 0, xtraTools = "", operational_data = "", xtraClass="";
                 $.each(reserves, function (key, value) {
-                    operational_data += '<tr id="tr' + idNum + '\">';
+                    if (value.owner === username) {
+                        xtraClass = "class=\"owner\" ";
+                    } else {
+                        xtraClass = "";
+                    }
+                    operational_data += '<tr ' + xtraClass + 'id="tr' + idNum + '\">';
                     operational_data += '<td id="td' + idNum + '\">' + transformValue(value.title) + '</td>';
                     operational_data += '<td>' + transformValue(value.bank) + '</td>';
                     operational_data += '<td>' + transformValue(value.currency) + '</td>';
                     operational_data += '<td>' + transformValue(value.owner) + '</td>';
 
-                    if (priv === 'admin') {
+                    if (priv === 'admin' && value.owner === username) {
                         xtraTools = '<a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
                             '<i class="fa fa-times" aria-hidden="true"></i></a>';
+                    } else {
+                        xtraTools = "";
                     }
 
                     operational_data += '<td>' + transformValue(value.responsible) + xtraTools + '</td>';
@@ -143,16 +152,18 @@
 
     function fillBanksSelect() {
         getBankList(function (data) {
-            if (data.length > 0) {
-                $.each(data, function (key, value) {
-                    var opt_data = "<option value=\"";
-                    opt_data += value.bank + "\" >";
-                    opt_data += value.bank;
-                    opt_data += "</option>";
-                    $("#bank").append(opt_data);
-                });
-            } else {
-                $("#bank").attr('disabled', 'disabled');
+            var select = document.getElementById('bank');
+            for (var j = select.options.length; j >= 0; j--) {
+                if (j !== select.selectedIndex) {
+                    select.remove(j);
+                } else {
+                    select.options[j].text = ".....";
+                }
+            }
+            for (var i = 0; i < data.length; i++) {
+                var opt = document.createElement("option");
+                opt.innerHTML = data[i].bank;
+                select.appendChild(opt);
             }
         });
     }
@@ -161,7 +172,11 @@
         getAntiagentList(function (data) {
             var select = document.getElementById('owner');
             for (var j = select.options.length; j >= 0; j--) {
-                select.remove(j);
+                if (j !== select.selectedIndex) {
+                    select.remove(j);
+                } else {
+                    select.options[j].text = ".....";
+                }
             }
             for (var i = 0; i < data.length; i++) {
                 var opt = document.createElement("option");
@@ -175,7 +190,11 @@
         getAntiagentList(function (data) {
             var select = document.getElementById('responsible');
             for (var j = select.options.length; j >= 0; j--) {
-                select.remove(j);
+                if (j !== select.selectedIndex) {
+                    select.remove(j);
+                } else {
+                    select.options[j].text = ".....";
+                }
             }
             for (var i = 0; i < data.length; i++) {
                 if (data[i].internal === true) {

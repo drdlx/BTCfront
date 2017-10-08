@@ -350,7 +350,9 @@ input[readonly] {
     text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
     border-right: 1px solid #C1C3D1;
 }
-
+.handbook_table tr.owner td {
+    background: rgba(107, 218, 81, 0.31);
+}
 .handbook_form {
     border: 3px ridge rgba(177, 174, 144, 0.31);
     background-color: rgba(206, 206, 188, 0.17);
@@ -358,11 +360,11 @@ input[readonly] {
     border-radius: 5px;
 }
 
-input:invalid:not(:placeholder-shown) {
+input.validate:invalid:not(:placeholder-shown) {
     background-color: rgba(255, 0, 0, 0.08);
 }
 
-input:valid:not(:placeholder-shown) {
+input.validate:valid:not(:placeholder-shown) {
     background-color: rgba(41, 255, 0, 0.28);
 }
 

@@ -28,7 +28,8 @@
         <button class="button middle" id="add_button">Добавить новую валюту</button>
         <form id="add_form" class="handbook_form">
             <div class="input_block middle">
-                <input type="text" maxlength="3" minlength="3" required placeholder="ABC" id="currency" name="currency">
+                <input type="text" maxlength="3" minlength="3" required placeholder="ABC"
+                       class="validate" id="currency" name="currency" pattern="[A-Z]{3}">
                 <label for="currency">Код валюты</label>
             </div>
             <div class="input_block middle">
