@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<script src="../js/privilege.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/vendor/jquery-ui.min.css">
+    <title>Отчет</title>
+    <script src="../js/vendor/jquery-3.2.1.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/vendor/jquery-ui.min.js"></script>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        Отчет
+    </div>
+    <div class="input_block" id="report_user_block">
+        <label for="report_user">Пользователь:</label>
+        <select id="report_user" required>
+            <option selected disabled hidden value="">Загрузка...</option>
+        </select>
+    </div>
+    <div class="input_block" id="report_date_block">
+        <label for="report_date">Дата:</label>
+        <input type="text" required id="report_date" pattern="[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}" readonly>
+    </div>
+    <script>
+        if (priv === 'user') {
+            $("#report_user_block").hide();
+            $("#report_date_block").addClass("middle");
+        }
+    </script>
+    <table class="report_table" id="report_table">
+        <tr>
+            <th>Резерв</th>
+            <th>Остаток</th>
+            <th>Расход</th>
+            <th>Приход</th>
+            <th>Ввод\вывод</th>
+            <th>Комиссия</th>
+        </tr>
+    </table>
+    <div class="centered" id="loading"><img src="../img/loader.gif"></div>
+    <br/>
+    <div class="info_block">
+        <p>
+            Сред. курс BTC: <span class="green" id="avg"></span>
+            Общий финрез: <span class="green" id="finrez"></span>
+            Всего Р: <span class="green" id="rub"></span>
+            Всего BTC: <span class="green" id="btc"></span>
+            <script>
+                getGlobalStatsFull(function (data) {
+                    document.getElementById('avg').innerHTML = data.avgCourse;
+                    document.getElementById('finrez').innerHTML = data.totalFinrez;
+                    document.getElementById('rub').innerHTML = data.totalRub;
+                    document.getElementById('btc').innerHTML = data.totalBtc;
+                    if (data.totalFinrez < 0) {
+                        document.getElementById('finrez').setAttribute('class', 'red');
+                    }
+                    if (data.totalRub < 0) {
+                        document.getElementById('rub').setAttribute('class', 'red');
+                    }
+                    if (data.totalBtc < 0) {
+                        document.getElementById('btc').setAttribute('class', 'red');
+                    }
+                });
+            </script>
+        </p>
+    </div>
+    <div>
+        <a href="menu.html">
+            <button class="button exit_button">В меню</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+
+    var todayDate = new Date(), avgCourse;
+    var userList = ["Все пользователи"], dateList = {};
+
+    $(document).ready(function () {
+        //get all available dates for current user
+        var r1 = function (username) {
+            var request = (priv === 'admin') ? '/admin/reportfull' : '/reportfull', userReqStr = "";
+            if (username !== "Все пользователи") {
+                userReqStr = (priv === 'admin') ? "&user=" + username : "";
+            }
+            return $.ajax({
+                url: apiServer + request,
+                type: 'GET',
+                crossDomain: true,
+                data: userReqStr,
+                headers: {
+                    "authorization": localStorage.getItem('token')
+                },
+                success: function (data) {
+                    var arr = (userReqStr === "") ? data : data.data;
+                    dateList = {};
+                    $.each(arr, function (key, value) {
+                        var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1, year = currDate.getFullYear();
+                        dateList[month + "/" + day + "/" + year] = month + "/" + day + "/" + year;
+                    });
+                    console.log(userReqStr);
+                    console.log(data);
+                }
+            });
+        };
+        var r2 = getAntiagentList(function (data) {
+            $.each(data, function (key, value) {
+               if (value.internal) {
+                   userList.push(value.agentname);
+               }
+            });
+        });
+        $.when(r1(username), r2).done(function () {
+            //======fill users select
+            fillSelectFromArray(document.getElementById("report_user"), userList);
+            document.getElementById("report_user").value = username;
+            //======fill datePicker
+            var todayDay = todayDate.getDate(), todayMonth = todayDate.getMonth() + 1, todayYear = todayDate.getFullYear();
+            $("#report_date").val(todayMonth + "/" + todayDay + "/" + todayYear);
+            $("#report_date").datepicker({
+                dateFormat: 'm/d/yy',
+                beforeShowDay: function (date) {
+                    var currDate = new Date(date), day = currDate.getDate(), month = currDate.getMonth() + 1, year = currDate.getFullYear();
+                    var hDate = month + "/" + day + "/" + year;
+                    var highlight = dateList[hDate];
+                    if (highlight) {
+                        return [true, "date_event", highlight];
+                    } else {
+                        return [false, "", ""];
+                    }
+                }
+            });
+            reBuildTable();
+            //======listening for changes
+            $("#report_user").change(function () {
+                reBuildTable();
+                r1($(this).val());
+            });
+            $("#report_date").change(function () {
+                reBuildTable();
+            });
+        });
+    });
+
+    function reBuildTable() {
+        $("#report_table").find("tr:gt(0)").remove();
+        $("#loading").show();
+        var request = (localStorage.getItem('permission') === 'admin') ? '/admin/reportfull' : '/reportfull';
+        var user = $("#report_user").val(), date = $("#report_date").val();
+        if (user === "Все пользователи") { user = ""}
+        var userReqStr = (priv === 'admin') ? "&user=" : "";
+        $.ajax({
+            url: apiServer + request,
+            type: 'GET',
+            crossDomain: true,
+            data: userReqStr + user + "&date=" + date,
+            headers: {
+                "authorization": localStorage.getItem('token')
+            },
+            success: function (data) {
+                console.log(userReqStr + user + "&date=" + date);
+                console.log(data);
+                var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0;
+                var operation_data = '', unsorted = (user === "") ? data : data.data, sortedData = {};
+                if (unsorted !== undefined) {
+                    sortedData = unsorted.sort(function (a, b) {
+                        return a.user.localeCompare(b.user);
+                    });
+                }
+                var currentUser = '', colCount = 6;
+                //---------------------------------------
+                $.each(sortedData, function (key, value) {
+                    var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1,
+                        year = currDate.getFullYear();
+                    dateList[month + "/" + day + "/" + year] = month + "/" + day + "/" + year;
+                    if ((currentUser !== value.user) && (priv === 'admin') && (user === "")) {
+                        currentUser = value.user;
+                        operation_data += '<tr class="report-user-header">';
+                        operation_data += '<td colspan="' + colCount + '">' + currentUser + "</td>";
+                        operation_data += '</tr>';
+                    }
+
+                    operation_data += '<tr>';
+                    operation_data += '<td>' + value.paym + '</td>';
+
+                    operation_data += '<td>' + value.remainder + '</td>';
+                    overallRemains += value.remainder;
+
+                    operation_data += '<td>' + value.consumption + '</td>';
+                    overallConsume += value.consumption;
+
+                    operation_data += '<td>' + value.coming + '</td>';
+                    overallComing += value.coming;
+
+                    operation_data += '<td>' + value.transaction + '</td>';
+                    overallIO += value.transaction;
+
+                    operation_data += '<td>' + value.commiss + '</td>';
+                    overallComiss += value.commiss;
+                    operation_data += '</tr>';
+                });
+
+                operation_data += '<tr class="overall">';
+                operation_data += '<td>' + 'ИТОГО:' + '</td>';
+                operation_data += '<td>' + overallRemains + '</td>';
+                operation_data += '<td>' + overallConsume + '</td>';
+                operation_data += '<td>' + +overallComing + '</td>';
+                operation_data += '<td>' + overallIO + '</td>';
+                operation_data += '<td>' + overallComiss + '</td>';
+                operation_data += '</tr>';
+                $("#loading").hide();
+                $("#report_table").append(operation_data);
+            }
+        });
+    }
+</script>

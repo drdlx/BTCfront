@@ -69,14 +69,22 @@ textarea {
 
 .button_pane table {
     width: 100%;
-    border-spacing: 15px;
+    border-spacing: 10px;
     border-collapse: separate;
 }
 
 .button_pane td {
     text-align: center;
+    width: 140px;
+    height: 45px;
 }
 
+.button_pane tr:nth-child(even) td {
+    border-right: rgb(170, 187, 212) 2px solid;
+}
+.button_pane tr:nth-child(even) td:last-child {
+    border: none;
+}
 .button_pane .menu_header td {
     text-align: left;
     font-size: 1.35em;
@@ -88,8 +96,8 @@ textarea {
 
 .button {
     padding: 5px;
-    width: 140px;
-    height: 45px;
+    min-width: 120px;
+    min-height: 40px;
     color: #555;
     font: inherit;
     line-height: 1em;
@@ -101,8 +109,29 @@ textarea {
     background-color: #424242;
     transition-duration: 0.4s;
     text-shadow: 1px 1px 1px rgba(144, 224, 255, 0.52);
+    cursor: pointer;
 }
 
+button.quick_access {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    font-size: 25px;
+    background-color: rgba(170, 170, 171, 0.44);
+    border: none;
+    transition-duration: 0.4s;
+}
+
+button.quick_access:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.81);
+    transition-duration: 0.4s;
+    color: white;
+}
+.quick_access.unaccepted {
+    background-color: red;
+    color: white;
+}
 .exit_button {
     width: auto;
     padding: 5px 15px;
@@ -155,6 +184,10 @@ input[readonly] {
     border: rgba(125, 96, 19, 0.3) outset 2px;
     border-radius: 5px;
     text-align: center;
+}
+.date_event a {
+    background: #42B373 none !important;
+    color: #ffffff !important;
 }
 
 .green {

@@ -161,7 +161,7 @@
                 var percentage = ((data / (avg / 100)) - 100);
                 var percentage_string = "";
                 if (percentage > 0) {
-                    if (!percentage.isFinite) {
+                    if (!isFinite(percentage)) {
                         percentage = 0;
                     }
                     percentage_string = ("+" + percentage.toFixed(2));
