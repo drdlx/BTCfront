@@ -408,11 +408,20 @@ input.validate:valid:not(:placeholder-shown) {
 .transfer_table tr td:nth-child(odd) {
     background-color: rgba(43, 35, 12, 0.19);
 }
-
+.transfer_table .description {
+    display: block;
+    max-height: 2.5em;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.66);
+    padding: 2px 15px;
+    overflow: hidden;
+    text-align: left;
+}
 .transfer_table span.transfer_data {
     width: 100%;
     display: block;
     line-height: 1.5em;
+    font-size: 1.2em;
 }
 .transfer_arrow {
     text-align: center;

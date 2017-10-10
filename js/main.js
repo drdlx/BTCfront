@@ -178,6 +178,20 @@ function getAntiagentList(callback) {
     });
 }
 
+function getCredits(callback) {
+    return $.ajax({
+        url: apiServer + '/reportcredit',
+        type: 'get',
+        headers: {'authorization': localStorage.getItem('token')},
+        success: function (data) {
+            callback(data);
+        },
+        error: function (err) {
+            callback(err.status);
+        }
+    });
+}
+
 function getAvgCourse(callback) {
     var fullList, payList = null, sellList = null;
 

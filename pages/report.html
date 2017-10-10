@@ -42,6 +42,7 @@
             <th>Приход</th>
             <th>Ввод\вывод</th>
             <th>Комиссия</th>
+            <th>Финрез</th>
         </tr>
     </table>
     <div class="centered" id="loading"><img src="../img/loader.gif"></div>
@@ -169,14 +170,14 @@
             success: function (data) {
                 console.log(userReqStr + user + "&date=" + date);
                 console.log(data);
-                var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0;
+                var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0, overallFinres = 0;
                 var operation_data = '', unsorted = (user === "") ? data : data.data, sortedData = {};
                 if (unsorted !== undefined) {
                     sortedData = unsorted.sort(function (a, b) {
                         return a.user.localeCompare(b.user);
                     });
                 }
-                var currentUser = '', colCount = 6;
+                var currentUser = '', colCount = 7;
                 //---------------------------------------
                 $.each(sortedData, function (key, value) {
                     var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1,
@@ -206,6 +207,10 @@
 
                     operation_data += '<td>' + value.commiss + '</td>';
                     overallComiss += value.commiss;
+
+                    operation_data += '<td>' + value.cur_fin_res + '</td>';
+                    overallFinres += value.cur_fin_res;
+
                     operation_data += '</tr>';
                 });
 
@@ -216,6 +221,7 @@
                 operation_data += '<td>' + +overallComing + '</td>';
                 operation_data += '<td>' + overallIO + '</td>';
                 operation_data += '<td>' + overallComiss + '</td>';
+                operation_data += '<td>' + overallFinres + '</td>';
                 operation_data += '</tr>';
                 $("#loading").hide();
                 $("#report_table").append(operation_data);
