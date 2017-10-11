@@ -102,13 +102,13 @@
                     "authorization": localStorage.getItem('token')
                 },
                 success: function (data) {
-                    var arr = (userReqStr === "") ? data : data.data;
+                    var arr = data.data;
                     dateList = {};
                     $.each(arr, function (key, value) {
                         var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1, year = currDate.getFullYear();
                         dateList[month + "/" + day + "/" + year] = month + "/" + day + "/" + year;
                     });
-                    console.log(userReqStr);
+                    console.log(dateList);
                     console.log(data);
                 }
             });
@@ -158,17 +158,17 @@
         var request = (localStorage.getItem('permission') === 'admin') ? '/admin/reportfull' : '/reportfull';
         var user = $("#report_user").val(), date = $("#report_date").val();
         if (user === "Все пользователи") { user = ""}
-        var userReqStr = (priv === 'admin') ? "&user=" : "";
+        var userReqStr = (priv === 'admin') ? "&user=" + user : "";
         $.ajax({
             url: apiServer + request,
             type: 'GET',
             crossDomain: true,
-            data: userReqStr + user + "&date=" + date,
+            data: userReqStr + "&date=" + date,
             headers: {
                 "authorization": localStorage.getItem('token')
             },
             success: function (data) {
-                console.log(userReqStr + user + "&date=" + date);
+                console.log(userReqStr + "&date=" + date);
                 console.log(data);
                 var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0, overallFinres = 0;
                 var operation_data = '', unsorted = (user === "") ? data : data.data, sortedData = {};
