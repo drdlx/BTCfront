@@ -72,37 +72,35 @@
 </html>
 <script>
     $(document).ready(function () {
-        if (localStorage.getItem('permission') === 'admin') {
-            $("#add_form").hide();
-            $("#add_button").click(function () {
-                $("#add_form").toggle(500);
+        $("#add_form").hide();
+        $("#add_button").click(function () {
+            $("#add_form").toggle(500);
+        });
+        $("#add_reserve").show();
+        fillBanksSelect();
+        fillOwnerSelect();
+        fillResponsibleSelect();
+        $("#add_form").on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: apiServer + '/reserves_add',
+                type: 'post',
+                headers: {'authorization': localStorage.getItem('token')},
+                data: $("#add_form").serialize(),
+                success: function (data) {
+                    swal("Успех", "Резерв " + $("#title").val() + " добавлен", "success");
+                    $("#error-msg").html("");
+                    document.getElementById('add_form').reset();
+                    buildTable();
+                },
+                error: function (err) {
+                    $("#error-msg").html("Ошибка при добавлении резерва");
+                    document.getElementById('add_form').reset();
+                }
             });
-            $("#add_reserve").show();
-            fillBanksSelect();
-            fillOwnerSelect();
-            fillResponsibleSelect();
-            $("#add_form").on('submit', function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: apiServer + '/reserves_add',
-                    type: 'post',
-                    headers: {'authorization': localStorage.getItem('token')},
-                    data: $("#add_form").serialize(),
-                    success: function (data) {
-                        swal("Успех", "Резерв " + $("#title").val() + " добавлен", "success");
-                        $("#error-msg").html("");
-                        document.getElementById('add_form').reset();
-                        buildTable();
-                    },
-                    error: function (err) {
-                        $("#error-msg").html("Ошибка при добавлении резерва");
-                        document.getElementById('add_form').reset();
-                    }
-                });
-            });
-        }
-        buildTable();
+        });
     });
+    buildTable();
 
     function buildTable() {
         getReserveList(function (data) {
@@ -119,7 +117,7 @@
                     '<th>Владелец</th>\n' +
                     '<th>Ответственный</th>\n' +
                     '</tr>');
-                var idNum = 0, xtraTools = "", operational_data = "", xtraClass="";
+                var idNum = 0, xtraTools = "", operational_data = "", xtraClass = "";
                 $.each(reserves, function (key, value) {
                     if (value.owner === username) {
                         xtraClass = "class=\"owner\" ";
@@ -169,41 +167,53 @@
     }
 
     function fillOwnerSelect() {
-        getAntiagentList(function (data) {
-            var select = document.getElementById('owner');
-            for (var j = select.options.length; j >= 0; j--) {
-                if (j !== select.selectedIndex) {
-                    select.remove(j);
-                } else {
-                    select.options[j].text = ".....";
-                }
+        var select = document.getElementById('owner');
+        for (var j = select.options.length; j >= 0; j--) {
+            if (j !== select.selectedIndex) {
+                select.remove(j);
+            } else {
+                select.options[j].text = ".....";
             }
-            for (var i = 0; i < data.length; i++) {
-                var opt = document.createElement("option");
-                opt.innerHTML = data[i].agentname;
-                select.appendChild(opt);
-            }
-        });
-    }
-
-    function fillResponsibleSelect() {
-        getAntiagentList(function (data) {
-            var select = document.getElementById('responsible');
-            for (var j = select.options.length; j >= 0; j--) {
-                if (j !== select.selectedIndex) {
-                    select.remove(j);
-                } else {
-                    select.options[j].text = ".....";
-                }
-            }
-            for (var i = 0; i < data.length; i++) {
-                if (data[i].internal === true) {
+        }
+        if (priv === 'admin') {
+            getAntiagentList(function (data) {
+                for (var i = 0; i < data.length; i++) {
                     var opt = document.createElement("option");
                     opt.innerHTML = data[i].agentname;
                     select.appendChild(opt);
                 }
+            });
+        } else {
+            var opt = document.createElement("option");
+            opt.innerHTML = username;
+            select.appendChild(opt);
+        }
+    }
+
+    function fillResponsibleSelect() {
+        var select = document.getElementById('responsible');
+        for (var j = select.options.length; j >= 0; j--) {
+            if (j !== select.selectedIndex) {
+                select.remove(j);
+            } else {
+                select.options[j].text = ".....";
             }
-        });
+        }
+        if (priv === 'admin') {
+            getAntiagentList(function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].internal === true) {
+                        var opt = document.createElement("option");
+                        opt.innerHTML = data[i].agentname;
+                        select.appendChild(opt);
+                    }
+                }
+            });
+        } else {
+            var opt = document.createElement("option");
+            opt.innerHTML = username;
+            select.appendChild(opt);
+        }
     }
 
     function transformValue(value) {

@@ -59,12 +59,10 @@ textarea {
 }
 
 .wrapper {
-    margin: auto;
+    margin: 30px auto;
     width: 800px;
     box-shadow: -2px 2px 0.5em rgba(0, 0, 0, 0.5);
     padding: 10px;
-    background: rgba(159, 202, 255, 0.1) url("../img/bright-squares.png") repeat;
-    background-size: 100%;
 }
 
 .button_pane table {
@@ -74,7 +72,7 @@ textarea {
 }
 
 .button_pane td {
-    text-align: center;
+    text-align: left;
     width: 140px;
     height: 45px;
 }
@@ -101,7 +99,8 @@ textarea {
     color: #555;
     font: inherit;
     line-height: 1em;
-    text-shadow: 1px 1px 1px rgba(113, 136, 140, 0.68);
+    background-color: rgba(211, 211, 211, 0.25);
+    width: min-content;
 }
 
 .button:hover {
@@ -114,12 +113,13 @@ textarea {
 
 button.quick_access {
     border-radius: 100%;
-    width: 40px;
-    height: 40px;
-    font-size: 25px;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
     background-color: rgba(170, 170, 171, 0.44);
     border: none;
     transition-duration: 0.4s;
+    margin-left: 8px;
 }
 
 button.quick_access:hover {
@@ -189,7 +189,10 @@ input[readonly] {
     background: #42B373 none !important;
     color: #ffffff !important;
 }
-
+.user_pane {
+    text-align: right;
+    font-size: 15px;
+}
 .green {
     color: #05cd00;
 }
@@ -374,7 +377,7 @@ input.validate:valid:not(:placeholder-shown) {
     display: none;
     text-indent: -100%;
     white-space: nowrap;
-    color: red;
+    color: #e41510;
     cursor: pointer;
     text-align: right;
 }
