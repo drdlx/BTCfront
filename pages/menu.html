@@ -3,6 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Главная</title>
@@ -12,7 +13,13 @@
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
 <body>
-<div class="wrapper">
+<script>
+    $(function(){
+        $("#sidebar").load("templates/sidebar.html");
+    });
+</script>
+<div id="sidebar"></div>
+<div class="wrapper col-sm-7">
     <div class="user_pane">
         Вы вошли как <span id="username"></span>, <a href="index.html">выход</a>
     </div>
@@ -27,7 +34,7 @@
                 </td>
             </tr>
             <tr>
-                <td>
+                <td class="col-md-1">
                     <a href="buy_form.html">
                         <button class="button">Покупка</button>
                     </a>
@@ -35,7 +42,7 @@
                         <button class="quick_access"><i class="fa fa-clock-o" aria-hidden="true"></i></button>
                     </a>
                 </td>
-                <td>
+                <td class="col-md-1">
                     <a href="sell_form.html">
                         <button class="button">Продажа</button>
                     </a>
@@ -43,7 +50,7 @@
                         <button class="quick_access"><i class="fa fa-clock-o" aria-hidden="true"></i></button>
                     </a>
                 </td>
-                <td>
+                <td class="col-md-1">
                     <a href="inputoutput.html">
                         <button class="button">Вывод\ввод</button>
                     </a>
@@ -58,22 +65,22 @@
                 </td>
             </tr>
             <tr>
-                <td>
+                <td class="col-md-1">
                     <a href="reserve_handbook.html">
                         <button class="button">Резервы</button>
                     </a>
                 </td>
-                <td>
+                <td class="col-md-1">
                     <a href="agent_handbook.html">
                         <button class="button">Контрагенты</button>
                     </a>
                 </td>
-                <td>
+                <td class="col-md-1">
                     <a href="bank_handbook.html">
                         <button class="button">Банки</button>
                     </a>
                 </td>
-                <td>
+                <td class="col-md-1">
                     <a href="currency_handbook.html">
                         <button class="button">Валюты</button>
                     </a>
@@ -85,12 +92,12 @@
                 </td>
             </tr>
             <tr>
-                <td>
+                <td class="col-md-1">
                     <a href="report.html">
                         <button class="button">Отчет</button>
                     </a>
                 </td>
-                <td>
+                <td class="col-md-1">
                     <a href="credit.html">
                         <button class="button">Кредиты</button>
                     </a>
@@ -102,7 +109,7 @@
                 </td>
             </tr>
             <tr class="hidden">
-                <td>
+                <td class="col-md-1">
                     <a href="registration.html">
                         <button class="button">Добавить пользователя</button>
                     </a>

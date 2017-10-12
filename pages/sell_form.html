@@ -3,18 +3,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/main.css">
     <title>Продажа</title>
     <script src="../js/vendor/jquery-3.2.1.min.js"></script>
     <script src="../js/main.js"></script>
     <script src="../js/vendor/sweetalert.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
 <body>
-<div class="wrapper">
+<script>
+    $(function(){
+        $("#sidebar").load("templates/sidebar.html");
+    });
+</script>
+<div id="sidebar"></div>
+<div class="wrapper col-sm-7">
     <div class="header">
         Продажа
     </div>

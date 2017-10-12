@@ -3,6 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Кредиты</title>
@@ -12,7 +13,13 @@
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
 <body>
-<div class="wrapper">
+<script>
+    $(function(){
+        $("#sidebar").load("templates/sidebar.html");
+    });
+</script>
+<div id="sidebar"></div>
+<div class="wrapper col-sm-7">
     <div class="header">Кредиты</div>
     <div id="notification" class="centered"></div>
     <div class="centered">
@@ -55,14 +62,24 @@
             $("#credit_table").html('<tr>\n' +
                 '<th>Заемщик</th>' +
                 '<th>Сумма долга</th>' +
-                '<th>Процент</th>' +
                 '</tr>');
-            var operational_data = "";
+            var operational_data = "", creditList = {}, currentUser = "", creditSum = 0;
+            credits.sort(function (a1, a2) {
+                return a1.debet.localeCompare(a2.debet);
+            });
             $.each(credits, function (key, value) {
+                if (value.debet === currentUser && currentUser !== "") {
+                    creditSum += value.debts;
+                } else {
+                    creditSum = value.debts;
+                }
+                currentUser = value.debet;
+                creditList[currentUser] = creditSum;
+            });
+            $.each(creditList, function (key, value) {
                 operational_data += '<tr>';
-                operational_data += '<td>' + value.debet + '</td>';
-                operational_data += '<td>' + value.debts + '</td>';
-                operational_data += '<td>' + value.percent + '</td>';
+                operational_data += '<td>' + key + '</td>';
+                operational_data += '<td>' + value + '</td>';
                 operational_data += '</tr>';
             });
             $("#credit_table").append(operational_data);
@@ -78,14 +95,21 @@
             $("#debit_table").html('<tr>\n' +
                 '<th>Кредитор</th>' +
                 '<th>Сумма долга</th>' +
-                '<th>Процент</th>' +
                 '</tr>');
-            var operational_data = "";
+            var operational_data = "", debitList = {}, currentUser = "", debitSum = 0;
             $.each(debets, function (key, value) {
+                if (value.credit === currentUser && currentUser !== "") {
+                    debitSum += value.debts;
+                } else {
+                    debitSum = value.debts;
+                }
+                currentUser = value.credit;
+                debitList[currentUser] = debitSum;
+            });
+            $.each(debitList, function (key, value) {
                 operational_data += '<tr>';
-                operational_data += '<td>' + value.credit + '</td>';
-                operational_data += '<td>' + value.debts + '</td>';
-                operational_data += '<td>' + value.percent + '</td>';
+                operational_data += '<td>' + key + '</td>';
+                operational_data += '<td>' + value + '</td>';
                 operational_data += '</tr>';
             });
             $("#debit_table").append(operational_data);

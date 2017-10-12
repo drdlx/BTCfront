@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/main.css">
     <title>История продаж</title>
@@ -12,7 +13,13 @@
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
 <body>
-<div class="wrapper">
+<script>
+    $(function(){
+        $("#sidebar").load("templates/sidebar.html");
+    });
+</script>
+<div id="sidebar"></div>
+<div class="wrapper col-sm-7">
     <div class="header">
         История операций продажи
     </div>

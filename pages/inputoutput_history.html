@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/main.css">
     <title>История переводов</title>
@@ -13,7 +14,13 @@
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
 <body>
-<div class="wrapper">
+<script>
+    $(function(){
+        $("#sidebar").load("templates/sidebar.html");
+    });
+</script>
+<div id="sidebar"></div>
+<div class="wrapper col-sm-7">
     <div class="header">
         История операций ввода\вывода
     </div>
@@ -148,10 +155,10 @@
                         operation_data += '</div></td>';
 
                         if (targetID === '#unaccepted_table') {
-                            xtraData = '<button class="accept" onclick="acceptEntry(' + rowNumber + ", \'" + source.reserve + "\')\">" +
+                            xtraData = '<div class="table_row_overlay col-md-7"><button class="accept col-md-6" onclick="acceptEntry(' + rowNumber + ", \'" + source.reserve + "\')\">" +
                                 '<i class="fa fa-chevron-down" aria-hidden="true">Подтвердить</i></button>';
-                            xtraData += '<button class="decline" onclick="declineEntry(' + rowNumber + ")\"" + '>' +
-                                '<i class="fa fa-times" aria-hidden="true">Отклонить</i></button>';
+                            xtraData += '<button class="decline col-md-6" onclick="declineEntry(' + rowNumber + ")\"" + '>' +
+                                '<i class="fa fa-times" aria-hidden="true">Отклонить</i></button></div>';
                             unacceptedID["" + rowNumber] = value._id;
                         }
                         if (targetID === '#report_table') {
@@ -210,6 +217,7 @@
                         swal("Успех", "Перевод был подтвержден", "success");
                         $("#unaccepted_table_tr" + id).detach().appendTo($("#report_table"));
                         delete unacceptedID[id];
+                        $("#report_table").show(200);
                         if (Object.keys(unacceptedID).length === 0) {
                             $("#unaccepted_table").hide(200);
                             $("#message").html("");

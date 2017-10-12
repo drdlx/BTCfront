@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="../css/main.css">
     <title>Покупка</title>
     <script src="../js/vendor/jquery-3.2.1.min.js"></script>
@@ -13,44 +14,50 @@
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
 <body>
-<div class="wrapper">
+<script>
+    $(function(){
+        $("#sidebar").load("templates/sidebar.html");
+    });
+</script>
+<div id="sidebar"></div>
+<div class="wrapper col-sm-7">
     <div class="header">
         Покупка
     </div>
     <form method="post" id="post_form">
         <div class="input_block">
-            <label for="paym">Резерв для оплаты</label>
-            <select name="paym" id="paym" required>
+            <label for="paym" class="col-md-4">Резерв для оплаты</label>
+            <select name="paym" id="paym" required class="col-md-4">
                 <option disabled selected value="" hidden>Загрузка...</option>
             </select>
         </div>
         <div class="input_block">
-            <label for="paymCrypto">Резерв зачисления</label>
-            <select name="paymCrypto" id="paymCrypto" required>
+            <label for="paymCrypto" class="col-md-4">Резерв зачисления</label>
+            <select name="paymCrypto" id="paymCrypto" required class="col-md-4">
                 <option disabled selected value="" hidden>Загрузка...</option>
             </select>
         </div>
         <div class="input_block">
-            <label for="course">Курс сделки</label>
+            <label for="course" class="col-md-4">Курс сделки</label>
             <input type="number" name="course" required id="course" step="0.01" min="0" onkeyup="reCount()"
-                   placeholder="0">
+                   placeholder="0" class="col-md-4">
         </div>
         <div class="input_block">
-            <label for="btc">Поступило</label>
+            <label for="btc" class="col-md-4">Поступило</label>
             <input type="number" name="btc" required id="btc" step="0.00000001" min="0" onkeyup="reCount()"
-                   placeholder="0.00000000">
+                   placeholder="0.00000000" class="col-md-4">
         </div>
         <div class="input_block">
-            <label for="commiss">Комиссия</label>
-            <input type="number" name="commiss" id="commiss" step="0.01" min="0" value="0" onkeyup="reCount()" required>
+            <label for="commiss" class="col-md-4">Комиссия</label>
+            <input type="number" name="commiss" id="commiss" step="0.01" min="0" value="0" onkeyup="reCount()" required class="col-md-4">
         </div>
         <div class="input_block">
             <label for="bot_commiss">Комиссия бота</label>
             <input type="number" name="bot_commiss" id="bot_commiss" readonly step="0.01" min="0" value="0">
         </div>
         <div class="input_block middle">
-            <label for="rub">Расход Р</label>
-            <input type="number" name="rub" required id="rub" step="0.01" min="0" readonly>
+            <label for="rub" class="col-md-4">Расход Р</label>
+            <input type="number" name="rub" required id="rub" step="0.01" min="0" readonly class="col-md-4">
         </div>
         <div class="info_block">
             Текущий ср. курс: <span id="avg_course"></span><span id="avg_prognosis"></span><span id="deal_finrez"

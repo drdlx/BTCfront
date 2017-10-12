@@ -14,7 +14,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<div class="wrapper">
+<script>
+    $(function(){
+        $("#sidebar").load("templates/sidebar.html");
+    });
+</script>
+<div id="sidebar"></div>
+<div class="wrapper col-sm-7">
     <div class="header">Справочник контрагентов</div>
     <div class="centered">
         <div>
@@ -26,7 +32,7 @@
     </div>
     <div id="add_agent">
         <script>$("#add_agent").hide();</script>
-        <button class="button middle" id="add_button">Добавить нового контрагента</button>
+        <button class="button middle col-md-3" id="add_button">Добавить нового контрагента</button>
         <form id="add_form" class="handbook_form">
             <div class="input_block middle">
                 <label for="agentname">Отображаемое имя</label>

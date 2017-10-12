@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+
 html {
     color: #222;
     font-size: 1em;
@@ -59,7 +60,7 @@ textarea {
 }
 
 .wrapper {
-    margin: 30px auto;
+    margin: 100px auto;
     width: 800px;
     box-shadow: -2px 2px 0.5em rgba(0, 0, 0, 0.5);
     padding: 10px;
@@ -80,9 +81,11 @@ textarea {
 .button_pane tr:nth-child(even) td {
     border-right: rgb(170, 187, 212) 2px solid;
 }
+
 .button_pane tr:nth-child(even) td:last-child {
     border: none;
 }
+
 .button_pane .menu_header td {
     text-align: left;
     font-size: 1.35em;
@@ -92,15 +95,19 @@ textarea {
     border-radius: 6%;
 }
 
+.button_pane a {
+    display: inline-block;
+}
+
 .button {
     padding: 5px;
-    min-width: 120px;
+    min-width: 100px;
     min-height: 40px;
     color: #555;
     font: inherit;
     line-height: 1em;
     background-color: rgba(211, 211, 211, 0.25);
-    width: min-content;
+    width: 100%;
 }
 
 .button:hover {
@@ -128,10 +135,12 @@ button.quick_access:hover {
     transition-duration: 0.4s;
     color: white;
 }
+
 .quick_access.unaccepted {
     background-color: red;
     color: white;
 }
+
 .exit_button {
     width: auto;
     padding: 5px 15px;
@@ -159,7 +168,7 @@ button.quick_access:hover {
     width: 47%;
     padding: 10px;
     margin-top: 7px;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(234, 234, 232, 0.5);
     border-radius: 5px;
     text-align: center;
     font-size: 1.25em;
@@ -185,14 +194,17 @@ input[readonly] {
     border-radius: 5px;
     text-align: center;
 }
+
 .date_event a {
     background: #42B373 none !important;
     color: #ffffff !important;
 }
+
 .user_pane {
     text-align: right;
     font-size: 15px;
 }
+
 .green {
     color: #05cd00;
 }
@@ -335,6 +347,7 @@ input[readonly] {
     background: rgba(216, 229, 255, 0.43);
     border-bottom: 4px solid #9ea7af;
     border-right: 1px solid #343a45;
+    border-left: 1px solid #343a45;
     font-size: 17px;
     font-weight: 100;
     padding: 7px 15px;
@@ -353,9 +366,11 @@ input[readonly] {
     text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
     border-right: 1px solid #C1C3D1;
 }
+
 .handbook_table tr.owner td {
     background: rgba(107, 218, 81, 0.31);
 }
+
 .handbook_form {
     border: 3px ridge rgba(177, 174, 144, 0.31);
     background-color: rgba(206, 206, 188, 0.17);
@@ -400,6 +415,7 @@ input.validate:valid:not(:placeholder-shown) {
     background-color: rgba(29, 29, 29, 0.11);
     width: 25%;
     transition-duration: 0.5s;
+    padding: 10px 0;
 }
 
 .transfer_participant {
@@ -411,21 +427,24 @@ input.validate:valid:not(:placeholder-shown) {
 .transfer_table tr td:nth-child(odd) {
     background-color: rgba(43, 35, 12, 0.19);
 }
+
 .transfer_table .description {
     display: block;
     max-height: 2.5em;
     font-size: 13px;
     color: rgba(0, 0, 0, 0.66);
-    padding: 2px 15px;
+    padding: 0 15px;
     overflow: hidden;
     text-align: left;
 }
+
 .transfer_table span.transfer_data {
     width: 100%;
     display: block;
     line-height: 1.5em;
     font-size: 1.2em;
 }
+
 .transfer_arrow {
     text-align: center;
     color: green;
@@ -436,6 +455,7 @@ input.validate:valid:not(:placeholder-shown) {
 .transfer_table tr td:last-child {
     width: 15%;
     text-align: center;
+    font-size: 20px;
 }
 
 #report_table tr td button.accept {
@@ -447,43 +467,107 @@ input.validate:valid:not(:placeholder-shown) {
 }
 
 #unaccepted_table tr td button.accept {
-     position: absolute;
-     display: none;
-     color: #007700;
-     cursor: pointer;
-     margin-left: auto;
-     margin-right: auto;
-     left: 60%;
-     transform: translateY(-76%);
-     padding: 10px 50px;
-     border-radius: 7px;
-     border: 2px solid #007700;
-     background-color: #c6ffb6;
-     font-size: 19px;
- }
+    position: relative;
+    display: none;
+    color: #007700;
+    cursor: pointer;
+    transform: translateY(-76%);
+    padding: 10px 50px;
+    border-radius: 7px;
+    border: 2px solid #007700;
+    background-color: #c6ffb6;
+    font-size: 19px;
+    margin-left: -100%;
+}
 
 #unaccepted_table tr td button.decline {
-    position: absolute;
+    position: relative;
     display: none;
     color: #85000b;
     cursor: pointer;
-    margin-left: auto;
-    margin-right: auto;
-    right: 60%;
     transform: translateY(-76%);
     padding: 10px 50px;
     border-radius: 7px;
     border: 2px solid #85000b;
     background-color: #ffa191;
     font-size: 19px;
+    margin-left: 25%;
 }
 
 #unaccepted_table tr:hover td button {
-    display: block;
+    display: inline-block;
     transition-duration: 0.5s;
 }
 
 #unaccepted_table tr:hover td {
     background-color: rgba(88, 88, 88, 0);
     transition-duration: 0.5s;
+}
+
+.table_row_overlay {
+    position: absolute;
+    left: 50%;
+}
+
+.sidebar {
+    position: fixed;
+    background-color: rgba(241, 242, 243, 0.22);
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-right: 1px ridge;
+    box-shadow: 1px 0 4px rgba(6, 3, 3, 0.21);
+    padding: 0;
+}
+
+option {
+    padding: 4px;
+}
+
+option.agent {
+    background-color: rgba(124, 218, 93, 0.69);
+    border-radius: 10px;
+}
+
+option.reserve {
+    background-color: rgba(156, 169, 167, 0.69);
+    border-radius: 10px;
+}
+
+button.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+button.accordion.active, button.accordion:hover {
+    background-color: #ccc;
+}
+
+.accordion_panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    list-style: none;
+    margin: 0;
+}
+
+button.accordion:after {
+    content: '\002B';
+    color: #777;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+button.accordion.active:after {
+    content: "\2212";
 }

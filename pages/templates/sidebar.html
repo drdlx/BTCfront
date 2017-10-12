@@ -1,0 +1,31 @@
+<div class="sidebar col-md-2">
+    <button class="accordion">Резервы</button>
+    <ul class="accordion_panel">
+        <li>r1</li>
+        <li>r2</li>
+    </ul>
+    <button class="accordion">Должники</button>
+    <ul class="accordion_panel">
+        <li>r1</li>
+        <li>r2</li>
+    </ul>
+    <button class="accordion">Долги</button>
+    <ul class="accordion_panel">
+        <li>r1</li>
+        <li>r2</li>
+    </ul>
+</div>
+<script>
+    var acc = document.getElementsByClassName('accordion');
+    for (var i = 0; i < acc.length; i++) {
+        acc[i].onclick = function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight){
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        }
+    }
+</script>

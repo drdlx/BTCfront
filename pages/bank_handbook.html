@@ -18,7 +18,13 @@
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
 <body>
-<div class="wrapper">
+<script>
+    $(function(){
+        $("#sidebar").load("templates/sidebar.html");
+    });
+</script>
+<div id="sidebar"></div>
+<div class="wrapper col-sm-7">
     <div class="header">Справочник банков</div>
     <div class="centered">
         <div>
@@ -30,7 +36,7 @@
     </div>
     <div id="add_bank">
         <script>$("#add_bank").hide();</script>
-        <button class="button middle" id="add_button">Добавить новый банк</button>
+        <button class="button middle col-md-3" id="add_button">Добавить новый банк</button>
         <form id="add_form" class="handbook_form">
             <div class="input_block middle">
                 <label for="bank">Наименование</label>
