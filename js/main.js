@@ -192,58 +192,30 @@ function getCredits(callback) {
     });
 }
 
-function getAvgCourse(callback) {
-    var fullList, payList = null, sellList = null;
+function getRemainders(callback) {
+    return $.ajax({
+        url: apiServer + "/remainder",
+        type: 'get',
+        headers: {'authorization': localStorage.getItem('token')},
+        success: function (data) {
+            callback(data);
+        },
+        error: function (err) {
+            callback(err.status);
+        }
+    });
+}
 
-    //pays request
-    function pays() {
-        return $.ajax({
-            url: apiServer + '/reportpay',
-            type: 'GET',
-            crossDomain: true,
-            headers: {
-                'authorization': localStorage.getItem('token')
-            },
-            data: "&last=true",
-            success: function (data) {
-                payList = data;
-                $.each(payList, function (key, value) {
-                    value.operation = 'pay'
-                });
-            }
-        });
-    }
-
-    //sells request
-    function sells() {
-        return $.ajax({
-            url: apiServer + "/reportsell",
-            crossDomain: true,
-            type: 'GET',
-            headers: {
-                'authorization': localStorage.getItem('token')
-            },
-            data: "&last=true",
-            success: function (data) {
-                sellList = data;
-                $.each(sellList, function (key, value) {
-                    value.operation = 'sell';
-                });
-            }
-        });
-    }
-    console.log("before when");
-    $.when(pays(), sells()).done(function (a1, a2) {
-        console.log("inside");
-        fullList = payList.concat(sellList);
-        fullList.sort(function (a, b) {
-            return a.date > b.date ? -1 : 1;
-        });
-        console.log(fullList);
-        if (fullList.length > 0) {
-            callback(fullList[0].average_course);
-        } else {
-            callback([]);
+function getMentorInvites(callback) {
+    return $.ajax({
+        url: apiServer + '/checkMentor',
+        type: 'get',
+        headers: {'authorization': localStorage.getItem('token')},
+        success: function (data) {
+            callback(data);
+        },
+        error: function (err) {
+            callback(err.status);
         }
     });
 }

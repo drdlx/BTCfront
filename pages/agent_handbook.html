@@ -15,7 +15,7 @@
 </head>
 <body>
 <script>
-    $(function(){
+    $(function () {
         $("#sidebar").load("templates/sidebar.html");
     });
 </script>
@@ -121,7 +121,7 @@
                     '<th>E-mail</th>\n' +
                     '</tr>');
                 var idNum = 0;
-                var xtraTools = "";
+                var removeButton = "", addStudentButton = "";
                 var operational_data = "";
                 $.each(agents, function (key, value) {
                     operational_data += '<tr id="tr' + idNum + "\">";
@@ -134,13 +134,20 @@
                     operational_data += '<td>' + transformValue(value.call) + '</td>';
 
                     if (priv === 'admin' && value.internal === false) {
-                        xtraTools = '<a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
+                        removeButton = ' <a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
                             '<i class="fa fa-times" aria-hidden="true"></i></a>';
                     } else {
-                        xtraTools = "";
+                        removeButton = "";
                     }
 
-                    operational_data += '<td>' + transformValue(value.mail) + xtraTools + '</td>';
+                    if (value.internal === true && value.agentname !== username) {
+                        addStudentButton = ' <a class="mentor" onclick="invite(' + "'" + value.agentname + "'" + ")\"" + '">' +
+                            '<i class="fa fa-graduation-cap" aria-hidden="true"></i></a>';
+                    } else {
+                        addStudentButton = "";
+                    }
+
+                    operational_data += '<td>' + transformValue(value.mail) + addStudentButton + removeButton + '</td>';
                     operational_data += '</tr>';
 
                     idNum++;
@@ -152,11 +159,10 @@
     }
 
     function transformValue(value) {
-        return ((value != null) && (value !="")) ? value : '-';
+        return ((value != null) && (value != "")) ? value : '-';
     }
 
     function removeEntry(id) {
-        console.log("clicked on row #" + id);
         swal({
             title: "Удаление",
             text: "Вы действительно хотите удалить запись " + document.getElementById("td" + id).innerHTML + "?",
@@ -179,6 +185,40 @@
                             swal("Ошибка при удалении записи", {icon: "warning"});
                         }
                     });
+                }
+            });
+    }
+
+    function invite(student) {
+        swal({
+            title: "Приглашение",
+            text: "Пригласить " + student + " стать вашим студентом?\n Укажите процент и валюту через пробел (5 RUB):",
+            icon: "warning",
+            content: "input",
+            buttons: true,
+            dangerMode: true
+        })
+            .then(function (isPressed) {
+                if (isPressed) {
+                    var parsed = isPressed.split(" ");
+                    if ($.isNumeric(parsed[0]) && parsed[1].length === 3) {
+                        $.ajax({
+                            url: apiServer + '/addMentor',
+                            type: 'post',
+                            headers: {'authorization': token},
+                            data: "&student=" + student + "&percent=" + parsed[0] + "&currency=" + parsed[1],
+                            success: function (data) {
+                                swal("Пользователь приглашен", {icon: "success"});
+                            },
+                            error: function (err) {
+                                swal("Ошибка при приглашении", {icon: "warning"});
+                            }
+                        });
+                    } else {
+                        return null;
+                    }
+                } else {
+                    return null;
                 }
             });
     }

@@ -1,31 +1,144 @@
 <div class="sidebar col-md-2">
-    <button class="accordion">Резервы</button>
-    <ul class="accordion_panel">
-        <li>r1</li>
-        <li>r2</li>
+    <button class="accordion">Резервы <img id="reserves_loader" src="../img/loader.gif" width="22px"></button>
+    <ul class="accordion_panel" id="reserves">
     </ul>
-    <button class="accordion">Должники</button>
-    <ul class="accordion_panel">
-        <li>r1</li>
-        <li>r2</li>
+    <button class="accordion">Должники <img id="credit_loader" src="../img/loader.gif" width="22px"></button>
+    <ul class="accordion_panel" id="credits">
     </ul>
-    <button class="accordion">Долги</button>
-    <ul class="accordion_panel">
-        <li>r1</li>
-        <li>r2</li>
+    <button class="accordion">Долги <img id="debit_loader" src="../img/loader.gif" width="22px"></button>
+    <ul class="accordion_panel" id="debits">
     </ul>
+    <div class="hidden" id="mentor_invites">
+        <button class="accordion">Приглашения</button>
+        <ul class="accordion_panel" id="mentor">
+        </ul>
+    </div>
 </div>
 <script>
+    var credits = [], debets = [], reserves = [], mentorInvites = [];
+
     var acc = document.getElementsByClassName('accordion');
     for (var i = 0; i < acc.length; i++) {
-        acc[i].onclick = function() {
+        acc[i].onclick = function () {
             this.classList.toggle("active");
             var panel = this.nextElementSibling;
-            if (panel.style.maxHeight){
+            if (panel.style.maxHeight) {
                 panel.style.maxHeight = null;
             } else {
                 panel.style.maxHeight = panel.scrollHeight + "px";
             }
         }
+    }
+
+    getCredits(function (data) {
+        $.each(data.credit, function (key, value) {
+            credits.push(value);
+        });
+        $.each(data.debet, function (key, value) {
+            debets.push(value);
+        });
+        buildCreditTab();
+        buildDebitTab();
+    });
+
+    getRemainders(function (data) {
+        $.each(data, function (key, value) {
+            reserves.push(value);
+        });
+        buildRemainderTab();
+    });
+
+    getMentorInvites(function (data) {
+        $.each(data, function(key, value) {
+            mentorInvites.push(value);
+        });
+        console.log(mentorInvites);
+        buildMentorInvitesTab();
+    });
+
+    function buildMentorInvitesTab() {
+        if (mentorInvites.length !== 0) {
+            $("#mentor").html('');
+            var operational_data = "";
+            $.each(mentorInvites, function (key, value) {
+                operational_data += '<li>';
+                operational_data += 'test';
+                operational_data += '</li>';
+            });
+            $("#mentor").append(operational_data);
+            $("#mentor_invites").show();
+        }
+    }
+
+    function buildRemainderTab() {
+        if (debets.length !== 0) {
+            $("#reserves").html('');
+            var operational_data = "";
+            $.each(reserves, function (key, value) {
+                operational_data += '<li>';
+                operational_data += value.title + ': ' + value.remainder + ' ' + value.currency;
+                operational_data += '</li>';
+            });
+            $("#reserves").append(operational_data);
+        } else {
+            $("#reserves").html('<li>Нет резервов</li>');
+        }
+        $("#reserves_loader").hide();
+    }
+
+    function buildCreditTab() {
+        if (credits.length !== 0) {
+            $("#credits").html('');
+            var operational_data = "", creditList = {}, currentUser = "", creditSum = 0;
+            credits.sort(function (a1, a2) {
+                return a1.debet.localeCompare(a2.debet);
+            });
+            $.each(credits, function (key, value) {
+                if (value.debet === currentUser && currentUser !== "") {
+                    creditSum += value.debts;
+                } else {
+                    creditSum = value.debts;
+                }
+                currentUser = value.debet;
+                creditList[currentUser] = creditSum;
+            });
+            $.each(creditList, function (key, value) {
+                operational_data += '<li>';
+                operational_data += key + ' - ' + value;
+                operational_data += '</li>';
+            });
+            $("#credits").append(operational_data);
+        } else {
+            $("#credits").html('<li>Нет должников</li>');
+        }
+        $("#credit_loader").hide();
+    }
+
+    function buildDebitTab() {
+        if (debets.length !== 0) {
+            $("#debits").html('');
+            var operational_data = "", debitList = {}, currentUser = "", debitSum = 0;
+            debets.sort(function (a1, a2) {
+                return a1.credit.localeCompare(a2.credit);
+            });
+            $.each(credits, function (key, value) {
+                if (value.credit === currentUser && currentUser !== "") {
+                    debitSum += value.debts;
+                } else {
+                    debitSum = value.debts;
+                }
+                currentUser = value.credit;
+                debitList[currentUser] = debitSum;
+            });
+            $.each(debitList, function (key, value) {
+                operational_data += '<li>';
+                operational_data += key + ' - ' + value;
+                operational_data += '</li>';
+            });
+            $("#debits").append(operational_data);
+        } else {
+            $("#debits").html('<li>Нет долгов</li>');
+        }
+        $("#debit_loader").hide();
     }
 </script>

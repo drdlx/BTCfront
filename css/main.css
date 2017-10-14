@@ -367,6 +367,9 @@ input[readonly] {
     border-right: 1px solid #C1C3D1;
 }
 
+.handbook_table td:first-child {
+    border-left: 1px solid #C1C3D1;
+}
 .handbook_table tr.owner td {
     background: rgba(107, 218, 81, 0.31);
 }
@@ -388,16 +391,30 @@ input.validate:valid:not(:placeholder-shown) {
 
 .handbook_table tr td a.delete_button {
     position: relative;
-    float: right;
     display: none;
     text-indent: -100%;
-    white-space: nowrap;
-    color: #e41510;
     cursor: pointer;
-    text-align: right;
+    font-size: 20px;
+    right: -100%;
+    line-height: 15px;
+    color: #e41510;
 }
 
 .handbook_table tr:hover td a.delete_button {
+    display: inline-block;
+}
+
+.handbook_table tr td a.mentor {
+    position: relative;
+    display: none;
+    text-indent: -100%;
+    cursor: pointer;
+    font-size: 20px;
+    right: -100%;
+    line-height: 15px;
+}
+
+.handbook_table tr:hover td a.mentor {
     display: inline-block;
 }
 
