@@ -14,6 +14,7 @@ input::-webkit-inner-spin-button {
 
 body {
     font-family: 'Source Sans Pro', sans-serif;
+    background-color: snow;
 }
 
 a {
@@ -64,6 +65,7 @@ textarea {
     width: 800px;
     box-shadow: -2px 2px 0.5em rgba(0, 0, 0, 0.5);
     padding: 10px;
+    background-color: white;
 }
 
 .button_pane table {
@@ -212,7 +214,18 @@ input[readonly] {
 .red {
     color: #cd3100;
 }
-
+.align_left {
+    text-align: left;
+    padding: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+.align_right {
+    text-align: right;
+    padding: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
 .report_table {
     background: white;
     border-radius: 3px;
@@ -316,9 +329,6 @@ input[readonly] {
     border-top: 1px solid #22262e;
 }
 
-.handbook_table {
-
-}
 
 .preload {
     display: none;
@@ -370,10 +380,28 @@ input[readonly] {
 .handbook_table td:first-child {
     border-left: 1px solid #C1C3D1;
 }
+
 .handbook_table tr.owner td {
     background: rgba(107, 218, 81, 0.31);
 }
 
+.handbook_table tr.mentor td {
+    background: rgba(0, 27, 218, 0.38);
+}
+
+.handbook_table tr.student td {
+    background: rgba(125, 163, 218, 0.31);
+}
+.handbook_table tr.mentor:hover:after {
+    content: "ваш наставник";
+    position: absolute;
+    vertical-align: middle;
+}
+.handbook_table tr.student:hover:after {
+    content: "ваш ученик";
+    position: absolute;
+    vertical-align: middle;
+}
 .handbook_form {
     border: 3px ridge rgba(177, 174, 144, 0.31);
     background-color: rgba(206, 206, 188, 0.17);
@@ -390,32 +418,30 @@ input.validate:valid:not(:placeholder-shown) {
 }
 
 .handbook_table tr td a.delete_button {
-    position: relative;
-    display: none;
-    text-indent: -100%;
+    visibility: hidden;
+    position: absolute;
     cursor: pointer;
     font-size: 20px;
-    right: -100%;
     line-height: 15px;
     color: #e41510;
+    margin-left: 10px;
 }
 
 .handbook_table tr:hover td a.delete_button {
-    display: inline-block;
+    visibility: visible;
 }
 
 .handbook_table tr td a.mentor {
-    position: relative;
-    display: none;
-    text-indent: -100%;
+    position: absolute;
+    visibility: hidden;
     cursor: pointer;
     font-size: 20px;
-    right: -100%;
     line-height: 15px;
+    margin-left: 10px;
 }
 
 .handbook_table tr:hover td a.mentor {
-    display: inline-block;
+    visibility: visible;
 }
 
 .transfer_table {
@@ -552,8 +578,8 @@ option.reserve {
 }
 
 button.accordion {
-    background-color: #eee;
-    color: #444;
+    background-color: #d0e4f5;
+    color: rgb(35, 35, 35);
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -561,14 +587,20 @@ button.accordion {
     border: none;
     outline: none;
     transition: 0.4s;
+    font-weight: 800;
+    border-bottom: 1px solid rgba(72, 72, 72, 0.15);
 }
 
-button.accordion.active, button.accordion:hover {
-    background-color: #ccc;
+button.accordion.active {
+    background-color: #6582b5;
+}
+
+button.accordion:hover {
+    background-color: rgba(161, 195, 224, 0.73);
 }
 
 .accordion_panel {
-    padding: 0 18px;
+    padding: 0;
     background-color: white;
     max-height: 0;
     overflow: hidden;
@@ -577,9 +609,15 @@ button.accordion.active, button.accordion:hover {
     margin: 0;
 }
 
+#sidebar_block {
+    overflow: hidden;
+    transition: max-width 0.2s ease-out;
+    background-color: white;
+}
+
 button.accordion:after {
     content: '\002B';
-    color: #777;
+    color: black;
     font-weight: bold;
     float: right;
     margin-left: 5px;
@@ -588,3 +626,42 @@ button.accordion:after {
 button.accordion.active:after {
     content: "\2212";
 }
+
+#sidebar_minimize {
+    position: fixed;
+    z-index: 10;
+    left: 11%;
+    top: 0.5em;
+    transition: 0.2s;
+    font-size: 35px;
+    border: none;
+    padding: 5px 15px;
+    background-color: #d0e4f5;
+    cursor: pointer;
+}
+
+#sidebar_minimize.active {
+    left: 1%;
+}
+
+.sidebar_lists {
+    margin-top: 5em;
+}
+
+.accordion_panel li {
+    padding: 10px;
+    background-color: whitesmoke;
+}
+
+#mentor_invites li {
+    line-height: 1em;
+    text-indent: 1em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.33);
+}
+
+#mentor_invites li i {
+    font-size: 20px;
+    cursor: pointer;
+    vertical-align: sub;
+}
+

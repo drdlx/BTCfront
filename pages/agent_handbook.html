@@ -73,7 +73,12 @@
 </body>
 </html>
 <script>
+    var mentorList = [], studentList = [];
     $(document).ready(function () {
+        getMentorList(function (data) {
+            mentorList = data.mentors;
+            studentList = data.students;
+        });
         if (localStorage.getItem('permission') === 'admin') {
             $("#add_form").hide();
             $("#add_button").click(function () {
@@ -124,7 +129,19 @@
                 var removeButton = "", addStudentButton = "";
                 var operational_data = "";
                 $.each(agents, function (key, value) {
-                    operational_data += '<tr id="tr' + idNum + "\">";
+                    var isMentor = mentorList.find(function (a) {
+                        return a.mentor === value.agentname
+                    }) !== undefined,
+                    isStudent = studentList.find(function (a) {
+                        return a.student === value.agentname
+                    }) !== undefined,
+                    className = "";
+                    if (isMentor) {
+                        className = "mentor"
+                    } else if (isStudent) {
+                        className = "student"
+                    }
+                    operational_data += '<tr id="tr' + idNum + "\" class='" + className + "'>";
                     operational_data += '<td id="td' + idNum + "\">" + value.agentname + '</td>';
 
                     var internalStr = ((value.internal === true) ? 'Да' : 'Нет');
@@ -140,7 +157,7 @@
                         removeButton = "";
                     }
 
-                    if (value.internal === true && value.agentname !== username) {
+                    if (value.internal === true && value.agentname !== username && !isMentor && !isStudent) {
                         addStudentButton = ' <a class="mentor" onclick="invite(' + "'" + value.agentname + "'" + ")\"" + '">' +
                             '<i class="fa fa-graduation-cap" aria-hidden="true"></i></a>';
                     } else {

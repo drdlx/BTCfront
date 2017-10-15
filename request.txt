@@ -1,0 +1,51 @@
+﻿'/auth' - аутентификация
+
+/createNewUser'-создание нового юзера(админ)
+'
+_______________________________________
+'/pay'- добавдение покупки
+ skip=0 limit=0 last=true
+/reportpay'- отчет о покупках
+'
+_______________________________________
+'/sell'- добавление продажи
+' skip=0 limit=0 last=true
+/reportsell'-отчет о продажах
+'
+_______________________________________
+/translate - ввод\вывод fulfilled=true\false
+'/reporttranslate' переводы
+/checktranslate  вернет тебе висящие  переводы на данного юзера
+/confirmation fulfilled=true\false выполнять при подтверждении перевода
+_______________________________________
+/reportfull'- полный отчет по рублевым резервам
+'
+/reportfullBTC'-полный отчет по резервам битков
+'
+/reportcredit - кредиты
+_______________________________________
+получение справочников
+'/currency'
+'/banks'
+'/anti_agent'
+'/reserves'
+_______________________________________
+а это для добавления(post):
+/createNP'- добаление нового резерва (админ)
+'
+'/currency_add'
+'/banks_add'
+'/anti_agent_add'
+'/reserves_add'
+_______________________________________
+так вот запросы на удаление
+/currency_del' currency
+/banks_del' bank
+/anti_agent_del' agentname
+/reserves_del' title
+_______________________________________
+Наставники
+/checkMentor
+/addMentor student, percent
+/consent status=true/false
+ /listMentor

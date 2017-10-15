@@ -220,6 +220,20 @@ function getMentorInvites(callback) {
     });
 }
 
+function getMentorList(callback) {
+    return $.ajax({
+        url: apiServer + "/listMentor",
+        type: 'get',
+        headers: {'authorization' : localStorage.getItem('token')},
+        success: function (data) {
+            callback(data);
+        },
+        error: function (err) {
+            callback(err.status);
+        }
+    });
+}
+
 function getGlobalStatsFull(callback) {
     var fullList, payList = null, sellList = null;
 

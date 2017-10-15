@@ -1,22 +1,26 @@
-<div class="sidebar col-md-2">
-    <button class="accordion">Резервы <img id="reserves_loader" src="../img/loader.gif" width="22px"></button>
-    <ul class="accordion_panel" id="reserves">
-    </ul>
-    <button class="accordion">Должники <img id="credit_loader" src="../img/loader.gif" width="22px"></button>
-    <ul class="accordion_panel" id="credits">
-    </ul>
-    <button class="accordion">Долги <img id="debit_loader" src="../img/loader.gif" width="22px"></button>
-    <ul class="accordion_panel" id="debits">
-    </ul>
-    <div class="hidden" id="mentor_invites">
-        <button class="accordion">Приглашения</button>
-        <ul class="accordion_panel" id="mentor">
+<button id="sidebar_minimize"><i class="fa fa-th-list" aria-hidden="true"></i></button>
+<div class="sidebar col-md-2" id="sidebar_block">
+    <div class="sidebar_lists">
+        <button class="accordion">Резервы <img id="reserves_loader" src="../img/loader.gif" width="22px"></button>
+        <ul class="accordion_panel" id="reserves">
         </ul>
+        <button class="accordion">Должники <img id="credit_loader" src="../img/loader.gif" width="22px"></button>
+        <ul class="accordion_panel" id="credits">
+        </ul>
+        <button class="accordion">Долги <img id="debit_loader" src="../img/loader.gif" width="22px"></button>
+        <ul class="accordion_panel" id="debits">
+        </ul>
+        <div class="hidden" id="mentor_invites">
+            <button class="accordion" id="mentor_button">Приглашения</button>
+            <ul class="accordion_panel" id="mentor">
+            </ul>
+        </div>
     </div>
 </div>
 <script>
-    var credits = [], debets = [], reserves = [], mentorInvites = [];
+    var creditsSidebar = [], debetsSidebar = [], reservesRemainders = [], mentorInvites = [], mentorsId = {}, currenciesSidebar = [];
 
+    //accordion lists toggle
     var acc = document.getElementsByClassName('accordion');
     for (var i = 0; i < acc.length; i++) {
         acc[i].onclick = function () {
@@ -30,53 +34,84 @@
         }
     }
 
+    //minimize button toggle
+    document.getElementById('sidebar_minimize').onclick = function () {
+        this.classList.toggle("active");
+        var sidebar = document.getElementById('sidebar_block');
+        if (sidebar.style.maxWidth) {
+            sidebar.style.maxWidth = null;
+            localStorage.setItem('sidebar_minimize', 'false')
+        } else {
+            sidebar.style.maxWidth = 0 + "px";
+            localStorage.setItem('sidebar_minimize', 'true')
+        }
+    };
+    if (localStorage.getItem('sidebar_minimize') === 'true') {
+        $("#sidebar_minimize").click();
+    }
+
     getCredits(function (data) {
         $.each(data.credit, function (key, value) {
-            credits.push(value);
+            creditsSidebar.push(value);
         });
         $.each(data.debet, function (key, value) {
-            debets.push(value);
+            debetsSidebar.push(value);
         });
         buildCreditTab();
         buildDebitTab();
     });
 
-    getRemainders(function (data) {
+    var q1 = getRemainders(function (data) {
         $.each(data, function (key, value) {
-            reserves.push(value);
+            reservesRemainders.push(value);
         });
+    });
+
+    var q2 = getCurrencyList(function (data) {
+        currenciesSidebar = data;
+    });
+
+    $.when(q1, q2).done(function () {
         buildRemainderTab();
     });
 
     getMentorInvites(function (data) {
-        $.each(data, function(key, value) {
+        $.each(data, function (key, value) {
             mentorInvites.push(value);
         });
-        console.log(mentorInvites);
         buildMentorInvitesTab();
     });
 
     function buildMentorInvitesTab() {
         if (mentorInvites.length !== 0) {
             $("#mentor").html('');
-            var operational_data = "";
+            var operational_data = "", rowCount = 0;
             $.each(mentorInvites, function (key, value) {
-                operational_data += '<li>';
-                operational_data += 'test';
+                rowCount++;
+                mentorsId[rowCount] = value;
+                operational_data += '<li id="listedInvite' + rowCount + '">';
+                operational_data += value.mentor + ' приглашает вас стать его учеником, ' + value.percent + "% от финреза в " + value.currency;
+                operational_data += ' <a class="sidebar_icon green" onclick="replyToMentorInvite(' + rowCount + ', true' + ')"><i class="fa fa-check" aria-hidden="true"></i></a>';
+                operational_data += ' <a class="sidebar_icon red" onclick="replyToMentorInvite(' + rowCount + ', false' + ')"><i class="fa fa-ban" aria-hidden="true"></i></a>';
                 operational_data += '</li>';
             });
+            $("#mentor_button").html("Приглашения (" + mentorInvites.length + ")");
             $("#mentor").append(operational_data);
             $("#mentor_invites").show();
         }
     }
 
     function buildRemainderTab() {
-        if (debets.length !== 0) {
+        if (reservesRemainders.length !== 0) {
             $("#reserves").html('');
-            var operational_data = "";
-            $.each(reserves, function (key, value) {
+            var operational_data = "", numberLimiter = 2;
+            $.each(reservesRemainders, function (key, value) {
                 operational_data += '<li>';
-                operational_data += value.title + ': ' + value.remainder + ' ' + value.currency;
+                numberLimiter = (currenciesSidebar.find(function (a) {
+                    return a.currency === value.currency
+                }).isCrypto === 'true') ? 8 : 2;
+                operational_data += "<span class='align_left col-md-5'>" + value.title + ':</span><span class="align_right col-md-7">' +
+                    value.remainder.toFixed(numberLimiter) + ' ' + value.currency + "</span>";
                 operational_data += '</li>';
             });
             $("#reserves").append(operational_data);
@@ -87,13 +122,13 @@
     }
 
     function buildCreditTab() {
-        if (credits.length !== 0) {
+        if (creditsSidebar.length !== 0) {
             $("#credits").html('');
             var operational_data = "", creditList = {}, currentUser = "", creditSum = 0;
-            credits.sort(function (a1, a2) {
+            creditsSidebar.sort(function (a1, a2) {
                 return a1.debet.localeCompare(a2.debet);
             });
-            $.each(credits, function (key, value) {
+            $.each(creditsSidebar, function (key, value) {
                 if (value.debet === currentUser && currentUser !== "") {
                     creditSum += value.debts;
                 } else {
@@ -104,7 +139,7 @@
             });
             $.each(creditList, function (key, value) {
                 operational_data += '<li>';
-                operational_data += key + ' - ' + value;
+                operational_data += '<span class=\'align_left col-md-5\'>' + key + '</span><span class=\'align_right col-md-7\'> ' + value.toFixed(2) + '</span>';
                 operational_data += '</li>';
             });
             $("#credits").append(operational_data);
@@ -115,13 +150,13 @@
     }
 
     function buildDebitTab() {
-        if (debets.length !== 0) {
+        if (debetsSidebar.length !== 0) {
             $("#debits").html('');
             var operational_data = "", debitList = {}, currentUser = "", debitSum = 0;
-            debets.sort(function (a1, a2) {
+            debetsSidebar.sort(function (a1, a2) {
                 return a1.credit.localeCompare(a2.credit);
             });
-            $.each(credits, function (key, value) {
+            $.each(debetsSidebar, function (key, value) {
                 if (value.credit === currentUser && currentUser !== "") {
                     debitSum += value.debts;
                 } else {
@@ -132,7 +167,7 @@
             });
             $.each(debitList, function (key, value) {
                 operational_data += '<li>';
-                operational_data += key + ' - ' + value;
+                operational_data += '<span class=\'align_left col-md-5\'>' + key + '</span><span class=\'align_right col-md-7\'> ' + value.toFixed(2) + "</span>";
                 operational_data += '</li>';
             });
             $("#debits").append(operational_data);
@@ -140,5 +175,34 @@
             $("#debits").html('<li>Нет долгов</li>');
         }
         $("#debit_loader").hide();
+    }
+
+    function replyToMentorInvite(id, reply) {
+        var replyText = (reply === true) ? "стать" : "отказаться быть";
+        swal({
+            title: "Подтверждение",
+            text: "Вы уверены, что хотите " + replyText + " учеником " + mentorsId[id].mentor + "?",
+            buttons: true,
+            icon: "warning"
+        }).then(function (isPressed) {
+            if (isPressed) {
+                $.ajax({
+                    url: apiServer + '/consent',
+                    type: 'post',
+                    headers: {'authorization': token},
+                    data: "&status=" + reply,
+                    success: function (data) {
+                        swal("Успех", "Операция проведена успешно", "success");
+                        delete mentorInvites[id];
+                        var buttonString = (Object.keys(mentorInvites).length > 0) ? "(" + Object.keys(mentorInvites).length + ")" : "";
+                        $("#mentor_button").html("Приглашения " + buttonString);
+                        $("#listedInvite" + id).hide(400);
+                    },
+                    error: function (err) {
+                        swal("Ошибка " + err.status, "Что-то пошло не так", "error");
+                    }
+                });
+            }
+        });
     }
 </script>
