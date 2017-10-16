@@ -20,6 +20,7 @@
 <script>
     var creditsSidebar = [], debetsSidebar = [], reservesRemainders = [], mentorInvites = [], mentorsId = {}, currenciesSidebar = [];
 
+    buildCachedTabs();
     //accordion lists toggle
     var acc = document.getElementsByClassName('accordion');
     for (var i = 0; i < acc.length; i++) {
@@ -28,9 +29,15 @@
             var panel = this.nextElementSibling;
             if (panel.style.maxHeight) {
                 panel.style.maxHeight = null;
+                sessionStorage.setItem('headerPanel' + panel.id, 'false');
             } else {
                 panel.style.maxHeight = panel.scrollHeight + "px";
+                sessionStorage.setItem('headerPanel' + panel.id, 'true');
             }
+        };
+        console.log(sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id));
+        if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
+            $(acc[i]).click();
         }
     }
 
@@ -118,6 +125,7 @@
         } else {
             $("#reserves").html('<li>Нет резервов</li>');
         }
+        sessionStorage.setItem('sidebarReserves', $("#reserves").html());
         $("#reserves_loader").hide();
     }
 
@@ -146,6 +154,7 @@
         } else {
             $("#credits").html('<li>Нет должников</li>');
         }
+        sessionStorage.setItem('sidebarCredits', $("#credits").html());
         $("#credit_loader").hide();
     }
 
@@ -174,7 +183,23 @@
         } else {
             $("#debits").html('<li>Нет долгов</li>');
         }
+        sessionStorage.setItem('sidebarDebits', $("#debits").html());
         $("#debit_loader").hide();
+    }
+    
+    function buildCachedTabs() {
+        if (sessionStorage.getItem('sidebarReserves') !== null) {
+            $("#reserves").html(sessionStorage.getItem('sidebarReserves'));
+            $("#reserves_loader").hide();
+        }
+        if (sessionStorage.getItem('sidebarCredits') !== null) {
+            $("#credits").html(sessionStorage.getItem('sidebarCredits'));
+            $("#credit_loader").hide();
+        }
+        if (sessionStorage.getItem('sidebarDebits') !== null) {
+            $("#debits").html(sessionStorage.getItem('sidebarDebits'));
+            $("#debit_loader").hide();
+        }
     }
 
     function replyToMentorInvite(id, reply) {
