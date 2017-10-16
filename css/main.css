@@ -196,7 +196,9 @@ button.quick_access:hover {
     text-align: center;
     font-size: 0.95em;
 }
-
+.info_block p {
+    margin: 0;
+}
 input[readonly] {
     background-color: rgba(246, 255, 206, 0.36);
     border: rgba(125, 96, 19, 0.3) outset 2px;
@@ -207,11 +209,6 @@ input[readonly] {
 .date_event a {
     background: #42B373 none !important;
     color: #ffffff !important;
-}
-
-.user_pane {
-    text-align: right;
-    font-size: 15px;
 }
 
 .green {
@@ -245,8 +242,8 @@ input[readonly] {
 }
 
 .report_table th {
-    color: #D5DDE5;
-    background: #1b1e24;
+    color: var(--color-five);
+    background: var(--color-four);
     border-bottom: 4px solid #9ea7af;
     border-right: 1px solid #343a45;
     font-size: 19px;
@@ -285,7 +282,7 @@ input[readonly] {
 }
 
 .report_table tr:nth-child(odd) td {
-    background: #EBEBEB;
+    background: var(--color-five);
 }
 
 .report_table tr:last-child td:first-child {
@@ -361,7 +358,7 @@ input[readonly] {
 
 .handbook_table th {
     color: rgba(22, 51, 80, 0.87);
-    background: rgba(216, 229, 255, 0.43);
+    background: var(--color-one);
     border-bottom: 4px solid #9ea7af;
     border-right: 1px solid #343a45;
     border-left: 1px solid #343a45;
@@ -720,4 +717,33 @@ button.accordion.active:after {
     text-decoration: underline;
     color: var(--color-one);
     margin-left: 0.3em;
+}
+.user_dropdown {
+    display: none;
+    position: absolute;
+    min-width: 150px;
+    background-color: var(--color-two);
+    z-index: 115;
+    box-shadow: -1px 1px 4px var(--color-three);
+    margin-left: 3em;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.user_dropdown:hover {
+    background-color: var(--color-one);
+}
+
+.user_dropdown a {
+    color: var(--color-three);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: 0.2s;
+}
+.user-icon {
+    cursor: pointer;
+}
+.user-icon:hover .user_dropdown {
+    display: block;
 }

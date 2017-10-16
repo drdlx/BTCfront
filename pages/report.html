@@ -56,31 +56,6 @@
     </table>
     <div class="centered" id="loading"><img src="../img/loader.gif"></div>
     <br/>
-    <div class="info_block">
-        <p>
-            Сред. курс BTC: <span class="green" id="avg"></span>
-            Общий финрез: <span class="green" id="finrez"></span>
-            Всего Р: <span class="green" id="rub"></span>
-            Всего BTC: <span class="green" id="btc"></span>
-            <script>
-                getGlobalStatsFull(function (data) {
-                    document.getElementById('avg').innerHTML = data.avgCourse;
-                    document.getElementById('finrez').innerHTML = data.totalFinrez;
-                    document.getElementById('rub').innerHTML = data.totalRub;
-                    document.getElementById('btc').innerHTML = data.totalBtc;
-                    if (data.totalFinrez < 0) {
-                        document.getElementById('finrez').setAttribute('class', 'red');
-                    }
-                    if (data.totalRub < 0) {
-                        document.getElementById('rub').setAttribute('class', 'red');
-                    }
-                    if (data.totalBtc < 0) {
-                        document.getElementById('btc').setAttribute('class', 'red');
-                    }
-                });
-            </script>
-        </p>
-    </div>
     <div>
         <a href="menu.html">
             <button class="button exit_button">В меню</button>

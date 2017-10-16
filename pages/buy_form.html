@@ -15,7 +15,7 @@
 </head>
 <body>
 <script>
-    $(function(){
+    $(function () {
         $("#sidebar").load("templates/sidebar.html");
         $("#header").load("templates/header.html");
     });
@@ -51,7 +51,8 @@
         </div>
         <div class="input_block">
             <label for="commiss" class="col-md-4">Комиссия</label>
-            <input type="number" name="commiss" id="commiss" step="0.01" min="0" value="0" onkeyup="reCount()" required class="col-md-4">
+            <input type="number" name="commiss" id="commiss" step="0.01" min="0" value="0" onkeyup="reCount()" required
+                   class="col-md-4">
         </div>
         <div class="input_block">
             <label for="bot_commiss">Комиссия бота</label>
@@ -81,23 +82,25 @@
 </body>
 </html>
 <script>
-    var avg, delayTimer, spentTotal, boughtTotal, xtraData;
+    var avgCourse, delayTimer, spentTotal, boughtTotal, xtraData;
 
     $(document).ready(function () {
-        getFullPaymentData(function (data) {
+        var r1 = getFullPaymentData(function (data) {
             document.getElementById('avg_course').innerHTML = data.avg;
-            avg = parseFloat(data.avg);
+            avgCourse = parseFloat(data.avg);
             spentTotal = parseFloat(data.rub);
             boughtTotal = parseFloat(data.btc);
         });
         var currencies;
-        getCurrencyList(function (data) {
-           currencies = data;
+        var r2 = getCurrencyList(function (data) {
+            currencies = data;
         });
-
-        var rubAccounts =[], btcAccounts = [];
-        getReserveList(function (data) {
-            $.each(data, function (key, value) {
+        var rubAccounts = [], btcAccounts = [], reservesBuy = [];
+        var r3 = getReserveList(function (data) {
+            reservesBuy = data;
+        });
+        $.when(r1, r2, r3).done(function () {
+            $.each(reservesBuy, function (key, value) {
                 if (value.responsible === username) {
                     var currency = value.currency;
                     $.each(currencies, function (key1, value1) {
@@ -111,39 +114,38 @@
                     })
                 }
             });
-
             fillSelectFromArray(document.getElementById('paym'), rubAccounts);
             fillSelectFromArray(document.getElementById('paymCrypto'), btcAccounts);
         });
+    });
 
 
-        $("#post_form").on('submit', function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: apiServer + '/pay',
-                headers: {
-                    'authorization': localStorage.getItem('token')
-                },
-                type: 'post',
-                crossDomain: true,
-                data: $("#post_form").serialize() + xtraData,
-                success: function () {
-                    document.getElementById('post_form').reset();
-                    getFullPaymentData(function (data) {
-                        document.getElementById('avg_course').innerHTML = data.avg;
-                        avg = parseFloat(data.avg);
-                        spentTotal = parseFloat(data.rub);
-                        boughtTotal = parseFloat(data.btc);
-                    });
-                    document.getElementById('avg_prognosis').innerHTML = "";
-                    document.getElementById('deal_finrez').innerHTML = '';
-                    $("#submit_button").prop("disabled", true);
-                    swal("Успех", "Запись была добавлена", "success");
-                },
-                error: function (err) {
-                    swal("Упс", "Что-то пошло не так", "error");
-                }
-            });
+    $("#post_form").on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: apiServer + '/pay',
+            headers: {
+                'authorization': localStorage.getItem('token')
+            },
+            type: 'post',
+            crossDomain: true,
+            data: $("#post_form").serialize() + xtraData,
+            success: function () {
+                document.getElementById('post_form').reset();
+                getFullPaymentData(function (data) {
+                    document.getElementById('avg_course').innerHTML = data.avg;
+                    avgCourse = parseFloat(data.avg);
+                    spentTotal = parseFloat(data.rub);
+                    boughtTotal = parseFloat(data.btc);
+                });
+                document.getElementById('avg_prognosis').innerHTML = "";
+                document.getElementById('deal_finrez').innerHTML = '';
+                $("#submit_button").prop("disabled", true);
+                swal("Успех", "Запись была добавлена", "success");
+            },
+            error: function (err) {
+                swal("Упс", "Что-то пошло не так", "error");
+            }
         });
     });
 
@@ -171,7 +173,7 @@
             var prognosisLine = document.getElementById('avg_prognosis');
             //prognosis field setter
             getAvgPrognose(rubResult, btcValue, boughtTotal, function (data) {
-                var percentage = ((data / (avg / 100)) - 100);
+                var percentage = ((data / (avgCourse / 100)) - 100);
                 var percentage_string = "";
                 if (percentage > 0) {
                     if (!isFinite(percentage)) {
@@ -200,7 +202,7 @@
     }
 
     function getAvgPrognose(spent, bought, totalB, callback) {
-        var result = ((totalB * avg) + spent) / (totalB + bought);
+        var result = ((totalB * avgCourse) + spent) / (totalB + bought);
         callback(result);
     }
 </script>
