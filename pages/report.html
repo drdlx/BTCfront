@@ -150,10 +150,8 @@
                 "authorization": localStorage.getItem('token')
             },
             success: function (data) {
-                console.log(userReqStr + "&date=" + date);
-                console.log(data);
                 var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0, overallFinres = 0;
-                var operation_data = '', unsorted = (user === "") ? data : data.data, sortedData = {};
+                var operation_data = '', unsorted = (user === "") ? data.report : data.report.noncrypto, sortedData = {};
                 if (unsorted !== undefined) {
                     sortedData = unsorted.sort(function (a, b) {
                         return a.user.localeCompare(b.user);

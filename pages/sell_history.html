@@ -50,6 +50,7 @@
 <script>
     $(document).ready(function () {
         getFullSalesData(function (data) {
+            console.log(data);
             var operation_data = '';
             $.each(data.data, function (key, value) {
                 operation_data += '<tr>';

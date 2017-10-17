@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
 :root {
-    --color-one: #CAe4db;
-    --color-two: rgb(220, 251, 53);
-    --color-three: #1A2930;
-    --color-four: #7a9d96;
-    --color-five: #ececec;
+    --color-light: #CAe4db;
+    --color-accent: rgb(230, 230, 29);
+    --color-dark: #1A2930;
+    --color-middle: #7a9d96;
+    --color-bright: #ececec;
+    --color-darkaccent: rgb(241, 201, 66);
 }
 
 html {
@@ -51,6 +52,14 @@ video {
     vertical-align: middle;
 }
 
+.notransition {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    -ms-transition: none !important;
+    transition: none !important;
+}
+
 fieldset {
     border: 0;
     margin: 0;
@@ -72,7 +81,7 @@ textarea {
     margin: 15px auto;
     box-shadow: -2px 2px 0.5em rgba(0, 0, 0, 0.5);
     padding: 10px;
-    background-color: var(--color-five);
+    background-color: var(--color-bright);
 }
 
 .button_pane table {
@@ -99,8 +108,8 @@ textarea {
     text-align: left;
     font-size: 1.35em;
     font-weight: bold;
-    color: var(--color-three);
-    border-bottom: var(--color-four) solid;
+    color: var(--color-dark);
+    border-bottom: var(--color-middle) solid;
     border-radius: 6%;
 }
 
@@ -239,11 +248,12 @@ input[readonly] {
     width: 100%;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     animation: float 5s infinite;
+    word-wrap: break-word;
 }
 
 .report_table th {
-    color: var(--color-five);
-    background: var(--color-four);
+    color: var(--color-bright);
+    background: var(--color-dark);
     border-bottom: 4px solid #9ea7af;
     border-right: 1px solid #343a45;
     font-size: 19px;
@@ -282,7 +292,7 @@ input[readonly] {
 }
 
 .report_table tr:nth-child(odd) td {
-    background: var(--color-five);
+    background: var(--color-bright);
 }
 
 .report_table tr:last-child td:first-child {
@@ -357,11 +367,11 @@ input[readonly] {
 }
 
 .handbook_table th {
-    color: rgba(22, 51, 80, 0.87);
-    background: var(--color-one);
+    color: snow;
+    background: var(--color-dark);
     border-bottom: 4px solid #9ea7af;
-    border-right: 1px solid #343a45;
-    border-left: 1px solid #343a45;
+    border-right: 1px solid var(--color-bright);
+    border-left: 1px solid var(--color-bright);
     font-size: 17px;
     font-weight: 100;
     padding: 7px 15px;
@@ -582,8 +592,8 @@ option.reserve {
 }
 
 button.accordion {
-    background-color: var(--color-two);
-    color: var(--color-three);
+    background-color: var(--color-accent);
+    color: var(--color-dark);
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -596,12 +606,12 @@ button.accordion {
 }
 
 button.accordion.active, button.accordion:hover {
-    background-color: var(--color-one);
+    background-color: var(--color-darkaccent);
 }
 
 .accordion_panel {
     padding: 0;
-    background-color: var(--color-one);
+    background-color: var(--color-light);
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
@@ -610,12 +620,15 @@ button.accordion.active, button.accordion:hover {
 }
 
 #sidebar_block {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
     transition: max-width 0.2s ease-out;
-    background-color: var(--color-five);
-    color: var(--color-four);
+    background-color: var(--color-bright);
+    color: var(--color-middle);
 }
-
+#sidebar_block::-webkit-scrollbar {
+    display: none;
+}
 button.accordion:after {
     content: '\002B';
     color: black;
@@ -637,12 +650,13 @@ button.accordion.active:after {
     font-size: 35px;
     border: none;
     padding: 5px 15px;
-    background-color: var(--color-two);
+    background-color: var(--color-accent);
     cursor: pointer;
 }
 
 #sidebar_minimize.active {
     left: 1%;
+    background-color: var(--color-darkaccent);
 }
 
 .sidebar_lists {
@@ -650,7 +664,7 @@ button.accordion.active:after {
 }
 
 .accordion_panel li {
-    padding: 10px;
+    padding: 4px 10px;
     background-color: whitesmoke;
 }
 
@@ -668,7 +682,7 @@ button.accordion.active:after {
 
 #header {
     margin: auto;
-    background-color: var(--color-four);
+    background-color: var(--color-middle);
     padding: 0;
 }
 
@@ -697,8 +711,8 @@ button.accordion.active:after {
     vertical-align: middle;
 }
 #header_info div {
-    background-color: var(--color-one);
-    color: var(--color-three);
+    background-color: var(--color-light);
+    color: var(--color-dark);
     padding: 1em;
     margin: 4px;
     display: flex;
@@ -708,34 +722,34 @@ button.accordion.active:after {
 #header_user i {
     font-size: 4em;
     vertical-align: middle;
-    color: var(--color-two);
+    color: var(--color-accent);
 }
 #header_username {
     font-size: 2em;
     display: inline-block;
     vertical-align: middle;
     text-decoration: underline;
-    color: var(--color-one);
+    color: var(--color-light);
     margin-left: 0.3em;
 }
 .user_dropdown {
     display: none;
     position: absolute;
     min-width: 150px;
-    background-color: var(--color-two);
+    background-color: var(--color-accent);
     z-index: 115;
-    box-shadow: -1px 1px 4px var(--color-three);
+    box-shadow: -1px 1px 4px var(--color-dark);
     margin-left: 3em;
     font-weight: 600;
     transition: 0.2s;
 }
 
 .user_dropdown:hover {
-    background-color: var(--color-one);
+    background-color: var(--color-darkaccent);
 }
 
 .user_dropdown a {
-    color: var(--color-three);
+    color: var(--color-dark);
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -746,4 +760,19 @@ button.accordion.active:after {
 }
 .user-icon:hover .user_dropdown {
     display: block;
+}
+.totalRemainders {
+    color: var(--color-dark);
+}
+.totalRemainders li {
+    padding: 0 10px;
+    font-weight: 600;
+    font-size: 16px;
+}
+.totalRemainders ul {
+    padding: 10px;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    list-style: none;
+    font-size: 12px;
 }

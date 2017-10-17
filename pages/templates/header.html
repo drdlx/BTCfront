@@ -41,12 +41,16 @@
             "authorization": localStorage.getItem('token')
         },
         success: function (data) {
-            var arr = data.data;
+            var arr = data.report.noncrypto;
             $.each(arr, function (key, value) {
                 dailyFinresHeader += value.cur_fin_res;
             });
             $("#finres_header").html(dailyFinresHeader.toFixed(2));
-            sessionStorage.setItem('header_finres', dailyFinresHeader);
+            sessionStorage.setItem('header_finres', dailyFinresHeader.toFixed(2));
+        },
+        error: function (err) {
+            sessionStorage.setItem('header_finres', 0);
+            $("#finres_header").html(0);
         }
     });
 
@@ -60,6 +64,10 @@
             avgHeader = data.average_course;
             $("#avg_header").html(avgHeader.toFixed(2));
             sessionStorage.setItem('header_avg', avgHeader.toFixed(2));
+        },
+        error: function (err) {
+            $("#avg_header").html(0);
+            sessionStorage.setItem('header_avg', 0);
         }
     });
 </script>

@@ -8,14 +8,14 @@
     <title>Справочник контрагентов</title>
     <script src="../js/vendor/jquery-3.2.1.min.js"></script>
     <script src="../js/main.js"></script>
-    <script src="../js/vendor/sweetalert.min.js"></script>
+    <script src="../js/vendor/sweetalert2.all.min.js"></script>
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <script>
-    $(function(){
+    $(function () {
         $("#sidebar").load("templates/sidebar.html");
         $("#header").load("templates/header.html");
     });
@@ -76,6 +76,13 @@
 </html>
 <script>
     var mentorList = [], studentList = [];
+    var currencyOption = {};
+    getCurrencyList(function (data) {
+        $.each(data, function (key, value) {
+            currencyOption[value.currency] = value.currency;
+        })
+    });
+
     $(document).ready(function () {
         getMentorList(function (data) {
             mentorList = data.mentors;
@@ -103,6 +110,7 @@
                     },
                     error: function (err) {
                         $("#error-msg").html("Ошибка при добавлении агента");
+                        swal("Ошибка при добавлении", "", "error");
                         document.getElementById('add_form').reset();
                     }
                 });
@@ -132,12 +140,12 @@
                 var operational_data = "";
                 $.each(agents, function (key, value) {
                     var isMentor = mentorList.find(function (a) {
-                        return a.mentor === value.agentname
-                    }) !== undefined,
-                    isStudent = studentList.find(function (a) {
-                        return a.student === value.agentname
-                    }) !== undefined,
-                    className = "";
+                            return a.mentor === value.agentname
+                        }) !== undefined,
+                        isStudent = studentList.find(function (a) {
+                            return a.student === value.agentname
+                        }) !== undefined,
+                        className = "";
                     if (isMentor) {
                         className = "mentor"
                     } else if (isStudent) {
@@ -185,9 +193,9 @@
         swal({
             title: "Удаление",
             text: "Вы действительно хотите удалить запись " + document.getElementById("td" + id).innerHTML + "?",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true
+            type: "warning",
+            showCancelButton: true,
+            focusConfirm: false
         })
             .then(function (isPressed) {
                 if (isPressed) {
@@ -197,11 +205,11 @@
                         headers: {'authorization': token},
                         data: "&agentname=" + document.getElementById("td" + id).innerHTML,
                         success: function (data) {
-                            swal("Запись успешно удалена", {icon: "success"});
+                            swal("Запись успешно удалена", {type: "success"});
                             $("#tr" + id).toggle(400);
                         },
                         error: function (err) {
-                            swal("Ошибка при удалении записи", {icon: "warning"});
+                            swal("Ошибка при удалении записи", {type: "warning"});
                         }
                     });
                 }
@@ -209,33 +217,43 @@
     }
 
     function invite(student) {
+        var options = "";
+        $.each(currencyOption, function (key, value) {
+            options += '<option>' + value + '</option>';
+        });
         swal({
             title: "Приглашение",
-            text: "Пригласить " + student + " стать вашим студентом?\n Укажите процент и валюту через пробел (5 RUB):",
-            icon: "warning",
-            content: "input",
-            buttons: true,
-            dangerMode: true
-        })
-            .then(function (isPressed) {
-                if (isPressed) {
-                    var parsed = isPressed.split(" ");
-                    if ($.isNumeric(parsed[0]) && parsed[1].length === 3) {
-                        $.ajax({
-                            url: apiServer + '/addMentor',
-                            type: 'post',
-                            headers: {'authorization': token},
-                            data: "&student=" + student + "&percent=" + parsed[0] + "&currency=" + parsed[1],
-                            success: function (data) {
-                                swal("Пользователь приглашен", {icon: "success"});
-                            },
-                            error: function (err) {
-                                swal("Ошибка при приглашении", {icon: "warning"});
-                            }
-                        });
+            type: "question",
+            html: "<p class='swal2'>Пригласить " + student + " стать вашим студентом?\n Укажите условия обучения</p>" +
+            '<label for="percent_input">Процент от финреза:</label><input id="percent_input" type="number" min="0" max="100" step="0.01" maxlength="3" class="swal2-input" required placeholder="0">' +
+            '<select class="swal2-input" id="currency_input" required><option disabled selected value="" hidden>Выберите валюту</option>' + options + '</select>',
+            preConfirm: function () {
+                return new Promise(function (resolve, reject) {
+                    var percent = $("#percent_input").val(), currency = $("#currency_input").val();
+                    if ($.isNumeric(percent) && currency !== null && percent < 100 && percent >= 0) {
+                        resolve([percent, currency]);
                     } else {
-                        return null;
+                        reject('Задайте корректные данные');
                     }
+                });
+            },
+            showCancelButton: true,
+            focusConfirm: false
+        })
+            .then(function (parsed) {
+                if (parsed) {
+                    $.ajax({
+                        url: apiServer + '/addMentor',
+                        type: 'post',
+                        headers: {'authorization': token},
+                        data: "&student=" + student + "&percent=" + parsed[0] + "&currency=" + parsed[1],
+                        success: function (data) {
+                            swal("Пользователь приглашен", "", "success");
+                        },
+                        error: function (err) {
+                            swal("Ошибка при приглашении", "", "warning");
+                        }
+                    });
                 } else {
                     return null;
                 }

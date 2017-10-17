@@ -15,10 +15,15 @@
             <ul class="accordion_panel" id="mentor">
             </ul>
         </div>
+        <div class="totalRemainders">
+            <ul id="totalRemainders">
+            </ul>
+        </div>
     </div>
 </div>
 <script>
-    var creditsSidebar = [], debetsSidebar = [], reservesRemainders = [], mentorInvites = [], mentorsId = {}, currenciesSidebar = [];
+    var creditsSidebar = [], debetsSidebar = [], reservesRemainders = [],
+        mentorInvites = [], mentorsId = {}, currenciesSidebar = [], totalRemainders = {};
 
     buildCachedTabs();
     //accordion lists toggle
@@ -35,7 +40,7 @@
                 sessionStorage.setItem('headerPanel' + panel.id, 'true');
             }
         };
-        console.log(sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id));
+
         if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
             $(acc[i]).click();
         }
@@ -53,8 +58,19 @@
             localStorage.setItem('sidebar_minimize', 'true')
         }
     };
+
+    //auto-minimize if required
     if (localStorage.getItem('sidebar_minimize') === 'true') {
-        $("#sidebar_minimize").click();
+        var sidebar = $("#sidebar_block"), minButton = $("#sidebar_minimize");
+        sidebar.addClass('notransition');
+        minButton.addClass('notransition');
+        sidebar[0].offsetHeight;
+        minButton[0].offsetHeight;
+        minButton.click();
+        setTimeout(function () {
+            sidebar.removeClass('notransition');
+            minButton.removeClass('notransition');
+            }, 200);
     }
 
     getCredits(function (data) {
@@ -71,6 +87,11 @@
     var q1 = getRemainders(function (data) {
         $.each(data, function (key, value) {
             reservesRemainders.push(value);
+            if (value.currency in totalRemainders) {
+                totalRemainders[value.currency] +=  value.remainder;
+            } else {
+                totalRemainders[value.currency] =  value.remainder;
+            }
         });
     });
 
@@ -80,6 +101,7 @@
 
     $.when(q1, q2).done(function () {
         buildRemainderTab();
+        buildTotalRemainders();
     });
 
     getMentorInvites(function (data) {
@@ -94,13 +116,13 @@
             $("#mentor").html('');
             var operational_data = "", rowCount = 0;
             $.each(mentorInvites, function (key, value) {
-                rowCount++;
                 mentorsId[rowCount] = value;
                 operational_data += '<li id="listedInvite' + rowCount + '">';
                 operational_data += value.mentor + ' приглашает вас стать его учеником, ' + value.percent + "% от финреза в " + value.currency;
                 operational_data += ' <a class="sidebar_icon green" onclick="replyToMentorInvite(' + rowCount + ', true' + ')"><i class="fa fa-check" aria-hidden="true"></i></a>';
                 operational_data += ' <a class="sidebar_icon red" onclick="replyToMentorInvite(' + rowCount + ', false' + ')"><i class="fa fa-ban" aria-hidden="true"></i></a>';
                 operational_data += '</li>';
+                rowCount++;
             });
             $("#mentor_button").html("Приглашения (" + mentorInvites.length + ")");
             $("#mentor").append(operational_data);
@@ -116,7 +138,7 @@
                 operational_data += '<li>';
                 numberLimiter = (currenciesSidebar.find(function (a) {
                     return a.currency === value.currency
-                }).isCrypto === 'true') ? 8 : 2;
+                }).isCrypto === true) ? 8 : 2;
                 operational_data += "<span class='align_left col-md-5'>" + value.title + ':</span><span class="align_right col-md-7">' +
                     value.remainder.toFixed(numberLimiter) + ' ' + value.currency + "</span>";
                 operational_data += '</li>';
@@ -186,7 +208,7 @@
         sessionStorage.setItem('sidebarDebits', $("#debits").html());
         $("#debit_loader").hide();
     }
-    
+
     function buildCachedTabs() {
         if (sessionStorage.getItem('sidebarReserves') !== null) {
             $("#reserves").html(sessionStorage.getItem('sidebarReserves'));
@@ -202,12 +224,31 @@
         }
     }
 
+    function buildTotalRemainders() {
+        if (Object.keys(totalRemainders).length !== 0) {
+            $("#totalRemainders").html("");
+            var operational_data = "Всего:";
+            $.each(totalRemainders, function (key, value) {
+                var numberLimiter = (currenciesSidebar.find(function (a) {
+                    return a.currency === key
+                }).isCrypto === true) ? 8 : 2;
+                operational_data += "<li><span class='align_left col-md-5'>" + key + "</span><span class='align_right col-md-7'>" +
+                value.toFixed(numberLimiter) + "</span>";
+            });
+            $("#totalRemainders").html(operational_data);
+        } else {
+            $("#totalRemainders").html("");
+        }
+    }
+
     function replyToMentorInvite(id, reply) {
         var replyText = (reply === true) ? "стать" : "отказаться быть";
         swal({
             title: "Подтверждение",
             text: "Вы уверены, что хотите " + replyText + " учеником " + mentorsId[id].mentor + "?",
             buttons: true,
+            showCancelButton: true,
+            type: "warning",
             icon: "warning"
         }).then(function (isPressed) {
             if (isPressed) {
@@ -219,8 +260,12 @@
                     success: function (data) {
                         swal("Успех", "Операция проведена успешно", "success");
                         delete mentorInvites[id];
-                        var buttonString = (Object.keys(mentorInvites).length > 0) ? "(" + Object.keys(mentorInvites).length + ")" : "";
-                        $("#mentor_button").html("Приглашения " + buttonString);
+                        if (Object.keys(mentorInvites).length === 0) {
+                            $("#mentor_invites").hide();
+                        } else {
+                            var buttonString = (Object.keys(mentorInvites).length > 0) ? "(" + Object.keys(mentorInvites).length + ")" : "";
+                            $("#mentor_button").html("Приглашения " + buttonString);
+                        }
                         $("#listedInvite" + id).hide(400);
                     },
                     error: function (err) {

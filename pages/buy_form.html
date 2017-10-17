@@ -82,7 +82,7 @@
 </body>
 </html>
 <script>
-    var avgCourse, delayTimer, spentTotal, boughtTotal, xtraData;
+    var avgCourse, delayTimer, boughtTotal, spentTotal, xtraData;
 
     $(document).ready(function () {
         var r1 = getFullPaymentData(function (data) {
@@ -152,6 +152,7 @@
     function reCount() {
         clearTimeout(delayTimer);
         delayTimer = setTimeout(function () {
+            document.getElementById('avg_course').innerHTML = avgCourse;
             var btcValue = parseFloat($("#btc").val()),
                 courseValue = parseFloat($("#course").val()),
                 comissValue = parseFloat($("#commiss").val()),
@@ -192,8 +193,6 @@
                 }
                 prognosisLine.innerHTML = '; Новый ср. курс: ' + newAvrg.toFixed(2) + ' (' + percentage_string + '%)';
                 var finrez = getDealFinrez(0, newAvrg, 0, botcomissValue, comissValue);
-                console.log('comiss ' + comissValue);
-                console.log('comiss ' + finrez);
                 document.getElementById('deal_finrez').innerHTML = '; Финрез сделки: ' + finrez;
                 xtraData = "&average_course=" + newAvrg + "&cur_fin_res=" + finrez;
                 $("#submit_button").prop("disabled", false);

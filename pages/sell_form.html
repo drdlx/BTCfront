@@ -80,28 +80,30 @@
 
 <script>
 
-    var delayTimer, avg, totalFinrez, xtraData;
+    var delayTimer, avg, xtraData;
 
     $(document).ready(function () {
-        getGlobalStatsFull(function (data) {
-            avg = data.avgCourse;
-            totalFinrez = data.totalFinrez;
-            document.getElementById('avg_course').innerHTML = avg;
-        });
+        if (sessionStorage.getItem('header_avg') !== null) {
+            avg = sessionStorage.getItem('header_avg');
+        } else {
+            avg = 0;
+        }
+        document.getElementById('avg_course').innerHTML = avg;
+
 
         var currencies;
-        getCurrencyList(function (data) {
+        var r1 = getCurrencyList(function (data) {
             currencies = data;
         });
 
         var rubAccounts =[], btcAccounts = [];
-        getReserveList(function (data) {
+        $.when(r1).done(getReserveList(function (data) {
             $.each(data, function (key, value) {
                 if (value.responsible === username) {
                     var currency = value.currency;
                     $.each(currencies, function (key1, value1) {
                         if (currency === value1.currency) {
-                            if (value1.isCrypto === 'true') {
+                            if (value1.isCrypto === true) {
                                 btcAccounts.push(value.title);
                             } else {
                                 rubAccounts.push(value.title);
@@ -113,7 +115,7 @@
 
             fillSelectFromArray(document.getElementById('paym'), rubAccounts);
             fillSelectFromArray(document.getElementById('paymCrypto'), btcAccounts);
-        });
+        }));
 
         $("#post_form").on('submit', function (e) {
             e.preventDefault();
@@ -127,9 +129,6 @@
                 data: $("#post_form").serialize() + xtraData,
                 success: function () {
                     document.getElementById('post_form').reset();
-                    getFullPaymentData(function (data) {
-                        totalFinrez = data.totalFinrez;
-                    });
                     document.getElementById('deal_finrez').innerHTML = "";
                     $("#submit_button").prop("disabled", true);
                     swal("Успех", "Запись успешно добавлена", "success");
@@ -144,6 +143,8 @@
     function reCount() {
         clearTimeout(delayTimer);
         delayTimer = setTimeout(function () {
+            avg = avgHeader;
+            document.getElementById('avg_course').innerHTML = avg;
             var btcValue = parseFloat($("#btc").val()),
                 courseValue = parseFloat($("#course").val()),
                 comissValue = parseFloat($("#commiss").val()),
