@@ -1,0 +1,65 @@
+<div id="header_block">
+    <div class="col-md-2" id="logo">
+        <a href="menu.html">
+            <img src="../img/logo.png" width="130px">
+        </a>
+    </div>
+    <div class="col-md-5" id="header_info">
+        <div class="col-md-10">Ср. курс <span id="avg_header"></span></div>
+        <div class="col-md-10">Финрез сегодня <span id="finres_header"></span></div>
+    </div>
+    <div class="col-md-3" id="header_user">
+        <div class="user-icon">
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i> <span id="header_username"></span>
+            <div class="user_dropdown">
+                <a href="index.html">Выйти</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //caching
+    if (sessionStorage.getItem('header_avg') !== null) {
+        $("#avg_header").html(sessionStorage.getItem('header_avg'));
+    }
+    if (sessionStorage.getItem('header_finres') !== null) {
+        $("#finres_header").html(sessionStorage.getItem('header_finres'));
+    }
+    //requesting info
+    var userReqStrHeader = (priv === 'admin') ? "&user=" + username : "";
+    var currDateHeader = new Date(), day = currDateHeader.getDate(), month = currDateHeader.getMonth() + 1,
+        year = currDateHeader.getFullYear();
+    var avgHeader = 0, dailyFinresHeader = 0;
+    $("#header_username").html(username);
+    $.ajax({
+        url: apiServer + '/reportfull',
+        type: 'GET',
+        crossDomain: true,
+        data: userReqStrHeader + "&date=" + month + "/" + day + "/" + year,
+        headers: {
+            "authorization": localStorage.getItem('token')
+        },
+        success: function (data) {
+            var arr = data.data;
+            $.each(arr, function (key, value) {
+                dailyFinresHeader += value.cur_fin_res;
+            });
+            $("#finres_header").html(dailyFinresHeader.toFixed(2));
+            sessionStorage.setItem('header_finres', dailyFinresHeader);
+        }
+    });
+
+    $.ajax({
+        url: apiServer + '/reportpay',
+        type: 'get',
+        headers: {'authorization': localStorage.getItem('token')},
+        data: "&last=true",
+        crossDomain: true,
+        success: function (data) {
+            avgHeader = data.average_course;
+            $("#avg_header").html(avgHeader.toFixed(2));
+            sessionStorage.setItem('header_avg', avgHeader.toFixed(2));
+        }
+    });
+</script>

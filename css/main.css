@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
+:root {
+    --color-one: #CAe4db;
+    --color-two: rgb(220, 251, 53);
+    --color-three: #1A2930;
+    --color-four: #7a9d96;
+    --color-five: #ececec;
+}
+
 html {
     color: #222;
     font-size: 1em;
@@ -61,11 +69,10 @@ textarea {
 }
 
 .wrapper {
-    margin: 100px auto;
-    width: 800px;
+    margin: 15px auto;
     box-shadow: -2px 2px 0.5em rgba(0, 0, 0, 0.5);
     padding: 10px;
-    background-color: white;
+    background-color: var(--color-five);
 }
 
 .button_pane table {
@@ -92,8 +99,8 @@ textarea {
     text-align: left;
     font-size: 1.35em;
     font-weight: bold;
-    color: rgba(59, 95, 134, 0.56);
-    border-bottom: rgba(145, 168, 202, 0.7) solid;
+    color: var(--color-three);
+    border-bottom: var(--color-four) solid;
     border-radius: 6%;
 }
 
@@ -170,7 +177,7 @@ button.quick_access:hover {
     width: 47%;
     padding: 10px;
     margin-top: 7px;
-    background-color: rgba(234, 234, 232, 0.5);
+    background-color: snow;
     border-radius: 5px;
     text-align: center;
     font-size: 1.25em;
@@ -189,7 +196,9 @@ button.quick_access:hover {
     text-align: center;
     font-size: 0.95em;
 }
-
+.info_block p {
+    margin: 0;
+}
 input[readonly] {
     background-color: rgba(246, 255, 206, 0.36);
     border: rgba(125, 96, 19, 0.3) outset 2px;
@@ -200,11 +209,6 @@ input[readonly] {
 .date_event a {
     background: #42B373 none !important;
     color: #ffffff !important;
-}
-
-.user_pane {
-    text-align: right;
-    font-size: 15px;
 }
 
 .green {
@@ -238,8 +242,8 @@ input[readonly] {
 }
 
 .report_table th {
-    color: #D5DDE5;
-    background: #1b1e24;
+    color: var(--color-five);
+    background: var(--color-four);
     border-bottom: 4px solid #9ea7af;
     border-right: 1px solid #343a45;
     font-size: 19px;
@@ -248,7 +252,7 @@ input[readonly] {
     text-align: center;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     vertical-align: middle;
-    max-width: 100px;
+    max-width: 50px;
 }
 
 .report_table th:first-child {
@@ -278,7 +282,7 @@ input[readonly] {
 }
 
 .report_table tr:nth-child(odd) td {
-    background: #EBEBEB;
+    background: var(--color-five);
 }
 
 .report_table tr:last-child td:first-child {
@@ -291,7 +295,7 @@ input[readonly] {
 
 .report_table td {
     background: #FFFFFF;
-    padding: 5px 20px;
+    padding: 10px 10px;
     text-align: center;
     vertical-align: middle;
     font-weight: 300;
@@ -354,7 +358,7 @@ input[readonly] {
 
 .handbook_table th {
     color: rgba(22, 51, 80, 0.87);
-    background: rgba(216, 229, 255, 0.43);
+    background: var(--color-one);
     border-bottom: 4px solid #9ea7af;
     border-right: 1px solid #343a45;
     border-left: 1px solid #343a45;
@@ -559,7 +563,7 @@ input.validate:valid:not(:placeholder-shown) {
     top: 0;
     left: 0;
     border-right: 1px ridge;
-    box-shadow: 1px 0 4px rgba(6, 3, 3, 0.21);
+    box-shadow: 1px 0 4px rgba(6, 3, 3, 0.41);
     padding: 0;
 }
 
@@ -578,8 +582,8 @@ option.reserve {
 }
 
 button.accordion {
-    background-color: #d0e4f5;
-    color: rgb(35, 35, 35);
+    background-color: var(--color-two);
+    color: var(--color-three);
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -591,17 +595,13 @@ button.accordion {
     border-bottom: 1px solid rgba(72, 72, 72, 0.15);
 }
 
-button.accordion.active {
-    background-color: #6582b5;
-}
-
-button.accordion:hover {
-    background-color: rgba(161, 195, 224, 0.73);
+button.accordion.active, button.accordion:hover {
+    background-color: var(--color-one);
 }
 
 .accordion_panel {
     padding: 0;
-    background-color: white;
+    background-color: var(--color-one);
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
@@ -612,7 +612,8 @@ button.accordion:hover {
 #sidebar_block {
     overflow: hidden;
     transition: max-width 0.2s ease-out;
-    background-color: white;
+    background-color: var(--color-five);
+    color: var(--color-four);
 }
 
 button.accordion:after {
@@ -636,7 +637,7 @@ button.accordion.active:after {
     font-size: 35px;
     border: none;
     padding: 5px 15px;
-    background-color: #d0e4f5;
+    background-color: var(--color-two);
     cursor: pointer;
 }
 
@@ -665,3 +666,84 @@ button.accordion.active:after {
     vertical-align: sub;
 }
 
+#header {
+    margin: auto;
+    background-color: var(--color-four);
+    padding: 0;
+}
+
+@keyframes bounce {
+    0%, 20%, 60%, 100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+
+    40% {
+        -webkit-transform: translateY(-14px);
+        transform: translateY(-14px);
+    }
+
+    80% {
+        -webkit-transform: translateY(-7px);
+        transform: translateY(-7px);
+    }
+}
+
+#logo:hover {
+    animation: bounce 1s;
+}
+#logo, #header_info, #header_user {
+    display: inline-block;
+    vertical-align: middle;
+}
+#header_info div {
+    background-color: var(--color-one);
+    color: var(--color-three);
+    padding: 1em;
+    margin: 4px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#header_user i {
+    font-size: 4em;
+    vertical-align: middle;
+    color: var(--color-two);
+}
+#header_username {
+    font-size: 2em;
+    display: inline-block;
+    vertical-align: middle;
+    text-decoration: underline;
+    color: var(--color-one);
+    margin-left: 0.3em;
+}
+.user_dropdown {
+    display: none;
+    position: absolute;
+    min-width: 150px;
+    background-color: var(--color-two);
+    z-index: 115;
+    box-shadow: -1px 1px 4px var(--color-three);
+    margin-left: 3em;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.user_dropdown:hover {
+    background-color: var(--color-one);
+}
+
+.user_dropdown a {
+    color: var(--color-three);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: 0.2s;
+}
+.user-icon {
+    cursor: pointer;
+}
+.user-icon:hover .user_dropdown {
+    display: block;
+}
