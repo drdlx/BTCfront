@@ -68,7 +68,7 @@
             $("#add_form").on('submit', function (e) {
                 e.preventDefault();
                 var currencyVal = $("#currency").val().toUpperCase(),
-                    isCryptoVal = ($("#isCrypto").is(':checked')) ? 'true' : 'false';
+                    isCryptoVal = ($("#isCrypto").is(':checked')) ? true : false;
                 $.ajax({
                     url: apiServer + '/currency_add',
                     type: 'post',
@@ -115,7 +115,7 @@
                             '<i class="fa fa-times" aria-hidden="true"></i></a>';
                     }
 
-                    var transformedBool = (value.isCrypto === 'true') ? "Да" : "Нет";
+                    var transformedBool = (value.isCrypto === true) ? "Да" : "Нет";
                     operational_data += '<td>' + transformedBool + xtraTools + '</td>';
                     operational_data += '</tr>';
 

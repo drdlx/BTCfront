@@ -100,7 +100,7 @@
                     var currency = value.currency;
                     $.each(currencies, function (key1, value1) {
                         if (currency === value1.currency) {
-                            if (value1.isCrypto === 'true') {
+                            if (value1.isCrypto === true) {
                                 btcAccounts.push(value.title);
                             } else {
                                 rubAccounts.push(value.title);

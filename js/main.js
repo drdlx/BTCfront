@@ -1,4 +1,4 @@
-var apiServer = 'http://52.243.47.71:3000';
+var apiServer = 'http://35.189.205.64:8080';
 var botComission = 0.0098;
 
 
