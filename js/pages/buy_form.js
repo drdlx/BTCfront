@@ -1,21 +1,33 @@
-var avgCourse, delayTimer, boughtTotal, spentTotal, xtraData;
+var avgCourse, delayTimer, boughtTotal = 0, xtraData, cryptoCurrency, currencies,
+    rubAccounts = [], btcAccounts = [], reservesBuy = [];
 
 $(document).ready(function () {
-    var r1 = getFullPaymentData(function (data) {
-        document.getElementById('avg_course').innerHTML = data.avg;
-        avgCourse = parseFloat(data.avg);
-        spentTotal = parseFloat(data.rub);
-        boughtTotal = parseFloat(data.btc);
-    });
-    var currencies;
+    var r1 = function () {
+        return $.ajax({
+            url: apiServer + '/reportpay',
+            type: 'get',
+            headers: {'authorization': localStorage.getItem('token')},
+            data: "&last=true",
+            crossDomain: true,
+            success: function (data) {
+                avgCourse = data.average_course;
+                if (!$.isNumeric(avgCourse)) {avgCourse = -1}
+            },
+            error: function (err) {
+                avgCourse = -1;
+            }
+        });
+    };
+
     var r2 = getCurrencyList(function (data) {
         currencies = data;
     });
-    var rubAccounts = [], btcAccounts = [], reservesBuy = [];
+
     var r3 = getReserveList(function (data) {
         reservesBuy = data;
     });
-    $.when(r1, r2, r3).done(function () {
+    $.when(r1(), r2, r3).done(function () {
+        document.getElementById('avg_course').innerHTML = avgCourse.toFixed(2);
         $.each(reservesBuy, function (key, value) {
             if (value.responsible === username) {
                 var currency = value.currency;
@@ -48,18 +60,13 @@ $("#post_form").on('submit', function (e) {
         data: $("#post_form").serialize() + xtraData,
         success: function () {
             document.getElementById('post_form').reset();
-            getFullPaymentData(function (data) {
-                document.getElementById('avg_course').innerHTML = data.avg;
-                avgCourse = parseFloat(data.avg);
-                spentTotal = parseFloat(data.rub);
-                boughtTotal = parseFloat(data.btc);
-            });
             document.getElementById('avg_prognosis').innerHTML = "";
             document.getElementById('deal_finrez').innerHTML = '';
             $("#submit_button").prop("disabled", true);
             swal("Успех", "Запись была добавлена", "success");
             reBuildSidebarContent();
             reBuildHeaderInfo();
+            document.getElementById('avg_course').innerHTML = avgHeader;
         },
         error: function (err) {
             swal("Упс", "Что-то пошло не так", "error");
@@ -70,7 +77,7 @@ $("#post_form").on('submit', function (e) {
 function reCount() {
     clearTimeout(delayTimer);
     delayTimer = setTimeout(function () {
-        document.getElementById('avg_course').innerHTML = avgCourse;
+        document.getElementById('avg_course').innerHTML = avgCourse.toFixed(2);
         var btcValue = parseFloat($("#btc").val()),
             courseValue = parseFloat($("#course").val()),
             comissValue = parseFloat($("#commiss").val()),
@@ -91,6 +98,7 @@ function reCount() {
 
         var prognosisLine = document.getElementById('avg_prognosis');
         //prognosis field setter
+        boughtTotal = totalRemainders[cryptoCurrency];
         getAvgPrognose(rubResult, btcValue, boughtTotal, function (data) {
             var percentage = ((data / (avgCourse / 100)) - 100);
             var percentage_string = "";
@@ -116,6 +124,16 @@ function reCount() {
             $("#submit_button").prop("disabled", false);
         });
     }, 1000);
+}
+
+function setCryptoCurrency() {
+    var selectedReserve = $("#paymCrypto").val();
+    $.each(reservesBuy, function (key, value) {
+        if (value.title === selectedReserve) {
+            cryptoCurrency = value.currency;
+        }
+    });
+    reCount();
 }
 
 function getAvgPrognose(spent, bought, totalB, callback) {

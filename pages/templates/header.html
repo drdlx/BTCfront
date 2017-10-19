@@ -44,6 +44,7 @@ function reBuildHeaderInfo() {
         },
         success: function (data) {
             var arr = data.report.noncrypto;
+            dailyFinresHeader = 0;
             $.each(arr, function (key, value) {
                 dailyFinresHeader += value.cur_fin_res;
             });

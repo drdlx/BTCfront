@@ -17,10 +17,12 @@ $(document).ready(function () {
                 "authorization": localStorage.getItem('token')
             },
             success: function (data) {
-                var arr = data.data;
+                console.log(data);
+                var arr = data.report.noncrypto;
                 dateList = {};
                 $.each(arr, function (key, value) {
-                    var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1, year = currDate.getFullYear();
+                    var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1,
+                        year = currDate.getFullYear();
                     dateList[month + "/" + day + "/" + year] = month + "/" + day + "/" + year;
                 });
             }
@@ -43,7 +45,8 @@ $(document).ready(function () {
         $("#report_date").datepicker({
             dateFormat: 'm/d/yy',
             beforeShowDay: function (date) {
-                var currDate = new Date(date), day = currDate.getDate(), month = currDate.getMonth() + 1, year = currDate.getFullYear();
+                var currDate = new Date(date), day = currDate.getDate(), month = currDate.getMonth() + 1,
+                    year = currDate.getFullYear();
                 var hDate = month + "/" + day + "/" + year;
                 var highlight = dateList[hDate];
                 if (highlight) {
@@ -56,8 +59,8 @@ $(document).ready(function () {
         reBuildTable();
         //======listening for changes
         $("#report_user").change(function () {
-            reBuildTable();
             r1($(this).val());
+            reBuildTable();
         });
         $("#report_date").change(function () {
             reBuildTable();
@@ -70,7 +73,9 @@ function reBuildTable() {
     $("#loading").show();
     var request = (localStorage.getItem('permission') === 'admin') ? '/admin/reportfull' : '/reportfull';
     var user = $("#report_user").val(), date = $("#report_date").val();
-    if (user === "Все пользователи") { user = ""}
+    if (user === "Все пользователи") {
+        user = "";
+    }
     var userReqStr = (priv === 'admin') ? "&user=" + user : "";
     $.ajax({
         url: apiServer + request,
@@ -81,16 +86,20 @@ function reBuildTable() {
             "authorization": localStorage.getItem('token')
         },
         success: function (data) {
-            var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0, overallFinres = 0;
-            var operation_data = '', unsorted = (user === "") ? data.report : data.report.noncrypto, sortedData = {};
-            if (unsorted !== undefined) {
-                sortedData = unsorted.sort(function (a, b) {
+            var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0,
+                overallFinres = 0;
+            var operation_data = '', sortedNoncryptoData = {},
+                unsortedNoncrypto = data.report.noncrypto,
+                unsortedCrypto = data.report.crypto;
+            console.log(data);
+            if (unsortedNoncrypto !== undefined) {
+                sortedNoncryptoData = unsortedNoncrypto.sort(function (a, b) {
                     return a.user.localeCompare(b.user);
                 });
             }
             var currentUser = '', colCount = 7;
             //---------------------------------------
-            $.each(sortedData, function (key, value) {
+            $.each(sortedNoncryptoData, function (key, value) {
                 var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1,
                     year = currDate.getFullYear();
                 dateList[month + "/" + day + "/" + year] = month + "/" + day + "/" + year;

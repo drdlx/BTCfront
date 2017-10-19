@@ -1,5 +1,6 @@
 $(document).ready(function () {
     getFullSalesData(function (data) {
+        console.log("huy");
         console.log(data);
         var operation_data = '';
         $.each(data.data, function (key, value) {
