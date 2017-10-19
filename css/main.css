@@ -721,16 +721,15 @@ button.accordion.active:after {
 
 #header_user i {
     font-size: 4em;
-    vertical-align: middle;
     color: var(--color-accent);
 }
 #header_username {
     font-size: 2em;
-    display: inline-block;
-    vertical-align: middle;
     text-decoration: underline;
     color: var(--color-light);
-    margin-left: 0.3em;
+    margin-left: 2.3em;
+    position: absolute;
+    top: 0;
 }
 .user_dropdown {
     display: none;
@@ -739,7 +738,8 @@ button.accordion.active:after {
     background-color: var(--color-accent);
     z-index: 115;
     box-shadow: -1px 1px 4px var(--color-dark);
-    margin-left: 3em;
+    margin-left: 4em;
+    top: 2.8em;
     font-weight: 600;
     transition: 0.2s;
 }
@@ -757,6 +757,7 @@ button.accordion.active:after {
 }
 .user-icon {
     cursor: pointer;
+    display: inline-block;
 }
 .user-icon:hover .user_dropdown {
     display: block;

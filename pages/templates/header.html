@@ -18,20 +18,22 @@
     </div>
 </div>
 
-<script>
-    //caching
-    if (sessionStorage.getItem('header_avg') !== null) {
-        $("#avg_header").html(sessionStorage.getItem('header_avg'));
-    }
-    if (sessionStorage.getItem('header_finres') !== null) {
-        $("#finres_header").html(sessionStorage.getItem('header_finres'));
-    }
-    //requesting info
-    var userReqStrHeader = (priv === 'admin') ? "&user=" + username : "";
-    var currDateHeader = new Date(), day = currDateHeader.getDate(), month = currDateHeader.getMonth() + 1,
-        year = currDateHeader.getFullYear();
-    var avgHeader = 0, dailyFinresHeader = 0;
-    $("#header_username").html(username);
+<script>//caching
+if (sessionStorage.getItem('header_avg') !== null) {
+    $("#avg_header").html(sessionStorage.getItem('header_avg'));
+}
+if (sessionStorage.getItem('header_finres') !== null) {
+    $("#finres_header").html(sessionStorage.getItem('header_finres'));
+}
+//requesting info
+var userReqStrHeader = (priv === 'admin') ? "&user=" + username : "";
+var currDateHeader = new Date(), day = currDateHeader.getDate(), month = currDateHeader.getMonth() + 1,
+    year = currDateHeader.getFullYear();
+var avgHeader = 0, dailyFinresHeader = 0;
+$("#header_username").html(username);
+reBuildHeaderInfo();
+
+function reBuildHeaderInfo() {
     $.ajax({
         url: apiServer + '/reportfull',
         type: 'GET',
@@ -70,4 +72,4 @@
             sessionStorage.setItem('header_avg', 0);
         }
     });
-</script>
+}</script>

@@ -224,6 +224,8 @@
                             $("#unaccepted_table").hide(200);
                             $("#message").html("");
                         }
+                        reBuildSidebarContent();
+                        reBuildHeaderInfo();
                     },
                     error: function (err) {
                         swal("Упс", "Ошибка при подтверждении перевода", "error");
@@ -254,6 +256,7 @@
                             $("#unaccepted_table").hide(200);
                             $("#message").html("");
                         }
+                        reBuildSidebarContent();
                     },
                     error: function (err) {
                         swal("Упс", "Ошибка при отмене перевода", "error");

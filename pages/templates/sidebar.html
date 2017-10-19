@@ -26,25 +26,6 @@
         mentorInvites = [], mentorsId = {}, currenciesSidebar = [], totalRemainders = {};
 
     buildCachedTabs();
-    //accordion lists toggle
-    var acc = document.getElementsByClassName('accordion');
-    for (var i = 0; i < acc.length; i++) {
-        acc[i].onclick = function () {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-                sessionStorage.setItem('headerPanel' + panel.id, 'false');
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-                sessionStorage.setItem('headerPanel' + panel.id, 'true');
-            }
-        };
-
-        if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
-            $(acc[i]).click();
-        }
-    }
 
     //minimize button toggle
     document.getElementById('sidebar_minimize').onclick = function () {
@@ -70,46 +51,88 @@
         setTimeout(function () {
             sidebar.removeClass('notransition');
             minButton.removeClass('notransition');
-            }, 200);
+        }, 200);
     }
 
-    getCredits(function (data) {
-        $.each(data.credit, function (key, value) {
-            creditsSidebar.push(value);
-        });
-        $.each(data.debet, function (key, value) {
-            debetsSidebar.push(value);
-        });
-        buildCreditTab();
-        buildDebitTab();
-    });
+    reBuildSidebarContent();
 
-    var q1 = getRemainders(function (data) {
-        $.each(data, function (key, value) {
-            reservesRemainders.push(value);
-            if (value.currency in totalRemainders) {
-                totalRemainders[value.currency] +=  value.remainder;
+    //accordion lists toggle
+    var acc = document.getElementsByClassName('accordion');
+    for (var i = 0; i < acc.length; i++) {
+        acc[i].onclick = function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+                sessionStorage.setItem('headerPanel' + panel.id, 'false');
             } else {
-                totalRemainders[value.currency] =  value.remainder;
+                panel.style.maxHeight = panel.scrollHeight + "px";
+                sessionStorage.setItem('headerPanel' + panel.id, 'true');
             }
+        };
+
+        if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
+            $(acc[i]).click();
+        }
+    }
+
+    function reBuildSidebarContent() {
+        getCredits(function (data) {
+            creditsSidebar = [];
+            debetsSidebar = [];
+            $.each(data.credit, function (key, value) {
+                creditsSidebar.push(value);
+            });
+            $.each(data.debet, function (key, value) {
+                debetsSidebar.push(value);
+            });
+            buildCreditTab();
+            buildDebitTab();
         });
-    });
 
-    var q2 = getCurrencyList(function (data) {
-        currenciesSidebar = data;
-    });
-
-    $.when(q1, q2).done(function () {
-        buildRemainderTab();
-        buildTotalRemainders();
-    });
-
-    getMentorInvites(function (data) {
-        $.each(data, function (key, value) {
-            mentorInvites.push(value);
+        var q1 = getRemainders(function (data) {
+            reservesRemainders = [];
+            totalRemainders = {};
+            $.each(data, function (key, value) {
+                reservesRemainders.push(value);
+                if (value.currency in totalRemainders) {
+                    totalRemainders[value.currency] += value.remainder;
+                } else {
+                    totalRemainders[value.currency] = value.remainder;
+                }
+            });
         });
-        buildMentorInvitesTab();
-    });
+
+        var q2 = getCurrencyList(function (data) {
+            currenciesSidebar = data;
+        });
+
+        $.when(q1, q2).done(function () {
+            buildRemainderTab();
+            buildTotalRemainders();
+        });
+
+        getMentorInvites(function (data) {
+            mentorInvites = [];
+            $.each(data, function (key, value) {
+                mentorInvites.push(value);
+            });
+            buildMentorInvitesTab();
+        });
+
+        var acc = document.getElementsByClassName('accordion');
+        for (var i = 0; i < acc.length; i++) {
+            if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
+                var panel = $(acc[i]).next();
+                panel.addClass("notransition");
+                panel[0].offsetHeight;
+                panel.css("max-height", panel.css("scroll-height"));
+                setTimeout(function () {
+                    panel.removeClass('notransition');
+                }, 200);
+            }
+        }
+    }
 
     function buildMentorInvitesTab() {
         if (mentorInvites.length !== 0) {
@@ -233,7 +256,7 @@
                     return a.currency === key
                 }).isCrypto === true) ? 8 : 2;
                 operational_data += "<li><span class='align_left col-md-5'>" + key + "</span><span class='align_right col-md-7'>" +
-                value.toFixed(numberLimiter) + "</span>";
+                    value.toFixed(numberLimiter) + "</span>";
             });
             $("#totalRemainders").html(operational_data);
         } else {
