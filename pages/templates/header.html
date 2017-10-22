@@ -89,9 +89,9 @@ function showSettingsScreen() {
             '<input class="swal2-input" name="percentBOT" id="botcommissHeader" type="number" max="100" min="0" value="' + botComission * 100 + '">%'  +
             '<h3>Пользовательская информация</h3>' +
             '<label for="firstnameHeader">Имя: </label>' +
-            '<input class="swal2-input validate" name="first_name" id="firstnameHeader" type="text" pattern="^[a-zA-Zа-яА-ЯЁё]+$" maxlength="20" minlength="2" value="' + transform(user.first_name) + '">'  +
+            '<input class="swal2-input validate" name="first_name" id="firstnameHeader" type="text" pattern="^[a-zA-Zа-яА-ЯЁё]+$" maxlength="20" minlength="2" value="' + transform(user.First_Name) + '">'  +
             '<label for="lastnameHeader">Фамилия: </label>' +
-            '<input class="swal2-input validate" name="last_name" id="lastnameHeader" type="text" pattern="^[a-zA-Zа-яА-ЯЁё]+$" maxlength="20" minlength="2" value="' + transform(user.last_name) + '">' +
+            '<input class="swal2-input validate" name="last_name" id="lastnameHeader" type="text" pattern="^[a-zA-Zа-яА-ЯЁё]+$" maxlength="20" minlength="2" value="' + transform(user.Last_Name) + '">' +
             '<label for="phoneHeader">Телефон: </label>' +
             '<input class="swal2-input validate" name="call" id="phoneHeader" type="tel" pattern="[0-9]{1}[-| ][0-9]{3}[-| ][0-9]{3}[-| ][0-9]{4}" maxlength="14" minlength="11" value="' + transform(user.call) + '">' +
             '<label for="mailHeader">E-mail: </label>' +
