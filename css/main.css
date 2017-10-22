@@ -221,7 +221,7 @@ input[readonly] {
 }
 
 .green {
-    color: #05cd00;
+    color: #48ad1e;
 }
 
 .red {
@@ -254,15 +254,14 @@ input[readonly] {
 .report_table th {
     color: var(--color-bright);
     background: var(--color-dark);
-    border-bottom: 4px solid #9ea7af;
+    border-bottom: 4px solid var(--color-darkaccent);
     border-right: 1px solid #343a45;
-    font-size: 19px;
+    font-size: 15px;
     font-weight: 100;
-    padding: 15px;
+    padding: 10px;
     text-align: center;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     vertical-align: middle;
-    max-width: 50px;
 }
 
 .report_table th:first-child {
@@ -305,11 +304,11 @@ input[readonly] {
 
 .report_table td {
     background: #FFFFFF;
-    padding: 10px 10px;
+    padding: 5px;
     text-align: center;
     vertical-align: middle;
     font-weight: 300;
-    font-size: 18px;
+    font-size: 16px;
     text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
     border-right: 1px solid #C1C3D1;
 }
@@ -744,7 +743,7 @@ button.accordion.active:after {
     transition: 0.2s;
 }
 
-.user_dropdown:hover {
+.user_dropdown a:hover {
     background-color: var(--color-darkaccent);
 }
 
@@ -776,4 +775,16 @@ button.accordion.active:after {
     transition: max-height 0.2s ease-out;
     list-style: none;
     font-size: 12px;
+}
+.input_block a.settings {
+    position: absolute;
+    cursor: pointer;
+    font-size: 20px;
+    margin-left: 10px;
+    color: rgba(17, 17, 17, 0);
+    transition: 0.2s;
+}
+
+.input_block:hover a.settings {
+    color: var(--color-middle);
 }

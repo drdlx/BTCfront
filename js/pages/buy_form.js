@@ -1,4 +1,4 @@
-var avgCourse, delayTimer, boughtTotal = 0, xtraData, cryptoCurrency, currencies,
+var avgCourse = 0, delayTimer, boughtTotal = 0, xtraData, cryptoCurrency, currencies,
     rubAccounts = [], btcAccounts = [], reservesBuy = [];
 
 $(document).ready(function () {
@@ -11,10 +11,10 @@ $(document).ready(function () {
             crossDomain: true,
             success: function (data) {
                 avgCourse = data.average_course;
-                if (!$.isNumeric(avgCourse)) {avgCourse = -1}
+                if (!$.isNumeric(avgCourse)) {avgCourse = 0}
             },
             error: function (err) {
-                avgCourse = -1;
+                avgCourse = 0;
             }
         });
     };
@@ -75,6 +75,9 @@ $("#post_form").on('submit', function (e) {
 });
 
 function reCount() {
+    getUserParameters(function (data) {
+        botComission = data.percentBOT;
+    });
     clearTimeout(delayTimer);
     delayTimer = setTimeout(function () {
         document.getElementById('avg_course').innerHTML = avgCourse.toFixed(2);
@@ -139,4 +142,38 @@ function setCryptoCurrency() {
 function getAvgPrognose(spent, bought, totalB, callback) {
     var result = ((totalB * avgCourse) + spent) / (totalB + bought);
     callback(result);
+}
+
+function setNewBotComiss() {
+    swal({
+        title: "Изменить процент сервисного сбора",
+        input: 'text',
+        inputPlaceholder: '0.00',
+        showCancelButton: true,
+        inputValidator: function(value) {
+            return new Promise(function (resolve, reject) {
+                if ($.isNumeric(value)) {
+                    resolve(value);
+                } else {
+                    reject("Некорректный ввод");
+                }
+            });
+        }
+    }).then(function (respond) {
+        $.ajax({
+            url: apiServer + '/userSettingUp',
+            type: 'post',
+            headers: {'authorization': token},
+            data: "&percentBOT=" + (respond * 0.01),
+            success: function (data) {
+                swal("Успех", "Процент сервисного сбора был изменен", "success");
+                botComission = parseFloat(respond) * 0.01;
+                reCount();
+            },
+            error: function (err) {
+                swal("Упс", "Что-то пошло не так, " + JSON.stringify(err), "error");
+            }
+        });
+    });
+
 }

@@ -94,9 +94,9 @@ function removeEntry(id) {
     swal({
         title: "Удаление",
         text: "Вы действительно хотите удалить запись " + document.getElementById("td" + id).innerHTML + "?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true
+        type: "warning",
+        showCancelButton: true,
+        focusCancel: true
     })
         .then(function (isPressed) {
             if (isPressed) {
@@ -106,11 +106,11 @@ function removeEntry(id) {
                     headers: {'authorization': token},
                     data: "&bank=" + document.getElementById("td" + id).innerHTML,
                     success: function (data) {
-                        swal("Запись успешно удалена", {icon: "success"});
+                        swal("Запись успешно удалена", "", "success");
                         $("#tr" + id).toggle(400);
                     },
                     error: function (err) {
-                        swal("Ошибка при удалении записи", {icon: "warning"});
+                        swal("Ошибка при удалении записи", "", "warning");
                     }
                 });
             }

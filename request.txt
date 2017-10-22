@@ -1,7 +1,5 @@
 ﻿'/auth' - аутентификация
-
 /createNewUser'-создание нового юзера(админ)
-'
 _______________________________________
 '/pay'- добавдение покупки
  skip=0 limit=0 last=true
@@ -32,11 +30,11 @@ _______________________________________
 _______________________________________
 а это для добавления(post):
 /createNP'- добаление нового резерва (админ)
-'
 '/currency_add'
 '/banks_add'
 '/anti_agent_add'
 '/reserves_add'
+/anti_agent_up обновление
 _______________________________________
 так вот запросы на удаление
 /currency_del' currency
@@ -49,3 +47,8 @@ _______________________________________
 /addMentor student, percent
 /consent status=true/false
  /listMentor
+________________________________________
+/userSetting -гет
+/userSettingUp пост
+/deleteMyOperations - очистка всего (обнуление)
+percentBOT - сервисный сбор

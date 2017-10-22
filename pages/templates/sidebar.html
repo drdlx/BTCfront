@@ -56,26 +56,6 @@
 
     reBuildSidebarContent();
 
-    //accordion lists toggle
-    var acc = document.getElementsByClassName('accordion');
-    for (var i = 0; i < acc.length; i++) {
-        acc[i].onclick = function () {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-                sessionStorage.setItem('headerPanel' + panel.id, 'false');
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-                sessionStorage.setItem('headerPanel' + panel.id, 'true');
-            }
-        };
-
-        if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
-            $(acc[i]).click();
-        }
-    }
-
     function reBuildSidebarContent() {
         getCredits(function (data) {
             creditsSidebar = [];
@@ -110,6 +90,24 @@
         $.when(q1, q2).done(function () {
             buildRemainderTab();
             buildTotalRemainders();
+            //accordion lists toggle
+            var acc = document.getElementsByClassName('accordion');
+            for (var i = 0; i < acc.length; i++) {
+                acc[i].onclick = function () {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    if (panel.style.maxHeight) {
+                        panel.style.maxHeight = null;
+                        sessionStorage.setItem('headerPanel' + panel.id, 'false');
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                        sessionStorage.setItem('headerPanel' + panel.id, 'true');
+                    }
+                };
+                if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
+                    $(acc[i]).click();
+                }
+            }
         });
 
         getMentorInvites(function (data) {

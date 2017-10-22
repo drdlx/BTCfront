@@ -68,7 +68,7 @@ function reCount() {
     clearTimeout(delayTimer);
     delayTimer = setTimeout(function () {
         avg = avgHeader;
-        document.getElementById('avg_course').innerHTML = avg;
+        document.getElementById('avg_course').innerHTML = avg.toFixed(2);
         var btcValue = parseFloat($("#btc").val()),
             courseValue = parseFloat($("#course").val()),
             comissValue = parseFloat($("#commiss").val()),

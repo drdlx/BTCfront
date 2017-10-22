@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <script src="../js/privilege.js"></script>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/main.css">
-    <title>История продаж</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Журнал операций</title>
     <script src="../js/vendor/jquery-3.2.1.min.js"></script>
     <script src="../js/main.js"></script>
     <script src="../js/vendor/sweetalert2.all.min.js"></script>
@@ -15,31 +15,31 @@
 </head>
 <body>
 <script>
-    $(function(){
+    $(function () {
         $("#sidebar").load("templates/sidebar.html");
         $("#header").load("templates/header.html");
     });
 </script>
 <div id="sidebar"></div>
 <div id="header" class="col-md-7"></div>
-<div class="wrapper col-sm-7">
+<div class="col-md-7 wrapper">
     <div class="header">
-        История операций продажи
+        Журнал операций
     </div>
     <table class="report_table" id="report_table">
         <tr>
-            <th>Резерв начисления</th>
-            <th>Продано BTC</th>
-            <th>Курс, Р</th>
-            <th>Начисленно, Р</th>
+            <th>Дата</th>
+            <th>Операция</th>
+            <th>Метод оплаты</th>
+            <th>Разница, Р</th>
+            <th>Разница, BTC</th>
             <th>Комиссия</th>
             <th>Сервисный сбор</th>
             <th>Финрез</th>
-            <th>Дата</th>
         </tr>
     </table>
     <div>
-        <a href="sell_form.html">
+        <a href="buy_form.html">
             <button class="button exit_button">Назад</button>
         </a>
         <a href="menu.html">
@@ -49,4 +49,4 @@
 </div>
 </body>
 </html>
-<script src="../js/pages/sell_history.js"></script>
+<script src="../js/pages/journal.js"></script>

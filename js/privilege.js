@@ -1,6 +1,3 @@
-/*var username = localStorage.getItem('username'),
-    token = localStorage.getItem('token'),
-    priv = localStorage.getItem('permission');*/
 var username = localStorage.getItem('username'),
     token = localStorage.getItem('token'),
     priv = localStorage.getItem('permission');
