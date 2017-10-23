@@ -8,17 +8,18 @@ $(document).ready(function () {
         if (username !== "Все пользователи") {
             userReqStr = (priv === 'admin') ? "&user=" + username : "";
         }
+        var currDateHeader = new Date(), day = currDateHeader.getDate(), month = currDateHeader.getMonth() + 1,
+            year = currDateHeader.getFullYear();
         return $.ajax({
             url: apiServer + request,
             type: 'GET',
             crossDomain: true,
-            data: userReqStr,
+            data: userReqStr + "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=1/1/1990",
             headers: {
                 "authorization": localStorage.getItem('token')
             },
             success: function (data) {
-                console.log(data);
-                var arr = data.report.noncrypto;
+                var arr = data.reports.noncrypto;
                 dateList = {};
                 $.each(arr, function (key, value) {
                     var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1,
@@ -71,30 +72,30 @@ $(document).ready(function () {
 function reBuildTable() {
     $("#report_table").find("tr:gt(0)").remove();
     $("#loading").show();
-    var request = (localStorage.getItem('permission') === 'admin') ? '/admin/reportfull' : '/reportfull';
     var user = $("#report_user").val(), date = $("#report_date").val();
     if (user === "Все пользователи") {
         user = "";
     }
     var userReqStr = (priv === 'admin') ? "&user=" + user : "";
+    var request = (localStorage.getItem('permission') === 'admin') ? '/admin/reportfull' : '/reportfull';
     $.ajax({
         url: apiServer + request,
         type: 'GET',
         crossDomain: true,
-        data: userReqStr + "&date=" + date,
+        data: userReqStr + "&dateEnd=" + date + "&dateBegin=" + date,
         headers: {
             "authorization": localStorage.getItem('token')
         },
         success: function (data) {
+            console.log(data);
             var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0,
                 overallFinres = 0;
             var operation_data = '', sortedNoncryptoData = {},
-                unsortedNoncrypto = data.report.noncrypto,
-                unsortedCrypto = data.report.crypto;
-            console.log(data);
+                unsortedNoncrypto = data.reports.noncrypto,
+                unsortedCrypto = data.reports.crypto;
             if (unsortedNoncrypto !== undefined) {
                 sortedNoncryptoData = unsortedNoncrypto.sort(function (a, b) {
-                    return a.user.localeCompare(b.user);
+                    return a.responsible.localeCompare(b.responsible);
                 });
             }
             var currentUser = '', colCount = 7;
@@ -103,8 +104,8 @@ function reBuildTable() {
                 var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1,
                     year = currDate.getFullYear();
                 dateList[month + "/" + day + "/" + year] = month + "/" + day + "/" + year;
-                if ((currentUser !== value.user) && (priv === 'admin') && (user === "")) {
-                    currentUser = value.user;
+                if ((currentUser !== value.responsible) && (priv === 'admin') && (user === "")) {
+                    currentUser = value.responsible;
                     operation_data += '<tr class="report-user-header">';
                     operation_data += '<td colspan="' + colCount + '">' + currentUser + "</td>";
                     operation_data += '</tr>';

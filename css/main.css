@@ -127,7 +127,17 @@ textarea {
     background-color: rgba(211, 211, 211, 0.25);
     width: 100%;
 }
-
+.dangerButton {
+    padding: 10px 15px;
+    color: var(--color-bright);
+    background-color: red;
+    border-radius: 5px;
+    width: 200px;
+    font-weight: 700;
+    display: inline-block;
+    font-size: 0.7em;
+    cursor: pointer;
+}
 .button:hover {
     color: #eaf5ff;
     background-color: #424242;
@@ -191,7 +201,17 @@ button.quick_access:hover {
     text-align: center;
     font-size: 1.25em;
 }
-
+.settings_block {
+    display: inline-block;
+    text-align: center;
+    font-size: 1.25em;
+}
+.settings_block label {
+    text-align: left;
+    display: inline-block;
+    width: 185px;
+    vertical-align: middle;
+}
 .middle {
     margin: 7px auto;
     display: block;
@@ -377,7 +397,8 @@ input[readonly] {
     text-align: center;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     vertical-align: middle;
-    max-width: 130px;
+    word-wrap: break-word;
+    max-width: 50px;
 }
 
 .handbook_table td {
@@ -430,18 +451,33 @@ input.validate:valid:not(:placeholder-shown) {
     background-color: rgba(41, 255, 0, 0.28);
 }
 
-.handbook_table tr td a.delete_button {
+.handbook_table tr td .button_block {
     visibility: hidden;
     position: absolute;
-    cursor: pointer;
     font-size: 20px;
     line-height: 15px;
-    color: #e41510;
     margin-left: 10px;
+    letter-spacing: 0.5em;
+    display: inline-block;
+    padding: 2px;
+    background-color: white;
+    max-width: 0px;
+    overflow: hidden;
+    transition-duration: 0.2s;
+    height: 1em;
 }
 
-.handbook_table tr:hover td a.delete_button {
+.darkaccent {
+    color: var(--color-darkaccent);
+}
+
+.handbook_table tr:hover td .button_block {
     visibility: visible;
+    max-width: 100%;
+}
+
+.button_block a {
+    cursor: pointer;
 }
 
 .handbook_table tr td a.mentor {

@@ -67,13 +67,15 @@ function getFullPaymentData(callback) {
         headers: {'authorization': localStorage.getItem('token')},
         crossDomain: true,
         success: function (data) {
-            $.each(data, function (key, value) {
-                currentAvg = ((totalBtc * currentAvg) + value.rub) / (totalBtc + value.btc);
-                totalBtc += value.btc - value.bot_commiss;
-                totalRub -= value.rub + value.commiss;
-            });
+            if (data) {
+                $.each(data, function (key, value) {
+                    currentAvg = ((totalBtc * currentAvg) + value.rub) / (totalBtc + value.btc);
+                    totalBtc += value.btc - value.bot_commiss;
+                    totalRub -= value.rub + value.commiss;
+                });
+            }
             var result = {
-                'data': data,
+                'data': (data) ? data : "",
                 'avg': currentAvg.toFixed(2),
                 'btc': totalBtc.toFixed(8),
                 'rub': totalRub.toFixed(2)
@@ -248,6 +250,20 @@ function getMentorList(callback) {
         },
         error: function (err) {
             callback(err.status);
+        }
+    });
+}
+
+function clearHistory(callback) {
+    return $.ajax({
+        url: apiServer + '/deleteMyOperations',
+        type: 'get',
+        headers: {'authorization' : token},
+        success: function (data) {
+            callback(1);
+        },
+        error: function (err) {
+            callback(err);
         }
     });
 }

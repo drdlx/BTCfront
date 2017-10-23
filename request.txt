@@ -41,6 +41,7 @@ _______________________________________
 /banks_del' bank
 /anti_agent_del' agentname
 /reserves_del' title
+/deleteMyOperations - очистка всего (обнуление)
 _______________________________________
 Наставники
 /checkMentor
@@ -50,5 +51,4 @@ _______________________________________
 ________________________________________
 /userSetting -гет
 /userSettingUp пост
-/deleteMyOperations - очистка всего (обнуление)
 percentBOT - сервисный сбор

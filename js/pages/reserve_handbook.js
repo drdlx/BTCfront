@@ -30,9 +30,10 @@ $(document).ready(function () {
 });
 buildTable();
 
+var users = {}, reservesID = {};
+
 function buildTable() {
     getReserveList(function (data) {
-        console.log(data);
         var reserves = data;
         if (reserves.length === 0) {
             $("#empty_notification").html("Нет доступных резервов");
@@ -47,28 +48,28 @@ function buildTable() {
                 '</tr>');
             var idNum = 0, xtraTools = "", operational_data = "", xtraClass = "";
             $.each(reserves, function (key, value) {
-                if (value.owner === username) {
-                    xtraClass = "class=\"owner\" ";
-                } else {
-                    xtraClass = "";
+                if (value.owner === username || value.responsible === username) {
+                    reservesID[idNum] = value;
+                    xtraClass = (value.owner === username) ? "class=\"owner\" " : "";
+                    operational_data += '<tr ' + xtraClass + 'id="tr' + idNum + '\">';
+                    operational_data += '<td id="td' + idNum + '\">' + transformValue(value.title) + '</td>';
+                    operational_data += '<td>' + transformValue(value.bank) + '</td>';
+                    operational_data += '<td>' + transformValue(value.currency) + '</td>';
+                    operational_data += '<td>' + transformValue(value.owner) + '</td>';
+
+                    if (value.owner === username) {
+                        xtraTools = '<div class="button_block"><a onclick="updateEntry(' + idNum + ")" + '">' +
+                            '<i class="fa fa-retweet darkaccent" aria-hidden="true"></i></a><a onclick="removeEntry(' + idNum + ")\"" + '">' +
+                            '<i class="fa fa-times red" aria-hidden="true"></i></a></div>';
+                    } else {
+                        xtraTools = "";
+                    }
+
+                    operational_data += '<td>' + transformValue(value.responsible) + xtraTools + '</td>';
+                    operational_data += '</tr>';
+
+                    idNum++;
                 }
-                operational_data += '<tr ' + xtraClass + 'id="tr' + idNum + '\">';
-                operational_data += '<td id="td' + idNum + '\">' + transformValue(value.title) + '</td>';
-                operational_data += '<td>' + transformValue(value.bank) + '</td>';
-                operational_data += '<td>' + transformValue(value.currency) + '</td>';
-                operational_data += '<td>' + transformValue(value.owner) + '</td>';
-
-                if (value.owner === username) {
-                    xtraTools = '<a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
-                        '<i class="fa fa-times" aria-hidden="true"></i></a>';
-                } else {
-                    xtraTools = "";
-                }
-
-                operational_data += '<td>' + transformValue(value.responsible) + xtraTools + '</td>';
-                operational_data += '</tr>';
-
-                idNum++;
             });
             $("#handbook_table").append(operational_data);
             $(".preload").removeClass('preload');
@@ -103,19 +104,23 @@ function fillOwnerSelect() {
             select.options[j].text = ".....";
         }
     }
-    if (priv === 'admin') {
-        getAntiagentList(function (data) {
-            for (var i = 0; i < data.length; i++) {
+    getAntiagentList(function (data) {
+        for (var i = 0; i < data.length; i++) {
+            if (priv === 'admin') {
                 var opt = document.createElement("option");
                 opt.innerHTML = data[i].agentname;
                 select.appendChild(opt);
             }
-        });
-    } else {
-        var opt = document.createElement("option");
-        opt.innerHTML = username;
-        select.appendChild(opt);
-    }
+            if (data[i].internal) {
+                users[data[i].agentname] = data[i].agentname;
+            }
+        }
+        if (priv !== 'admin') {
+            var opt = document.createElement("option");
+            opt.innerHTML = username;
+            select.appendChild(opt);
+        }
+    });
 }
 
 function fillResponsibleSelect() {
@@ -162,14 +167,45 @@ function removeEntry(id) {
                     url: apiServer + '/reserves_del',
                     type: 'post',
                     headers: {'authorization': token},
-                    data: "&title=" + document.getElementById("td" + id).innerHTML,
+                    data: "&title=" + reservesID[id].title,
                     success: function (data) {
                         swal("Запись успешно удалена", "", "success");
                         $("#tr" + id).toggle(400);
+                        delete reservesID[id];
                         reBuildSidebarContent();
                     },
                     error: function (err) {
                         swal("Ошибка при удалении записи", "", "warning");
+                    }
+                });
+            }
+        });
+}
+
+function updateEntry(id) {
+    swal({
+        title: "Смена ответственного",
+        text: "Выберите пользователя, которому желаете передать свой резерв под ответственность",
+        input: "select",
+        inputOptions: users,
+        inputPlaceholder: "Ответственный...",
+        showCancelButton: true,
+        focusCancel: true
+    })
+        .then(function (isPressed) {
+            if (isPressed) {
+                $.ajax({
+                    url: apiServer + '/reserves_up',
+                    type: 'post',
+                    headers: {'authorization': token},
+                    data: "&title=" + reservesID[id].title + "&id=" + reservesID[id]._id + "&bank=" + reservesID[id].bank +
+                    "&currency=" + reservesID[id].currency + "&owner=" + reservesID[id].owner + "&responsible=" + isPressed,
+                    success: function (data) {
+                        swal("Запись успешно обновлена", "", "success");
+                        reBuildSidebarContent();
+                    },
+                    error: function (err) {
+                        swal("Ошибка при обновлении записи", "", "warning");
                     }
                 });
             }

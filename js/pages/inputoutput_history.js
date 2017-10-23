@@ -113,8 +113,8 @@ function fillTable(data, targetID) {
                     if (targetID === '#report_table') {
                         acceptedID["" + rowNumber] = value._id;
                     }
-
-                    operation_data += '<td>' + value.date.substring(0, value.date.indexOf('T')) + xtraData + '</td>';
+                    var datet = value.date.split("/");
+                    operation_data += '<td>' + datet[1] + "/" + datet[0] + "/" + datet[2] + xtraData + '</td>';
                     operation_data += '</tr>';
                 });
             });
