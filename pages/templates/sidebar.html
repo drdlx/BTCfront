@@ -155,7 +155,7 @@
             url: apiServer + "/journal",
             type: 'get',
             headers: {'authorization': token},
-            data: "&begin=0&end=5" + "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=",
+            data: "&begin=0&end=5" + "&dateEnd=" + year + "-" + ((month < 10) ? "0" + month : month) + "-" + ((day < 10) ? "0" + day : day) + "&dateBegin=",
             success: function (data) {
                 var operation_data = 'Последние операции';
                 $("#sidebarHistory").html("");
