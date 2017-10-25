@@ -50,10 +50,12 @@ function buildTable() {
                 operational_data += '<tr id="tr' + idNum + "\">";
                 operational_data += '<td id="td' + idNum + "\">" + value.currency + '</td>';
 
+                xtraTools = '<div class="button_block">';
                 if (priv === 'admin') {
-                    xtraTools = '<a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
+                    xtraTools += '<a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
                         '<i class="fa fa-times" aria-hidden="true"></i></a>';
                 }
+                xtraTools += '</div>';
 
                 var transformedBool = (value.isCrypto === true) ? "Да" : "Нет";
                 operational_data += '<td>' + transformedBool + xtraTools + '</td>';

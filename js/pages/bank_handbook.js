@@ -54,10 +54,12 @@ function buildTable() {
                 operational_data += '<tr id="tr' + idNum + "\">";
                 operational_data += '<td id="td' + idNum + "\">" + transformValue(value.bank) + '</td>';
 
+                xtraTools = '<div class="button_block">';
                 if (priv === 'admin') {
-                    xtraTools = '<a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
+                    xtraTools += '<a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
                         '<i class="fa fa-times" aria-hidden="true"></i></a>';
                 }
+                xtraTools += '</div>';
 
                 operational_data += '<td>' + transformValue(value.currency) + xtraTools + '</td>';
                 operational_data += '</tr>';

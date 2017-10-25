@@ -70,6 +70,10 @@ textarea {
     resize: vertical;
 }
 
+b, strong {
+    font-weight: 700;
+}
+
 .header {
     text-align: center;
     font-size: 3em;
@@ -359,7 +363,6 @@ input[readonly] {
 .report_table tr:hover td {
     background: #4E5066;
     color: #FFFFFF;
-    border-top: 1px solid #22262e;
 }
 
 
@@ -409,6 +412,7 @@ input[readonly] {
     font-size: 16px;
     text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
     border-right: 1px solid #C1C3D1;
+    position: relative;
 }
 
 .handbook_table td:first-child {
@@ -456,10 +460,10 @@ input.validate:valid:not(:placeholder-shown) {
     position: absolute;
     font-size: 20px;
     line-height: 15px;
-    margin-left: 10px;
+    left: 100%;
     letter-spacing: 0.5em;
-    display: inline-block;
-    padding: 2px;
+    display: inline-flex;
+    padding: 2px 0;
     background-color: white;
     max-width: 0px;
     overflow: hidden;
@@ -556,6 +560,18 @@ input.validate:valid:not(:placeholder-shown) {
 
 #report_table tr td button.decline {
     display: none;
+}
+
+.report_table .buy td {
+    background-color: #f4c7c3 !important;
+}
+
+.report_table .sell td {
+    background-color: #b7e1cd !important;
+}
+
+.report_table .transfer td {
+    background-color: #fce8b2 !important;
 }
 
 #unaccepted_table tr td button.accept {
@@ -811,6 +827,24 @@ button.accordion.active:after {
     transition: max-height 0.2s ease-out;
     list-style: none;
     font-size: 12px;
+    font-weight: 600;
+}
+.sidebarHistory ul {
+    margin: 0;
+    padding: 10px;
+    background-color: rgba(235, 241, 148, 0.23);
+    font-size: 14px;
+    color: var(--color-dark);
+    font-weight: 600;
+    border-radius: 5px;
+}
+.sidebarHistory li {
+    list-style: none;
+    padding: 3px;
+    border-bottom: 1px #cab7b7 solid;
+    font-weight: 100;
+    font-size: 16px;
+    line-height: 1.35em;
 }
 .input_block a.settings {
     position: absolute;

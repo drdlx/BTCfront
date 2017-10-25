@@ -1,4 +1,4 @@
-var currencies, userReserves = [], sourceList = [], agents = [], selectedCurrency, fulfilled = false,
+var currencies, userReserves = [], sourceList = [], agents = [], selectedCurrency,
     sourceType = "", destType = "";
 $(document).ready(function () {
     var r1 = getCurrencyList(function (data) {
@@ -43,7 +43,7 @@ $("#post_form").on('submit', function (e) {
         type: 'post',
         crossDomain: true,
         headers: {'authorization': localStorage.getItem('token')},
-        data: $("#post_form").serialize() + "&fulfilled=" + fulfilled,
+        data: $("#post_form").serialize() + "&currency=" + selectedCurrency,
         success: function () {
             document.getElementById('post_form').reset();
             swal("Успех", "Операция перевода была добавлена", "success");
@@ -109,6 +109,7 @@ function checkOutput(outputValue) {
         if (userReserves[i].title === outputValue) {
             found = true;
             destType = 'reserve';
+            selectedCurrency = userReserves[i].currency;
             break;
         }
     }
@@ -120,8 +121,5 @@ function checkOutput(outputValue) {
                 break;
             }
         }
-    }
-    if ((sourceType === 'reserve' || sourceType === 'agent') && destType === 'reserve') {
-        fulfilled = true;
     }
 }

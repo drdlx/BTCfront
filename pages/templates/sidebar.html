@@ -19,10 +19,14 @@
             <ul id="totalRemainders">
             </ul>
         </div>
+        <div class="sidebarHistory">
+            <ul id="sidebarHistory">
+            </ul>
+        </div>
     </div>
 </div>
 <script>
-    var creditsSidebar = [], debetsSidebar = [], reservesRemainders = [],
+    var creditsSidebar = [], debetsSidebar = [], reservesRemainders = [], reservesSidebar = [],
         mentorInvites = [], mentorsId = {}, currenciesSidebar = [], totalRemainders = {};
 
     buildCachedTabs();
@@ -52,6 +56,30 @@
             sidebar.removeClass('notransition');
             minButton.removeClass('notransition');
         }, 200);
+    }
+
+    //accordion lists toggle
+    var acc = document.getElementsByClassName('accordion');
+    for (var i = 0; i < acc.length; i++) {
+        acc[i].onclick = function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+                sessionStorage.setItem('headerPanel' + panel.id, 'false');
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + 30 + "px";
+                sessionStorage.setItem('headerPanel' + panel.id, 'true');
+            }
+        };
+        if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
+            var panel = $(acc[i]).next();
+            panel.addClass("notransition");
+            $(acc[i]).click();
+            setTimeout(function () {
+                panel.removeClass('notransition');
+            }, 200);
+        }
     }
 
     reBuildSidebarContent();
@@ -90,24 +118,27 @@
         $.when(q1, q2).done(function () {
             buildRemainderTab();
             buildTotalRemainders();
-            //accordion lists toggle
+
             var acc = document.getElementsByClassName('accordion');
             for (var i = 0; i < acc.length; i++) {
-                acc[i].onclick = function () {
-                    this.classList.toggle("active");
-                    var panel = this.nextElementSibling;
-                    if (panel.style.maxHeight) {
-                        panel.style.maxHeight = null;
-                        sessionStorage.setItem('headerPanel' + panel.id, 'false');
-                    } else {
-                        panel.style.maxHeight = panel.scrollHeight + "px";
-                        sessionStorage.setItem('headerPanel' + panel.id, 'true');
-                    }
-                };
                 if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
+                    var panel = $(acc[i]).next();
+                    panel.addClass("notransition");
                     $(acc[i]).click();
+                    $(acc[i]).click();
+                    setTimeout(function () {
+                        panel.removeClass('notransition');
+                    }, 250);
                 }
             }
+        });
+
+        var q3 = getReserveList(function (data) {
+            reservesSidebar = data;
+        });
+
+        $.when(q3).done(function () {
+            buildHistoryBlock();
         });
 
         getMentorInvites(function (data) {
@@ -117,19 +148,44 @@
             });
             buildMentorInvitesTab();
         });
+    }
 
-        var acc = document.getElementsByClassName('accordion');
-        for (var i = 0; i < acc.length; i++) {
-            if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
-                var panel = $(acc[i]).next();
-                panel.addClass("notransition");
-                panel[0].offsetHeight;
-                panel.css("max-height", panel.css("scroll-height"));
-                setTimeout(function () {
-                    panel.removeClass('notransition');
-                }, 200);
+    function buildHistoryBlock() {
+        $.ajax({
+            url: apiServer + "/journal",
+            type: 'get',
+            headers: {'authorization': token},
+            data: "&begin=0&end=5" + "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=",
+            success: function (data) {
+                var operation_data = 'Последние операции';
+                $("#sidebarHistory").html("");
+                $.each(data, function (key, value) {
+                    let operation = value.operation;
+                    switch (operation) {
+                        case "pay":
+                            operation_data += '<li><b>Купленно:</b> <span class="green"><b>' + value.btc + '</b></span> за <span class="red"><b>' + value.rub + ' RUB'  + '</b></span> по курсу <b>' + value.course + '</b></li>';
+                            break;
+                        case "sell":
+                            operation_data += '<li><b>Продано:</b> <span class="red"><b>' + value.btc + '</b></span> за <span class="green"><b>' + value.rub + '</span> RUB'  + '</b> по курсу <b>' + value.course + '</b></li>';
+                            break;
+                        case "translate":
+                            var sourceRes = reservesSidebar.find(function (a) {
+                                if (a.title === value.source) {
+                                    return true;
+                                }
+                            });
+                            if (!sourceRes) {
+                                sourceRes = value.source;
+                            } else {
+                                sourceRes = (sourceRes.responsible === username) ? sourceRes.responsible : sourceRes.owner;
+                            }
+                            operation_data += '<li><b>Перевод:</b> ' + ((sourceRes === username) ? 'отправлено <span class="red"><b>' : 'получено <span class="green"><b>') + value.transaction + '</span> ' + value.currency + ((sourceRes === username) ? '</b> на <b>' : '</b> от <b>') + value.destination + '</b></li>';
+                            break;
+                    }
+                });
+                $("#sidebarHistory").html(operation_data);
             }
-        }
+        });
     }
 
     function buildMentorInvitesTab() {

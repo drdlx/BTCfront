@@ -8,6 +8,7 @@ getCurrencyList(function (data) {
 
 $(document).ready(function () {
     getMentorList(function (data) {
+        console.log(data);
         mentorList = data.mentors;
         studentList = data.students;
     });
@@ -59,7 +60,7 @@ function buildTable() {
                 '<th>E-mail</th>\n' +
                 '</tr>');
             var idNum = 0;
-            var removeButton = "", addStudentButton = "";
+            var removeButton = "", addStudentButton = "", xtraData = '';
             var operational_data = "";
             $.each(agents, function (key, value) {
                 var isMentor = mentorList.find(function (a) {
@@ -84,20 +85,21 @@ function buildTable() {
                 operational_data += '<td>' + transformValue(value.call) + '</td>';
 
                 if (priv === 'admin' && value.internal === false) {
-                    removeButton = ' <a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
+                    removeButton = ' <a onclick="removeEntry(' + idNum + ")\"" + '">' +
                         '<i class="fa fa-times" aria-hidden="true"></i></a>';
                 } else {
                     removeButton = "";
                 }
-
                 if (value.internal === true && value.agentname !== username && !isMentor && !isStudent) {
-                    addStudentButton = ' <a class="mentor" onclick="invite(' + "'" + value.agentname + "'" + ")\"" + '">' +
+                    addStudentButton = ' <a onclick="invite(' + "'" + value.agentname + "'" + ")\"" + '">' +
                         '<i class="fa fa-graduation-cap" aria-hidden="true"></i></a>';
                 } else {
                     addStudentButton = "";
                 }
+                xtraData = '<div class="button_block">';
+                xtraData += addStudentButton + removeButton + '</div>';
 
-                operational_data += '<td>' + transformValue(value.mail) + addStudentButton + removeButton + '</td>';
+                operational_data += '<td>' + transformValue(value.mail) + xtraData + '</td>';
                 operational_data += '</tr>';
 
                 idNum++;
