@@ -86,6 +86,7 @@ b, strong {
     box-shadow: -2px 2px 0.5em rgba(0, 0, 0, 0.5);
     padding: 10px;
     background-color: var(--color-bright);
+    z-index: 0;
 }
 
 .button_pane table {
@@ -130,6 +131,7 @@ b, strong {
     line-height: 1em;
     background-color: rgba(211, 211, 211, 0.25);
     width: 100%;
+    margin: auto;
 }
 .dangerButton {
     padding: 10px 15px;
@@ -267,7 +269,7 @@ input[readonly] {
     background: white;
     border-radius: 3px;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin: 15px 0;
     padding: 5px;
     width: 100%;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
@@ -335,6 +337,7 @@ input[readonly] {
     font-size: 16px;
     text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
     border-right: 1px solid #C1C3D1;
+    max-width: 110px;
 }
 
 .report_table td:last-child {
@@ -365,7 +368,15 @@ input[readonly] {
     color: #FFFFFF;
 }
 
+#changeResponsibleButtons {
+    display: none;
+}
+#changeResponsibleButtons.active {
+    display: flex;
+}
 
+.active {
+}
 .preload {
     display: none;
 }
@@ -401,7 +412,7 @@ input[readonly] {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     vertical-align: middle;
     word-wrap: break-word;
-    max-width: 50px;
+    max-width: 75px;
 }
 
 .handbook_table td {
@@ -445,6 +456,22 @@ input[readonly] {
     background-color: rgba(206, 206, 188, 0.17);
     padding: 10px;
     border-radius: 5px;
+}
+.absolute_checkbox {
+    position: absolute;
+    left: 0;
+    z-index: -1;
+    transition-duration: 0.3s;
+}
+
+.absolute_checkbox.active {
+    left: -25%;
+    z-index: 1;
+}
+
+.absolute_checkbox input {
+    width: 20px;
+    height: 20px;
 }
 
 input.validate:invalid:not(:placeholder-shown) {
@@ -857,4 +884,24 @@ button.accordion.active:after {
 
 .input_block:hover a.settings {
     color: var(--color-middle);
+}
+
+.pager {
+    cursor: pointer;
+    background: var(--color-light);
+    padding: 5px 15px;
+    margin: 0 5px;
+    font-size: 30px;
+    border-radius: 10px;
+    box-shadow: -1px 1px 4px 1px rgba(0, 0, 0, 0.35);
+    border: 5px solid transparent;
+}
+.pager:active {
+    border: var(--color-light) ridge 5px;
+}
+.pager.disabled {
+    background-color: #adadad;
+    box-shadow: none;
+    color: snow;
+    pointer-events: none;
 }

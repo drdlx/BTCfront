@@ -24,12 +24,18 @@
 <div id="header" class="col-md-7"></div>
 <div class="wrapper col-sm-7">
     <div class="header">Справочник резервов</div>
+    <h3 id="responsibleMsg" class="hidden centered">Отметьте резервы для передачи</h3>
     <div class="centered">
         <div>Доступные резервы:</div>
         <span id="empty_notification"></span>
         <table class="handbook_table preload" id="handbook_table">
         </table>
     </div>
+    <div id="changeResponsibleButtons" class="middle">
+        <button class="button col-md-2" onclick="toggleResponsibilityBlock()">Отмена</button>
+        <button class="button col-md-2">Отправить</button>
+    </div>
+    <button id="changeResponsibleActivate" class="button col-md-3 middle" onclick="toggleResponsibilityBlock()">Передать ответственность</button>
     <div id="add_reserve">
         <script>$("#add_reserve").hide();</script>
         <button class="button middle col-md-3" id="add_button">Добавить новый резерв</button>

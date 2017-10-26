@@ -40,7 +40,7 @@
             url: apiServer + '/reportfull',
             type: 'GET',
             crossDomain: true,
-            data: userReqStrHeader + "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=",
+            data: userReqStrHeader + "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=" + month + "/" + day + "/" + year,
             headers: {
                 "authorization": localStorage.getItem('token')
             },

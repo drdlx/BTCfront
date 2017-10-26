@@ -30,7 +30,7 @@ $(document).ready(function () {
 });
 buildTable();
 
-var users = {}, reservesID = {};
+var users = {}, reservesID = {}, selected = [];
 
 function buildTable() {
     getReserveList(function (data) {
@@ -52,14 +52,15 @@ function buildTable() {
                     reservesID[idNum] = value;
                     xtraClass = (value.owner === username) ? "class=\"owner\" " : "";
                     operational_data += '<tr ' + xtraClass + 'id="tr' + idNum + '\">';
-                    operational_data += '<td id="td' + idNum + '\">' + transformValue(value.title) + '</td>';
+                    operational_data += '<td id="td' + idNum + '\">' + '<div class="absolute_checkbox">'
+                        + '<input type="checkbox" onchange="toggleSelection(' + idNum+ ')"></div> '
+                        + transformValue(value.title) + '</td>';
                     operational_data += '<td>' + transformValue(value.bank) + '</td>';
                     operational_data += '<td>' + transformValue(value.currency) + '</td>';
                     operational_data += '<td>' + transformValue(value.owner) + '</td>';
 
                     if (value.owner === username) {
-                        xtraTools = '<div class="button_block"><a onclick="updateEntry(' + idNum + ")" + '">' +
-                            '<i class="fa fa-retweet darkaccent" aria-hidden="true"></i></a><a onclick="removeEntry(' + idNum + ")\"" + '">' +
+                        xtraTools = '<div class="button_block"><a onclick="removeEntry(' + idNum + ")\"" + '">' +
                             '<i class="fa fa-times red" aria-hidden="true"></i></a></div>';
                     } else {
                         xtraTools = "";
@@ -182,7 +183,7 @@ function removeEntry(id) {
         });
 }
 
-function updateEntry(id) {
+/*function updateEntry(id) {
     swal({
         title: "Смена ответственного",
         text: "Выберите пользователя, которому желаете передать свой резерв под ответственность",
@@ -210,4 +211,21 @@ function updateEntry(id) {
                 });
             }
         });
+}*/
+
+function toggleResponsibilityBlock() {
+    $('input:checkbox').prop("checked", false);
+    selected = [];
+    $(".absolute_checkbox").toggleClass("active");
+    $("#changeResponsibleActivate").toggleClass("active");
+    $("#changeResponsibleButtons").toggleClass("active");
+    $("#responsibleMsg").toggle(200);
+}
+
+function toggleSelection(id) {
+    if (selected.indexOf(id) !== -1) {
+        selected.splice(selected.indexOf(id), 1);
+    } else {
+        selected.push(id);
+    }
 }
