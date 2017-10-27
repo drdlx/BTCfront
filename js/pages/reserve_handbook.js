@@ -50,7 +50,7 @@ function buildTable() {
             $.each(reserves, function (key, value) {
                 if (value.owner === username || value.responsible === username) {
                     reservesID[idNum] = value;
-                    xtraClass = (value.owner === username) ? "class=\"owner\" " : "";
+                    xtraClass = (value.responsible === username) ? "class=\"owner\" " : "";
                     operational_data += '<tr ' + xtraClass + 'id="tr' + idNum + '\">';
                     operational_data += '<td id="td' + idNum + '\">' + '<div class="absolute_checkbox">'
                         + '<input type="checkbox" onchange="toggleSelection(' + idNum+ ')"></div> '
@@ -183,35 +183,40 @@ function removeEntry(id) {
         });
 }
 
-/*function updateEntry(id) {
+function sendResponsibleSwitch() {
+    var dataToSend = [];
+    for (var i = 0; i < selected.length; i++) {
+        dataToSend.push(reservesID[selected[i]]._id);
+    }
     swal({
         title: "Смена ответственного",
-        text: "Выберите пользователя, которому желаете передать свой резерв под ответственность",
+        text: "Выберите пользователя, которому желаете передать свои резервы под ответственность",
         input: "select",
         inputOptions: users,
         inputPlaceholder: "Ответственный...",
         showCancelButton: true,
         focusCancel: true
-    })
-        .then(function (isPressed) {
-            if (isPressed) {
-                $.ajax({
-                    url: apiServer + '/reserves_up',
-                    type: 'post',
-                    headers: {'authorization': token},
-                    data: "&title=" + reservesID[id].title + "&id=" + reservesID[id]._id + "&bank=" + reservesID[id].bank +
-                    "&currency=" + reservesID[id].currency + "&owner=" + reservesID[id].owner + "&responsible=" + isPressed,
-                    success: function (data) {
-                        swal("Запись успешно обновлена", "", "success");
-                        reBuildSidebarContent();
-                    },
-                    error: function (err) {
-                        swal("Ошибка при обновлении записи", "", "warning");
-                    }
-                });
-            }
-        });
-}*/
+    }).then(function (responsible) {
+        if (responsible) {
+            $.ajax({
+                url: apiServer + '/pass',
+                type: 'post',
+                headers: {'authorization' : token},
+                data: {
+                    data: dataToSend,
+                    responsible: responsible
+                },
+                success: function (data) {
+                    swal("Запрос на передачу резервов был отправлен", "", "success");
+                    toggleResponsibilityBlock();
+                },
+                error: function () {
+                    swal("Ошибка при отправке запроса", "", "warning");
+                }
+            });
+        }
+    });
+}
 
 function toggleResponsibilityBlock() {
     $('input:checkbox').prop("checked", false);
