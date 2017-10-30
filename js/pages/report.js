@@ -4,7 +4,7 @@ var userList = ["Все пользователи"], dateList = {};
 $(document).ready(function () {
     //get all available dates for current user
     var r1 = function (username) {
-        var request = (priv === 'admin') ? '/admin/reportfull' : '/reportfull', userReqStr = "";
+        var request = (priv === 'admin') ? '/admin/reportfull' : '/reportfull', userReqStr = "&user=";
         if (username !== "Все пользователи") {
             userReqStr = (priv === 'admin') ? "&user=" + username : "";
         }
