@@ -2,24 +2,20 @@
 /createNewUser'-создание нового юзера(админ)
 _______________________________________
 '/pay'- добавдение покупки
- skip=0 limit=0 last=true
-/reportpay'- отчет о покупках
-'
+ begin=0 end=0 last=true
+/reportpay'- отчет о покупках (история)
 _______________________________________
 '/sell'- добавление продажи
-' skip=0 limit=0 last=true
-/reportsell'-отчет о продажах
-'
+begin=0 end=0 last=true
+/reportsell'-отчет о продажах (история)
 _______________________________________
 /translate - ввод\вывод fulfilled=true\false
-'/reporttranslate' переводы
+'/reporttranslate' история переводов
 /checktranslate  вернет тебе висящие  переводы на данного юзера
 /confirmation fulfilled=true\false выполнять при подтверждении перевода
 _______________________________________
 /reportfull'- полный отчет по рублевым резервам
-'
 /reportfullBTC'-полный отчет по резервам битков
-'
 /reportcredit - кредиты
 _______________________________________
 получение справочников
@@ -29,7 +25,7 @@ _______________________________________
 '/reserves'
 _______________________________________
 а это для добавления(post):
-/createNP'- добаление нового резерва (админ)
+/createNP'- добаление нового резерва
 '/currency_add'
 '/banks_add'
 '/anti_agent_add'
@@ -47,8 +43,14 @@ _______________________________________
 /checkMentor
 /addMentor student, percent
 /consent status=true/false
- /listMentor
+/listMentor
 ________________________________________
+параметры юзера
 /userSetting -гет
 /userSettingUp пост
 percentBOT - сервисный сбор
+________________________________________
+передача резервов
+/passReserves отправить резервы
+/checkPass висящие резервы
+/confirmedPass - подтвердить передачу

@@ -20,7 +20,7 @@ $(document).ready(function () {
                     }
                 },
                 success: function (data) {
-                    swal("Успех", 'Пользователь ' + $("#login").val() + ' был создан');
+                    swal("Успех", 'Пользователь ' + $("#login").val() + ' был создан', "success");
                     document.getElementById('error-msg').innerHTML = '';
                     document.getElementById('post_form').reset();
                 },

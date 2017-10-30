@@ -254,6 +254,20 @@ function getMentorList(callback) {
     });
 }
 
+function getReserveSwitches(callback) {
+    return $.ajax({
+        url: apiServer + '/checkPass',
+        type: 'get',
+        headers: {'authorization': localStorage.getItem('token')},
+        success: function (data) {
+            callback(data);
+        },
+        error: function (err) {
+            callback(err.status);
+        }
+    });
+}
+
 function clearHistory(callback) {
     return $.ajax({
         url: apiServer + '/deleteMyOperations',

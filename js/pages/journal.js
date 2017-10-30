@@ -10,7 +10,8 @@ function drawJournal(page, direction) {
         url: apiServer + "/journal",
         type: 'get',
         headers: {'authorization': token},
-        data: "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=&begin=" + (display * page) + "&end=" + (display * page + display),
+        data: "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=&begin="
+        + (display * page) + "&end=" + (display * page + display) + "&user=" + username,
         success: function (data) {
             console.log(data);
             if (data && data.length > 0) {

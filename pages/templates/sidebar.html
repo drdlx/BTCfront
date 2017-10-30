@@ -15,6 +15,11 @@
             <ul class="accordion_panel" id="mentor">
             </ul>
         </div>
+        <div class="hidden" id="reserves_switches">
+            <button class="accordion" id="reserves_switches_button">Передача резервов</button>
+            <ul class="accordion_panel" id="switches">
+            </ul>
+        </div>
         <div class="totalRemainders">
             <ul id="totalRemainders">
             </ul>
@@ -27,7 +32,8 @@
 </div>
 <script>
     var creditsSidebar = [], debetsSidebar = [], reservesRemainders = [], reservesSidebar = [],
-        mentorInvites = [], mentorsId = {}, currenciesSidebar = [], totalRemainders = {};
+        mentorInvites = [], mentorsId = {}, currenciesSidebar = [], totalRemainders = {},
+        reserveSwitches = [], switchesID = {};
 
     buildCachedTabs();
 
@@ -148,6 +154,15 @@
             });
             buildMentorInvitesTab();
         });
+
+        getReserveSwitches(function (data) {
+            reserveSwitches = [];
+            $.each(data, function (key, value) {
+                reserveSwitches.push(value);
+            });
+            console.log(data);
+            //buildResereSwitchesTab();
+        });
     }
 
     function buildHistoryBlock() {
@@ -155,7 +170,7 @@
             url: apiServer + "/journal",
             type: 'get',
             headers: {'authorization': token},
-            data: "&begin=0&end=5" + "&dateEnd=" + year + "-" + ((month < 10) ? "0" + month : month) + "-" + ((day < 10) ? "0" + day : day) + "&dateBegin=",
+            data: "&begin=0&end=5" + "&dateEnd=" + year + "-" + ((month < 10) ? "0" + month : month) + "-" + ((day < 10) ? "0" + day : day) + "&dateBegin=" + "&user=" + username,
             success: function (data) {
                 var operation_data = 'Последние операции';
                 $("#sidebarHistory").html("");
@@ -195,6 +210,25 @@
             $.each(mentorInvites, function (key, value) {
                 mentorsId[rowCount] = value;
                 operational_data += '<li id="listedInvite' + rowCount + '">';
+                operational_data += value.mentor + ' приглашает вас стать его учеником, ' + value.percent + "% от финреза в " + value.currency;
+                operational_data += ' <a class="sidebar_icon green" onclick="replyToMentorInvite(' + rowCount + ', true' + ')"><i class="fa fa-check" aria-hidden="true"></i></a>';
+                operational_data += ' <a class="sidebar_icon red" onclick="replyToMentorInvite(' + rowCount + ', false' + ')"><i class="fa fa-ban" aria-hidden="true"></i></a>';
+                operational_data += '</li>';
+                rowCount++;
+            });
+            $("#mentor_button").html("Приглашения (" + mentorInvites.length + ")");
+            $("#mentor").append(operational_data);
+            $("#mentor_invites").show();
+        }
+    }
+
+    function buildResereSwitchesTab() {
+        if (reserveSwitches.length !== 0) {
+            $("#switches").html('');
+            var operational_data = "", rowCount = 0;
+            $.each(reserveSwitches, function (key, value) {
+                switchesID[rowCount] = value;
+                operational_data += '<li id="listedSwitch' + rowCount + '">';
                 operational_data += value.mentor + ' приглашает вас стать его учеником, ' + value.percent + "% от финреза в " + value.currency;
                 operational_data += ' <a class="sidebar_icon green" onclick="replyToMentorInvite(' + rowCount + ', true' + ')"><i class="fa fa-check" aria-hidden="true"></i></a>';
                 operational_data += ' <a class="sidebar_icon red" onclick="replyToMentorInvite(' + rowCount + ', false' + ')"><i class="fa fa-ban" aria-hidden="true"></i></a>';

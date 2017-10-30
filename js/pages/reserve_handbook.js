@@ -199,7 +199,7 @@ function sendResponsibleSwitch() {
     }).then(function (responsible) {
         if (responsible) {
             $.ajax({
-                url: apiServer + '/pass',
+                url: apiServer + '/passReserves',
                 type: 'post',
                 headers: {'authorization' : token},
                 data: {
