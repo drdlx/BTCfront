@@ -1,9 +1,12 @@
 var currDateJournal = new Date(), day = currDateJournal.getDate(), month = currDateJournal.getMonth() + 1,
     year = currDateJournal.getFullYear();
-var page = 0;
+var page = 0, currenciesJournal = [];
 const display = 20;
 
-drawJournal(0, 0);
+getCurrencyList(function (data) {
+    currenciesJournal = data;
+    drawJournal(0, 0);
+});
 
 function drawJournal(page, direction) {
     $.ajax({
@@ -42,8 +45,13 @@ function drawJournal(page, direction) {
                     //Source
                     var source = (value.operation === "translate") ? value.source : value.paym;
                     operation_data += '<td>' + source + '</td>';
+                    //Destination
+                    var destination = (value.operation === "translate") ? value.destination : value.paymCrypto;
+                    operation_data += '<td>' + destination + '</td>';
+
                     //Non-crypto checkout
                     var rub = 0, rubClass = "";
+                    var non_crypto_currency = (value.operation === "translate") ? value.currency : value.currencyNonCrypto;
                     if (value.operation === "pay") {
                         rub = -value.rub;
                         rubClass = "red";
@@ -51,11 +59,19 @@ function drawJournal(page, direction) {
                         rub = value.rub;
                         rubClass = "green";
                     } else {
-                        rub = value.transaction;
+                        if (currenciesJournal.find(function (a) {
+                                return a.currency === non_crypto_currency;
+                            }).isCrypto) {
+                            non_crypto_currency = "";
+                            rub = 0;
+                        } else {
+                            rub = value.transaction;
+                        }
                     }
-                    operation_data += '<td class="' + rubClass + '">' + rub + '</td>';
+                    operation_data += '<td class="' + rubClass + '">' + rub + ' ' + non_crypto_currency + '</td>';
                     //Crypto checkout
                     var btc = 0, btcClass = "";
+                    var crypto_currency = (value.operation === "translate") ? value.currency : value.currencyCrypto;
                     if (value.operation === "pay") {
                         btc = value.btc;
                         btcClass = "green";
@@ -63,11 +79,18 @@ function drawJournal(page, direction) {
                         btc = -value.btc;
                         btcClass = "red";
                     } else {
-                        btc = 0;
+                        if (currenciesJournal.find(function (a) {
+                                return a.currency === crypto_currency;
+                            }).isCrypto) {
+                            btc = value.transaction;
+                        } else {
+                            btc = 0;
+                            crypto_currency = "";
+                        }
                     }
-                    operation_data += '<td class="' + btcClass + '">' + btc + '</td>';
-                    operation_data += '<td>' + value.commiss + '</td>';
-                    operation_data += '<td>' + ((value.operation === "translate") ? 0 : value.bot_commiss) + '</td>';
+                    operation_data += '<td class="' + btcClass + '">' + btc + ' ' + crypto_currency +'</td>';
+                    operation_data += '<td>' + value.commiss + ' ' + non_crypto_currency + '</td>';
+                    operation_data += '<td>' + ((value.operation === "translate") ? 0 : value.bot_commiss) + ' ' + crypto_currency + '</td>';
                     operation_data += '<td>' + ((value.operation === "translate") ? -value.commiss : value.cur_fin_res) + '</td>';
                     operation_data += '</tr>';
                 });
