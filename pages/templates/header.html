@@ -91,17 +91,17 @@
                 title: "Настройки",
                 html: '<br><div class="settings_block middle"><label for="botcommissHeader">Сервисный сбор: </label>' +
                 '<input class="swal2-input validate col-md-4" name="percentBOT" id="botcommissHeader" type="text" ' +
-                'max="100" min="0" pattern="[0-9]{1,2}([.,][0-9]{1,2})?" step="0.01" value="' + botComission * 100 + '">% </div>' +
+                'max="100" min="0" pattern="[0-9]{1,2}([.,][0-9]{1,2})?" value="' + botComission * 100 + '">% </div>' +
                 '<h3>Пользовательская информация</h3>' +
                 '<div class="settings_block middle"><label for="firstnameHeader">Имя: </label>' +
                 '<input class="swal2-input validate col-md-4" name="first_name" id="firstnameHeader" type="text" ' +
-                'pattern="^[a-zA-Zа-яА-ЯЁё]+$" maxlength="20" minlength="2" value="' + transform(user.First_Name) + '"></div>' +
+                'pattern="^[a-zA-Zа-яА-ЯЁё]+$" maxlength="20" value="' + transform(user.First_Name) + '"></div>' +
                 '<div class="settings_block middle"><label for="lastnameHeader">Фамилия: </label>' +
                 '<input class="swal2-input validate col-md-4" name="last_name" id="lastnameHeader" type="text" ' +
-                'pattern="^[a-zA-Zа-яА-ЯЁё]+$" maxlength="20" minlength="2" value="' + transform(user.Last_Name) + '"></div>' +
+                'pattern="^[a-zA-Zа-яА-ЯЁё]+$" maxlength="20" value="' + transform(user.Last_Name) + '"></div>' +
                 '<div class="settings_block middle"><label for="phoneHeader">Телефон: </label>' +
                 '<input class="swal2-input validate col-md-4" name="call" id="phoneHeader" type="tel" ' +
-                'pattern="(\\+)?[0-9]{1}[-| ]?[0-9]{3}[-| ]?[0-9]{3}[-| ]?[0-9]{4}" maxlength="17" minlength="10" value="' + transform(user.call) + '"></div>' +
+                'pattern="(\\+)?[0-9]{1}[-| ]?[0-9]{3}[-| ]?[0-9]{3}[-| ]?[0-9]{4}" maxlength="17" value="' + transform(user.call) + '"></div>' +
                 '<div class="settings_block middle"><label for="mailHeader">E-mail: </label>' +
                 '<input class="swal2-input validate col-md-4" name="mail" id="mailHeader" type="email" ' +
                 'value="' + transform(user.mail) + '"></div>' +

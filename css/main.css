@@ -28,6 +28,7 @@ body {
 
 a {
     text-decoration: none;
+    cursor: pointer;
 }
 
 hr {
@@ -73,7 +74,6 @@ textarea {
 b, strong {
     font-weight: 700;
 }
-
 .header {
     text-align: center;
     font-size: 3em;
@@ -252,6 +252,9 @@ input[readonly] {
 
 .red {
     color: #cd3100;
+}
+.blue {
+    color: var(--color-dark);
 }
 .align_left {
     text-align: left;
@@ -706,6 +709,11 @@ button.accordion.active, button.accordion:hover {
 }
 #sidebar_block::-webkit-scrollbar {
     display: none;
+}
+
+.sidebar_icon {
+    font-size: 26px;
+    margin-left: 13px;
 }
 button.accordion:after {
     content: '\002B';
