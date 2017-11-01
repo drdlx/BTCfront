@@ -1,5 +1,5 @@
-var delayTimer, avg, xtraData;
-
+var delayTimer, avg, xtraData, rubAccounts =[],
+    btcAccounts = [], reservesSell = [];
 $(document).ready(function () {
     if (sessionStorage.getItem('header_avg') !== null) {
         avg = sessionStorage.getItem('header_avg');
@@ -14,7 +14,6 @@ $(document).ready(function () {
         currencies = data;
     });
 
-    var rubAccounts =[], btcAccounts = [], reservesSell = [];
     var r2 = getReserveList(function (data) {
         reservesSell = data;
     });
@@ -64,7 +63,10 @@ $(document).ready(function () {
     });
 });
 
-function reCount() {
+function reCount(initiator) {
+    getUserParameters(function (data) {
+        botComission = data.percentBOT;
+    });
     clearTimeout(delayTimer);
     delayTimer = setTimeout(function () {
         avg = avgHeader;
@@ -72,6 +74,7 @@ function reCount() {
         var btcValue = parseFloat($("#btc").val()),
             courseValue = parseFloat($("#course").val()),
             comissValue = parseFloat($("#commiss").val()),
+            rubValue = parseFloat($("#rub").val()),
             botcomissValue;
         if (isNaN(btcValue)) {
             btcValue = 0;
@@ -82,10 +85,20 @@ function reCount() {
         if (isNaN(comissValue)) {
             comissValue = 0;
         }
+        if (isNaN(rubValue)) {
+            rubValue = 0;
+        }
+        switch (initiator) {
+            case "rub":
+                btcValue = rubValue / courseValue;
+                $("#btc").val(btcValue.toFixed(8));
+                break;
+            default:
+                rubValue = courseValue * btcValue;
+                $("#rub").val(rubValue.toFixed(2));
+        }
         botcomissValue = btcValue * botComission;
         $("#bot_commiss").val(botcomissValue.toFixed(8));
-        var rubValue = courseValue * btcValue;
-        $("#rub").val(rubValue.toFixed(2));
 
         var finrez = getDealFinrez(rubValue, avg, btcValue, botcomissValue, comissValue);
         var finrez_field = document.getElementById('deal_finrez');
@@ -102,4 +115,14 @@ function reCount() {
         xtraData = "&cur_fin_res=" + finrez + "&average_course=" + avg;
         $("#submit_button").prop("disabled", false);
     }, 1000);
+}
+
+function setCryptoCurrency() {
+    var selectedReserve = $("#paymCrypto").val();
+    $.each(reservesSell, function (key, value) {
+        if (value.title === selectedReserve) {
+            cryptoCurrency = value.currency;
+        }
+    });
+    reCount();
 }

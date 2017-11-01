@@ -74,7 +74,7 @@ $("#post_form").on('submit', function (e) {
     });
 });
 
-function reCount() {
+function reCount(initiator) {
     getUserParameters(function (data) {
         botComission = data.percentBOT;
     });
@@ -84,6 +84,7 @@ function reCount() {
         var btcValue = parseFloat($("#btc").val()),
             courseValue = parseFloat($("#course").val()),
             comissValue = parseFloat($("#commiss").val()),
+            rubResult = parseFloat($("#rub").val()),
             botcomissValue;
         if (isNaN(btcValue)) {
             btcValue = 0;
@@ -94,10 +95,20 @@ function reCount() {
         if (isNaN(comissValue)) {
             comissValue = 0;
         }
+        if (isNaN(rubResult)) {
+            rubResult = 0;
+        }
+        switch (initiator) {
+            case "rub":
+                btcValue = (rubResult / courseValue);
+                $("#btc").val(btcValue.toFixed(8));
+                break;
+            default:
+                rubResult = (courseValue * btcValue);
+                $("#rub").val(rubResult.toFixed(2));
+        }
         botcomissValue = btcValue * botComission;
         $("#bot_commiss").val(botcomissValue.toFixed(8));
-        var rubResult = (courseValue * btcValue);
-        $("#rub").val(rubResult.toFixed(2));
 
         var prognosisLine = document.getElementById('avg_prognosis');
         //prognosis field setter

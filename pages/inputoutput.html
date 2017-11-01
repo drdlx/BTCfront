@@ -25,7 +25,9 @@
 <div id="header" class="col-md-7"></div>
 <div class="wrapper col-sm-7">
     <div class="header">
-        Ввод\вывод
+        <span class="option"><a href="buy_form.html">Покупка</a></span>
+        <span class="option"><a href="sell_form.html">Продажа</a></span>
+        <span class="selected_option"><a>Ввод/Вывод</a></span>
     </div>
     <form method="post" id="post_form">
         <div class="input_block">
@@ -42,7 +44,7 @@
         </div>
         <div class="input_block middle">
             <label for="description">Описание</label>
-            <input type="text" name="description" id="description" minlength="2" placeholder="Текст описания" required>
+            <input type="text" name="description" id="description" maxlength="18" placeholder="Текст описания">
         </div>
         <div class="input_block middle">
             <label for="transaction">Сумма</label>

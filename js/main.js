@@ -20,28 +20,6 @@ function getUserParameters(callback) {
     });
 }
 
-function fillSelectWithCurrencies(select, sourceSelect) {
-    var sselect = document.getElementById(sourceSelect);
-    var bank = sselect.options[sselect.selectedIndex].value;
-    var currencies = '';
-    getBankList(function (data) {
-        $.each(data, function (key, value) {
-            if (value.bank === bank) {
-                currencies = value.currency.split(',');
-            }
-        });
-        select.removeAttribute('disabled');
-        for (var j = select.options.length; j >= 0; j--) {
-            select.remove(j);
-        }
-        for (var i = 0; i < currencies.length; i++) {
-            var opt = document.createElement("option");
-            opt.innerHTML = currencies[i];
-            select.appendChild(opt);
-        }
-    });
-}
-
 function fillSelectFromArray(select, array) {
     select.removeAttribute('disabled');
     for (var j = select.options.length; j >= 0; j--) {
