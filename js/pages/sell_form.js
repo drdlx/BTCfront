@@ -55,6 +55,9 @@ $(document).ready(function () {
                 swal("Успех", "Запись успешно добавлена", "success");
                 reBuildSidebarContent();
                 reBuildHeaderInfo();
+                getReserveList(function (data) {
+                    reservesSell = data;
+                });
             },
             error: function () {
                 swal("Упс", "Что-то пошло не так", "error");
@@ -69,7 +72,6 @@ function reCount(initiator) {
     });
     clearTimeout(delayTimer);
     delayTimer = setTimeout(function () {
-        avg = avgHeader;
         document.getElementById('avg_course').innerHTML = avg.toFixed(2);
         var btcValue = parseFloat($("#btc").val()),
             courseValue = parseFloat($("#course").val()),
@@ -124,5 +126,41 @@ function setCryptoCurrency() {
             cryptoCurrency = value.currency;
         }
     });
+    avg = reservesSell.find(function (a) {
+        return a.title === selectedReserve;
+    }).average_course;
     reCount();
+}
+
+function setNewBotComiss() {
+    swal({
+        title: "Изменить процент сервисного сбора",
+        input: 'text',
+        inputPlaceholder: '0.00',
+        showCancelButton: true,
+        inputValidator: function(value) {
+            return new Promise(function (resolve, reject) {
+                if ($.isNumeric(value)) {
+                    resolve(value);
+                } else {
+                    reject("Некорректный ввод");
+                }
+            });
+        }
+    }).then(function (respond) {
+        $.ajax({
+            url: apiServer + '/userSettingUp',
+            type: 'post',
+            headers: {'authorization': token},
+            data: "&percentBOT=" + (respond * 0.01),
+            success: function (data) {
+                swal("Успех", "Процент сервисного сбора был изменен", "success");
+                botComission = parseFloat(respond) * 0.01;
+                reCount();
+            },
+            error: function (err) {
+                swal("Упс", "Что-то пошло не так, " + JSON.stringify(err), "error");
+            }
+        });
+    });
 }

@@ -90,8 +90,8 @@
             swal({
                 title: "Настройки",
                 html: '<br><div class="settings_block middle"><label for="botcommissHeader">Сервисный сбор: </label>' +
-                '<input class="swal2-input validate col-md-4" name="percentBOT" id="botcommissHeader" type="text" ' +
-                'max="100" min="0" pattern="[0-9]{1,2}([.,][0-9]{1,2})?" value="' + botComission * 100 + '">% </div>' +
+                '<input class="swal2-input validate col-md-4" name="percentBOT" id="botcommissHeader" type="number" ' +
+                'max="100" min="0" step="0.01" value="' + botComission * 100 + '">% </div>' +
                 '<h3>Пользовательская информация</h3>' +
                 '<div class="settings_block middle"><label for="firstnameHeader">Имя: </label>' +
                 '<input class="swal2-input validate col-md-4" name="first_name" id="firstnameHeader" type="text" ' +
@@ -101,7 +101,7 @@
                 'pattern="^[a-zA-Zа-яА-ЯЁё]+$" maxlength="20" value="' + transform(user.Last_Name) + '"></div>' +
                 '<div class="settings_block middle"><label for="phoneHeader">Телефон: </label>' +
                 '<input class="swal2-input validate col-md-4" name="call" id="phoneHeader" type="tel" ' +
-                'pattern="(\\+)?[0-9]{1}[-| ]?[0-9]{3}[-| ]?[0-9]{3}[-| ]?[0-9]{4}" maxlength="17" value="' + transform(user.call) + '"></div>' +
+                'pattern="(\\+)?[0-9]{1}[-| ]?[0-9]{3}[-| ]?[0-9]{3}[-| ]?[0-9]{4}" maxlength="17" value="' + transform(user.call).replace(/\s/g,'') + '"></div>' +
                 '<div class="settings_block middle"><label for="mailHeader">E-mail: </label>' +
                 '<input class="swal2-input validate col-md-4" name="mail" id="mailHeader" type="email" ' +
                 'value="' + transform(user.mail) + '"></div>' +
@@ -114,7 +114,7 @@
                         let botComiss = $("#botcommissHeader").val(), firstname = $("#firstnameHeader").val(),
                             lastname = $("#lastnameHeader").val(), tel = $("#phoneHeader").val(),
                             mail = $("#mailHeader").val();
-                        let conditions = [$.isNumeric(botComiss), botComiss > 0, botComiss < 100];
+                        let conditions = [$.isNumeric(botComiss), botComiss >= 0, botComiss < 100];
                         for (var i = 0; i < conditions.length; i++) {
                             if (conditions[i] === false) {
                                 reject("Проверьте правильность всех полей");

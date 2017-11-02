@@ -2,22 +2,6 @@ var avgCourse = 0, delayTimer, boughtTotal = 0, xtraData, cryptoCurrency, curren
     rubAccounts = [], btcAccounts = [], reservesBuy = [];
 
 $(document).ready(function () {
-    var r1 = function () {
-        return $.ajax({
-            url: apiServer + '/reportpay',
-            type: 'get',
-            headers: {'authorization': localStorage.getItem('token')},
-            data: "&last=true",
-            crossDomain: true,
-            success: function (data) {
-                avgCourse = data.average_course;
-                if (!$.isNumeric(avgCourse)) {avgCourse = 0}
-            },
-            error: function (err) {
-                avgCourse = 0;
-            }
-        });
-    };
 
     var r2 = getCurrencyList(function (data) {
         currencies = data;
@@ -26,8 +10,8 @@ $(document).ready(function () {
     var r3 = getReserveList(function (data) {
         reservesBuy = data;
     });
-    $.when(r1(), r2, r3).done(function () {
-        document.getElementById('avg_course').innerHTML = avgCourse.toFixed(2);
+    $.when(r2, r3).done(function () {
+        document.getElementById('avg_course').innerHTML = "-";
         $.each(reservesBuy, function (key, value) {
             if (value.responsible === username) {
                 var currency = value.currency;
@@ -45,34 +29,37 @@ $(document).ready(function () {
         fillSelectFromArray(document.getElementById('paym'), rubAccounts);
         fillSelectFromArray(document.getElementById('paymCrypto'), btcAccounts);
     });
-});
 
-
-$("#post_form").on('submit', function (e) {
-    e.preventDefault();
-    $.ajax({
-        url: apiServer + '/pay',
-        headers: {
-            'authorization': localStorage.getItem('token')
-        },
-        type: 'post',
-        crossDomain: true,
-        data: $("#post_form").serialize() + xtraData,
-        success: function () {
-            document.getElementById('post_form').reset();
-            document.getElementById('avg_prognosis').innerHTML = "";
-            document.getElementById('deal_finrez').innerHTML = '';
-            $("#submit_button").prop("disabled", true);
-            swal("Успех", "Запись была добавлена", "success");
-            reBuildSidebarContent();
-            reBuildHeaderInfo();
-            document.getElementById('avg_course').innerHTML = avgHeader;
-        },
-        error: function (err) {
-            swal("Упс", "Что-то пошло не так", "error");
-        }
+    $("#post_form").on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: apiServer + '/pay',
+            headers: {
+                'authorization': localStorage.getItem('token')
+            },
+            type: 'post',
+            crossDomain: true,
+            data: $("#post_form").serialize() + xtraData,
+            success: function () {
+                document.getElementById('post_form').reset();
+                document.getElementById('avg_prognosis').innerHTML = "";
+                document.getElementById('deal_finrez').innerHTML = '';
+                $("#submit_button").prop("disabled", true);
+                swal("Успех", "Запись была добавлена", "success");
+                reBuildSidebarContent();
+                reBuildHeaderInfo();
+                getReserveList(function (data) {
+                    reservesBuy = data;
+                });
+                document.getElementById('avg_course').innerHTML = avgHeader;
+            },
+            error: function (err) {
+                swal("Упс", "Что-то пошло не так", "error");
+            }
+        });
     });
 });
+
 
 function reCount(initiator) {
     getUserParameters(function (data) {
@@ -189,5 +176,4 @@ function setNewBotComiss() {
             }
         });
     });
-
 }
