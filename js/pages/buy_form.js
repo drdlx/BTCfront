@@ -136,6 +136,9 @@ function setCryptoCurrency() {
             cryptoCurrency = value.currency;
         }
     });
+    avgCourse = reservesBuy.find(function (a) {
+        return a.title === selectedReserve;
+    }).average_course;
     reCount();
 }
 
