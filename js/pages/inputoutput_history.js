@@ -128,6 +128,7 @@ function fillTable(data, targetID) {
 
 function acceptEntry(id, sourceReserve) {
     var currency = "", userReservesOptions = {};
+    //determine currency
     for (var j = 0; j < reserves.length; j++) {
         if (reserves[j].title === sourceReserve) {
             currency = reserves[j].currency;
@@ -135,7 +136,7 @@ function acceptEntry(id, sourceReserve) {
         }
     }
     for (var i = 0; i < reserves.length; i++) {
-        if (reserves[i].currency === currency && reserves[i].owner === username) {
+        if (reserves[i].currency === currency && (reserves[i].owner === username || reserves[i].responsible === username)) {
             userReservesOptions[reserves[i].title] = reserves[i].title;
         }
     }
