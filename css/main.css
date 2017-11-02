@@ -28,8 +28,11 @@ body {
 
 a {
     text-decoration: none;
+    cursor: pointer;
 }
-
+a:visited {
+    color: inherit;
+}
 hr {
     display: block;
     height: 1px;
@@ -37,10 +40,6 @@ hr {
     border-top: 1px solid #ccc;
     margin: 1em 0;
     padding: 0;
-}
-
-.hidden {
-    display: none;
 }
 
 audio,
@@ -73,14 +72,20 @@ textarea {
 b, strong {
     font-weight: 700;
 }
-
 .header {
     text-align: center;
     font-size: 3em;
     padding: 5px;
     color: #444;
 }
-
+.header .selected_option, .header .option:hover {
+    text-decoration: underline;
+    color: var(--color-middle);
+}
+.header .option {
+    font-size: 0.5em;
+    color: darkgray;
+}
 .wrapper {
     margin: 15px auto;
     box-shadow: -2px 2px 0.5em rgba(0, 0, 0, 0.5);
@@ -252,6 +257,9 @@ input[readonly] {
 
 .red {
     color: #cd3100;
+}
+.blue {
+    color: var(--color-dark);
 }
 .align_left {
     text-align: left;
@@ -707,6 +715,11 @@ button.accordion.active, button.accordion:hover {
 #sidebar_block::-webkit-scrollbar {
     display: none;
 }
+
+.sidebar_icon {
+    font-size: 26px;
+    margin-left: 13px;
+}
 button.accordion:after {
     content: '\002B';
     color: black;
@@ -904,4 +917,8 @@ button.accordion.active:after {
     box-shadow: none;
     color: snow;
     pointer-events: none;
+}
+
+.hidden {
+    display: none;
 }

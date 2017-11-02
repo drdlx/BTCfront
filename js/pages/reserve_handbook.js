@@ -1,3 +1,7 @@
+getCurrencyList(function (data) {
+    currenciesHB = data;
+});
+
 $(document).ready(function () {
     $("#add_form").hide();
     $("#add_button").click(function () {
@@ -28,9 +32,10 @@ $(document).ready(function () {
         });
     });
 });
+
 buildTable();
 
-var users = {}, reservesID = {}, selected = [];
+var users = {}, reservesID = {}, selected = [], currenciesHB = [];
 
 function buildTable() {
     getReserveList(function (data) {
@@ -150,6 +155,44 @@ function fillResponsibleSelect() {
     }
 }
 
+function fillSelectWithCurrencies(select, sourceSelect) {
+    var sselect = document.getElementById(sourceSelect);
+    var bank = sselect.options[sselect.selectedIndex].value;
+    var currencies = '';
+    getBankList(function (data) {
+        $.each(data, function (key, value) {
+            if (value.bank === bank) {
+                currencies = value.currency.split(',');
+            }
+        });
+        select.removeAttribute('disabled');
+        for (var j = select.options.length; j >= 0; j--) {
+            select.remove(j);
+        }
+        for (var i = 0; i < currencies.length; i++) {
+            var opt = document.createElement("option");
+            opt.innerHTML = currencies[i];
+            select.appendChild(opt);
+        }
+        selectCurrency();
+    });
+}
+
+function selectCurrency() {
+    $("#average_course").val(0);
+
+    var currencyStr = $("#currency").val(),
+    currency = currenciesHB.find(function (a) {
+        return a.currency === currencyStr;
+    });
+
+    if (currency.isCrypto) {
+        $("#average_course_block").show(100);
+    } else {
+        $("#average_course_block").hide(100);
+    }
+}
+
 function transformValue(value) {
     return ((value != null) && ($.trim(value).length > 0) ? value : '-');
 }
@@ -157,7 +200,7 @@ function transformValue(value) {
 function removeEntry(id) {
     swal({
         title: "Удаление",
-        text: "Вы действительно хотите удалить запись " + document.getElementById("td" + id).innerHTML + "?",
+        text: "Вы действительно хотите удалить запись " + reservesID[id].title + "?",
         type: "warning",
         showCancelButton: true,
         focusCancel: true

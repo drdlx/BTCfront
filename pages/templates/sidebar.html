@@ -156,12 +156,8 @@
         });
 
         getReserveSwitches(function (data) {
-            reserveSwitches = [];
-            $.each(data, function (key, value) {
-                reserveSwitches.push(value);
-            });
-            console.log(data);
-            //buildResereSwitchesTab();
+            reserveSwitches = data;
+            buildReserveSwitchesTab();
         });
     }
 
@@ -211,7 +207,7 @@
                 mentorsId[rowCount] = value;
                 operational_data += '<li id="listedInvite' + rowCount + '">';
                 operational_data += value.mentor + ' приглашает вас стать его учеником, ' + value.percent + "% от финреза в " + value.currency;
-                operational_data += ' <a class="sidebar_icon green" onclick="replyToMentorInvite(' + rowCount + ', true' + ')"><i class="fa fa-check" aria-hidden="true"></i></a>';
+                operational_data += '<br><a class="sidebar_icon green" onclick="replyToMentorInvite(' + rowCount + ', true' + ')"><i class="fa fa-check" aria-hidden="true"></i></a>';
                 operational_data += ' <a class="sidebar_icon red" onclick="replyToMentorInvite(' + rowCount + ', false' + ')"><i class="fa fa-ban" aria-hidden="true"></i></a>';
                 operational_data += '</li>';
                 rowCount++;
@@ -222,22 +218,23 @@
         }
     }
 
-    function buildResereSwitchesTab() {
-        if (reserveSwitches.length !== 0) {
+    function buildReserveSwitchesTab() {
+        console.log(reserveSwitches);
+        if (Object.keys(reserveSwitches).length !== 0) {
             $("#switches").html('');
             var operational_data = "", rowCount = 0;
             $.each(reserveSwitches, function (key, value) {
                 switchesID[rowCount] = value;
                 operational_data += '<li id="listedSwitch' + rowCount + '">';
-                operational_data += value.mentor + ' приглашает вас стать его учеником, ' + value.percent + "% от финреза в " + value.currency;
-                operational_data += ' <a class="sidebar_icon green" onclick="replyToMentorInvite(' + rowCount + ', true' + ')"><i class="fa fa-check" aria-hidden="true"></i></a>';
-                operational_data += ' <a class="sidebar_icon red" onclick="replyToMentorInvite(' + rowCount + ', false' + ')"><i class="fa fa-ban" aria-hidden="true"></i></a>';
+                operational_data += '<b>' + key + '</b> хочет передать вам под ответственность <b>' + value.length + "</b> резерва(-ов). Нажмите на \"инфо\" чтобы просмотреть подробности";
+                operational_data += '<br><a class="sidebar_icon blue" onclick="replyToReserveSwitch(' + rowCount + ', true' + ')"><i class="fa fa-info-circle" aria-hidden="true"></i></a>';
+                operational_data += ' <a class="sidebar_icon red" onclick="replyToReserveSwitch(' + rowCount + ', false' + ')"><i class="fa fa-ban" aria-hidden="true"></i></a>';
                 operational_data += '</li>';
                 rowCount++;
             });
-            $("#mentor_button").html("Приглашения (" + mentorInvites.length + ")");
-            $("#mentor").append(operational_data);
-            $("#mentor_invites").show();
+            $("#reserves_switches_button").html("Новые резервы (" + Object.keys(reserveSwitches).length + ")");
+            $("#switches").append(operational_data);
+            $("#reserves_switches").show();
         }
     }
 
@@ -378,6 +375,45 @@
                             $("#mentor_button").html("Приглашения " + buttonString);
                         }
                         $("#listedInvite" + id).hide(400);
+                    },
+                    error: function (err) {
+                        swal("Ошибка " + err.status, "Что-то пошло не так", "error");
+                    }
+                });
+            }
+        });
+    }
+
+    function replyToReserveSwitch(id, reply) {
+        var reserveList = "";
+        $.each(switchesID[id], function (key, value) {
+            reserveList += '<li><span class="align_left col-md-5">' + value.reserve + ':</span><span class="align_right col-md-7">' + value.remainder + ' ' + '</span></li>';
+        });
+        swal({
+            title: "Подтверждение",
+            html: '<p>Внимательно проверьте остатки на резервах. В случае несовпадения с реальными показателями вся ответственность будет лежать на вас!</p>' +
+            '<div class="totalRemainders"><ul>' + reserveList +
+            '</ul></div>' +
+            '<p>Если все совпадает, можете смело подтверждать прием</p>',
+            showCancelButton: true,
+            type: "warning",
+        }).then(function (isPressed) {
+            if (isPressed) {
+                $.ajax({
+                    url: apiServer + '/confirmedPass',
+                    type: 'post',
+                    headers: {'authorization': token},
+                    data: "&status=" + reply,
+                    success: function (data) {
+                        swal("Успех", "Операция проведена успешно", "success");
+                        delete switchesID[id];
+                        if (Object.keys(switchesID).length === 0) {
+                            $("#reserves_switches").hide();
+                        } else {
+                            var buttonString = (Object.keys(switchesID).length > 0) ? "(" + Object.keys(switchesID).length + ")" : "";
+                            $("#reserves_switches_button").html("Новые резервы: " + buttonString);
+                        }
+                        $("#listedSwitch" + id).hide(400);
                     },
                     error: function (err) {
                         swal("Ошибка " + err.status, "Что-то пошло не так", "error");
