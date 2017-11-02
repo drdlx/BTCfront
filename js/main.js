@@ -122,7 +122,7 @@ function getUnacceptedTransferData(callback) {
 
 function getReserveList(callback) {
     return $.ajax({
-        url: apiServer + '/reserves',
+        url: apiServer + '/IOReserves',
         type: 'get',
         headers: {'authorization': localStorage.getItem('token')},
         success: function (data) {

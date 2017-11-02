@@ -1,24 +1,23 @@
-var agents = null, reserves = null, unacceptedList = [], acceptedList = [];
-$(document).ready(function () {
-    var q1 = getAntiagentList(function (data) {
-        agents = data;
-    });
-    var q2 = getReserveList(function (data) {
-        reserves = data;
-    });
-    var q3 = getUnacceptedTransferData(function (data) {
-        unacceptedList = data;
-    });
-    var q4 = getFullTransferData(function (data) {
-        acceptedList = data;
-    });
-    $.when(q1, q2, q3, q4).done(function () {
-        fillTable(unacceptedList, "#unaccepted_table");
-        fillTable(acceptedList, "#report_table");
-        console.log(acceptedList);
-        $("#loading").prop('class', 'hidden');
-    });
+var agents = [], IOReserves = [], unacceptedList = [], acceptedList = [];
+
+var q1 = getAntiagentList(function (data) {
+    agents = data;
 });
+var q2 = getReserveList(function (data) {
+    IOReserves = data;
+});
+var q3 = getUnacceptedTransferData(function (data) {
+    unacceptedList = data;
+});
+var q4 = getFullTransferData(function (data) {
+    acceptedList = data;
+});
+$.when(q1, q2, q3, q4).done(function () {
+    fillTable(unacceptedList, "#unaccepted_table");
+    fillTable(acceptedList, "#report_table");
+    $("#loading").prop('class', 'hidden');
+});
+
 
 function getParticipantData(input, callback) {
     var agent = null, reserve = null;
@@ -31,7 +30,7 @@ function getParticipantData(input, callback) {
         }
     });
     if (!found) {
-        $.each(reserves, function (key, value) {
+        $.each(IOReserves, function (key, value) {
             if (input === value.title) {
                 reserve = input;
                 agent = value.owner;
@@ -72,21 +71,22 @@ function fillTable(data, targetID) {
                     //======forming comission string and getting a currency========
                     var commiss = value.commiss;
                     var comStr = (commiss > 0) ? " (+" + commiss + ")" : "";
-                    var curStr = "", creditStr = (value.percent > 0) ? "<span class='red'> " + value.percent + "%</span>" : "";
+                    var curStr = "",
+                        creditStr = (value.percent > 0) ? "<span class='red'> " + value.percent + "%</span>" : "";
                     //====trying to get currency from source
                     if (source.reserve !== null) {
-                        for (var j = 0; j < reserves.length; j++) {
-                            if (reserves[j].title === source.reserve) {
-                                curStr = reserves[j].currency;
+                        for (var j = 0; j < IOReserves.length; j++) {
+                            if (IOReserves[j].title === source.reserve) {
+                                curStr = IOReserves[j].currency;
                                 break;
                             }
                         }
                     }
                     //====if we have failed, then we are got to get currency from destination
                     if (curStr === "" && destination.reserve !== null) {
-                        for (var n = 0; n < reserves.length; n++) {
-                            if (reserves[n].title === destination.reserve) {
-                                curStr = reserves[n].currency;
+                        for (var n = 0; n < IOReserves.length; n++) {
+                            if (IOReserves[n].title === destination.reserve) {
+                                curStr = IOReserves[n].currency;
                                 break;
                             }
                         }
@@ -113,8 +113,8 @@ function fillTable(data, targetID) {
                     if (targetID === '#report_table') {
                         acceptedID["" + rowNumber] = value._id;
                     }
-                    var datet = value.date.split("/");
-                    operation_data += '<td>' + datet[1] + "/" + datet[0] + "/" + datet[2] + xtraData + '</td>';
+                    var datet = value.date.substring(0, value.date.indexOf('T')).split("-");
+                    operation_data += '<td>' + datet[2] + "/" + datet[1] + "/" + datet[0] + xtraData + '</td>';
                     operation_data += '</tr>';
                 });
             });
@@ -129,15 +129,15 @@ function fillTable(data, targetID) {
 function acceptEntry(id, sourceReserve) {
     var currency = "", userReservesOptions = {};
     //determine currency
-    for (var j = 0; j < reserves.length; j++) {
-        if (reserves[j].title === sourceReserve) {
-            currency = reserves[j].currency;
+    for (var j = 0; j < IOReserves.length; j++) {
+        if (IOReserves[j].title === sourceReserve) {
+            currency = IOReserves[j].currency;
             break;
         }
     }
-    for (var i = 0; i < reserves.length; i++) {
-        if (reserves[i].currency === currency && (reserves[i].owner === username || reserves[i].responsible === username)) {
-            userReservesOptions[reserves[i].title] = reserves[i].title;
+    for (var i = 0; i < IOReserves.length; i++) {
+        if (IOReserves[i].currency === currency && (IOReserves[i].owner === username || IOReserves[i].responsible === username)) {
+            userReservesOptions[IOReserves[i].title] = IOReserves[i].title;
         }
     }
     swal({
