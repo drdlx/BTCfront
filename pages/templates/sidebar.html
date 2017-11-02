@@ -240,7 +240,7 @@
 
     function buildRemainderTab() {
         if (reservesRemainders.length !== 0) {
-            $("#IOReserves").html('');
+            $("#reserves").html('');
             var operational_data = "", numberLimiter = 2;
             $.each(reservesRemainders, function (key, value) {
                 operational_data += '<li>';
@@ -251,11 +251,11 @@
                     value.remainder.toFixed(numberLimiter) + ' ' + value.currency + "</span>";
                 operational_data += '</li>';
             });
-            $("#IOReserves").append(operational_data);
+            $("#reserves").append(operational_data);
         } else {
-            $("#IOReserves").html('<li>Нет резервов</li>');
+            $("#reserves").html('<li>Нет резервов</li>');
         }
-        sessionStorage.setItem('sidebarReserves', $("#IOReserves").html());
+        sessionStorage.setItem('sidebarReserves', $("#reserves").html());
         $("#reserves_loader").hide();
     }
 
@@ -319,7 +319,7 @@
 
     function buildCachedTabs() {
         if (sessionStorage.getItem('sidebarReserves') !== null) {
-            $("#IOReserves").html(sessionStorage.getItem('sidebarReserves'));
+            $("#reserves").html(sessionStorage.getItem('sidebarReserves'));
             $("#reserves_loader").hide();
         }
         if (sessionStorage.getItem('sidebarCredits') !== null) {

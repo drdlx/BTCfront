@@ -140,6 +140,7 @@ function acceptEntry(id, sourceReserve) {
             userReservesOptions[IOReserves[i].title] = IOReserves[i].title;
         }
     }
+    console.log(userReservesOptions);
     swal({
         title: 'Подтверждение операции',
         text: "Выберите целевой резерв",
