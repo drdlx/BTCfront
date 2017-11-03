@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<script>
+    if (localStorage.getItem('token') !== 'null' || localStorage.getItem('username') !== 'null') {
+        window.location = 'menu.html';
+    }
+</script>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

@@ -1,13 +1,3 @@
-$(document).ready(function () {
-    localStorage.setItem('token', null);
-    localStorage.setItem('username', null);
-    localStorage.setItem('permission', null);
-    sessionStorage.setItem('header_finres', 0);
-    sessionStorage.setItem('header_avg', 0);
-    sessionStorage.setItem('sidebarReserves', 0);
-    sessionStorage.setItem('sidebarCredits', 0);
-    sessionStorage.setItem('sidebarDebits', 0);
-});
 $("#submit").click(function () {
     $("#submit").hide();
     $("#loading_bar").html("<img src='../img/ajax-load.gif' width='10%'>");

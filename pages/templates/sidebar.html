@@ -1,6 +1,10 @@
 <button id="sidebar_minimize"><i class="fa fa-th-list" aria-hidden="true"></i></button>
 <div class="sidebar col-md-2" id="sidebar_block">
     <div class="sidebar_lists">
+        <div class="totalRemainders">
+            <ul id="totalRemainders">
+            </ul>
+        </div>
         <button class="accordion">Резервы <img id="reserves_loader" src="../img/loader.gif" width="22px"></button>
         <ul class="accordion_panel" id="reserves">
         </ul>
@@ -18,10 +22,6 @@
         <div class="hidden" id="reserves_switches">
             <button class="accordion" id="reserves_switches_button">Передача резервов</button>
             <ul class="accordion_panel" id="switches">
-            </ul>
-        </div>
-        <div class="totalRemainders">
-            <ul id="totalRemainders">
             </ul>
         </div>
         <div class="sidebarHistory">
@@ -174,7 +174,7 @@
                     let operation = value.operation;
                     switch (operation) {
                         case "pay":
-                            operation_data += '<li><b>Купленно:</b> <span class="green"><b>' + value.btc + '</b></span> за <span class="red"><b>' + value.rub + ' RUB'  + '</b></span> по курсу <b>' + value.course + '</b></li>';
+                            operation_data += '<li><b>Куплено:</b> <span class="green"><b>' + value.btc + '</b></span> за <span class="red"><b>' + value.rub + ' RUB'  + '</b></span> по курсу <b>' + value.course + '</b></li>';
                             break;
                         case "sell":
                             operation_data += '<li><b>Продано:</b> <span class="red"><b>' + value.btc + '</b></span> за <span class="green"><b>' + value.rub + '</span> RUB'  + '</b> по курсу <b>' + value.course + '</b></li>';
@@ -190,7 +190,7 @@
                             } else {
                                 sourceRes = (sourceRes.responsible === username) ? sourceRes.responsible : sourceRes.owner;
                             }
-                            operation_data += '<li><b>Перевод:</b> ' + ((sourceRes === username) ? 'отправлено <span class="red"><b>' : 'получено <span class="green"><b>') + value.transaction + '</span> ' + value.currency + ((sourceRes === username) ? '</b> на <b>' : '</b> от <b>') + value.destination + '</b></li>';
+                            operation_data += '<li><b>Перевод:</b> ' + ((sourceRes === username) ? 'отправлено <span class="red"><b>' : 'получено <span class="green"><b>') + value.transaction + '</span> ' + value.currency + ((sourceRes === username) ? '</b> на <b>' : '</b> на <b>') + value.destination + '</b></li>';
                             break;
                     }
                 });

@@ -115,6 +115,9 @@ function getUnacceptedTransferData(callback) {
             callback(result);
         },
         error: function (err) {
+            if (err.status === 401) {
+                tokenTimedOut();
+            }
             callback(err.status);
         }
     });
@@ -129,6 +132,9 @@ function getReserveList(callback) {
             callback(data);
         },
         error: function (err) {
+            if (err.status === 401) {
+                tokenTimedOut();
+            }
             callback(err.status);
         }
     });
@@ -143,6 +149,9 @@ function getCurrencyList(callback) {
             callback(data);
         },
         error: function (err) {
+            if (err.status === 401) {
+                tokenTimedOut();
+            }
             callback(err.status);
         }
     });
@@ -157,6 +166,9 @@ function getBankList(callback) {
             callback(data);
         },
         error: function (err) {
+            if (err.status === 401) {
+                tokenTimedOut();
+            }
             callback(err.status);
         }
     });
@@ -171,6 +183,9 @@ function getAntiagentList(callback) {
             callback(data);
         },
         error: function (err) {
+            if (err.status === 401) {
+                tokenTimedOut();
+            }
             callback(err.status);
         }
     });
@@ -185,6 +200,9 @@ function getCredits(callback) {
             callback(data);
         },
         error: function (err) {
+            if (err.status === 401) {
+                tokenTimedOut();
+            }
             callback(err.status);
         }
     });
@@ -199,6 +217,9 @@ function getRemainders(callback) {
             callback(data);
         },
         error: function (err) {
+            if (err.status === 401) {
+                tokenTimedOut();
+            }
             callback(err.status);
         }
     });
@@ -213,6 +234,9 @@ function getMentorInvites(callback) {
             callback(data);
         },
         error: function (err) {
+            if (err.status === 401) {
+                tokenTimedOut();
+            }
             callback(err.status);
         }
     });
@@ -241,6 +265,9 @@ function getReserveSwitches(callback) {
             callback(data);
         },
         error: function (err) {
+            if (err.status === 401) {
+                tokenTimedOut();
+            }
             callback(err.status);
         }
     });
@@ -265,5 +292,4 @@ function getDealFinrez(income, avgCourse, btcOutcome, botCommiss, comiss) {
     result = (income - (avgCourse * btcOutcome) - (botCommiss * avgCourse) - comiss).toFixed(2);
     return parseFloat(result);
 }
-
 

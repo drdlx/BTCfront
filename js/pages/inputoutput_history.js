@@ -136,7 +136,7 @@ function acceptEntry(id, sourceReserve) {
         }
     }
     for (var i = 0; i < IOReserves.length; i++) {
-        if (IOReserves[i].currency === currency && (IOReserves[i].owner === username || IOReserves[i].responsible === username)) {
+        if (IOReserves[i].currency === currency && IOReserves[i].responsible === username) {
             userReservesOptions[IOReserves[i].title] = IOReserves[i].title;
         }
     }
