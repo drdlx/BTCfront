@@ -5,8 +5,8 @@
         </a>
     </div>
     <div class="col-md-5" id="header_info">
-        <div class="col-md-10">Ср. курс <span id="avg_header"></span></div>
-        <div class="col-md-10">Финрез сегодня <span id="finres_header"></span></div>
+        <div class="col-md-6"><b>Средние курсы</b><ul id="avg_header"></ul></div>
+        <div class="col-md-4 centered"><b>Финрез сегодня </b><span id="finres_header" class="middle"></span></div>
     </div>
     <div class="col-md-3" id="header_user">
         <div class="user-icon">
@@ -31,11 +31,12 @@
     var userReqStrHeader = (priv === 'admin') ? "&user=" + username : "";
     var currDateHeader = new Date(), day = currDateHeader.getDate(), month = currDateHeader.getMonth() + 1,
         year = currDateHeader.getFullYear();
-    var avgHeader = 0, dailyFinresHeader = 0;
+    var avgHeader = 0, dailyFinresHeader = 0, headerReserves = [], headerCurrencies = [];
     $("#header_username").html(username);
     reBuildHeaderInfo();
 
     function reBuildHeaderInfo() {
+        //finrez section
         $.ajax({
             url: apiServer + '/reportfull',
             type: 'GET',
@@ -61,23 +62,22 @@
             }
         });
 
-        $.ajax({
-            url: apiServer + '/reportpay',
-            type: 'get',
-            headers: {'authorization': localStorage.getItem('token')},
-            data: "&last=true",
-            crossDomain: true,
-            success: function (data) {
-                if (data.average_course) {
-                    avgHeader = data.average_course;
-                }
-                $("#avg_header").html(avgHeader.toFixed(2));
-                sessionStorage.setItem('header_avg', avgHeader.toFixed(2));
-            },
-            error: function (err) {
-                $("#avg_header").html(0);
-                sessionStorage.setItem('header_avg', 0);
-            }
+        //avg courses section
+        var avgData = "";
+        getCurrencyList(function (data) {
+            headerCurrencies = data;
+            getReserveList(function (data) {
+                $.each(data, function (key, value) {
+                    if (value.responsible === username && headerCurrencies.find(function (a) {
+                            return a.currency === value.currency;
+                        }).isCrypto) {
+                        headerReserves.push(value);
+                        avgData += '<li><b>' + value.currency + ' </b><span class="align_left col-md-5"> ' + value.title + ':</span><span class="align_right col-md-5">' + value.average_course.toFixed(2) + '</span></li>'
+                    }
+                });
+                $("#avg_header").html(avgData);
+                sessionStorage.setItem('header_avg', avgData);
+            });
         });
     }
 

@@ -224,7 +224,7 @@ button.quick_access:hover {
     vertical-align: middle;
 }
 .middle {
-    margin: 7px auto;
+    margin: auto;
     display: block;
 }
 
@@ -716,6 +716,26 @@ button.accordion.active, button.accordion:hover {
     display: none;
 }
 
+#avg_header {
+    overflow-y: scroll;
+    list-style: none;
+    margin: auto;
+    padding: 0;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+#avg_header li:not(:last-child) {
+    border-bottom: 1px solid rgba(17, 17, 17, 0.32);
+}
+
+#avg_header span {
+    overflow-x: hidden;
+}
+
+#avg_header::-webkit-scrollbar {
+    display: none;
+}
 .sidebar_icon {
     font-size: 26px;
     margin-left: 13px;
@@ -801,13 +821,17 @@ button.accordion.active:after {
     display: inline-block;
     vertical-align: middle;
 }
+#header_username {
+    overflow-x: hidden;
+}
 #header_info div {
     background-color: var(--color-light);
     color: var(--color-dark);
-    padding: 1em;
+    padding: 0.4em;
     margin: 4px;
-    display: flex;
+    display: inline-block;
     justify-content: space-between;
+    vertical-align: middle;
 }
 
 #header_user i {
