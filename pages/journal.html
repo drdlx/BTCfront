@@ -10,6 +10,8 @@
     <script src="../js/vendor/jquery-3.2.1.min.js"></script>
     <script src="../js/main.js"></script>
     <script src="../js/vendor/sweetalert2.all.min.js"></script>
+    <script src="../js/vendor/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="../css/vendor/jquery-ui.min.css">
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
@@ -26,8 +28,24 @@
     <div class="header">
         Журнал операций
     </div>
-    <div class="centered">
-        <a class="pager pager-left" onclick="prevPage()">
+    <div class="input_block" id="report_user_block">
+        <label for="report_user">Пользователь:</label>
+        <select id="report_user" required>
+            <option selected disabled hidden value="">Загрузка...</option>
+        </select>
+    </div>
+    <div class="input_block" id="report_date_block">
+        <label for="report_date">Дата:</label>
+        <input type="text" required id="report_date" pattern="[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}" readonly>
+    </div>
+    <script>
+        if (priv === 'user') {
+            $("#report_user_block").hide();
+            $("#report_date_block").addClass("middle");
+        }
+    </script>
+    <div class="centered pagers">
+        <a class="pager pager-left disabled" onclick="prevPage()">
             <i class="fa fa-angle-double-left" aria-hidden="true"></i>
         </a>
         <a class="pager pager-right" onclick="nextPage()">
@@ -47,8 +65,9 @@
             <th>Финрез</th>
         </tr>
     </table>
-    <div class="centered">
-        <a class="pager pager-left" onclick="prevPage()">
+    <div class="centered" id="loading"><img src="../img/loader.gif"></div>
+    <div class="centered pagers">
+        <a class="pager pager-left disabled" onclick="prevPage()">
             <i class="fa fa-angle-double-left" aria-hidden="true"></i>
         </a>
         <a class="pager pager-right" onclick="nextPage()">

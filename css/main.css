@@ -367,13 +367,8 @@ input[readonly] {
     padding: 10px 0;
 }
 
-.report_table tr:nth-child(odd):hover td {
-    background: #4E5066;
-}
-
 .report_table tr:hover td {
-    background: #4E5066;
-    color: #FFFFFF;
+    font-weight: 700;
 }
 
 #changeResponsibleButtons {
@@ -922,7 +917,9 @@ button.accordion.active:after {
 .input_block:hover a.settings {
     color: var(--color-middle);
 }
-
+.pagers {
+    margin-top: 25px;
+}
 .pager {
     cursor: pointer;
     background: var(--color-light);

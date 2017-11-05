@@ -1,4 +1,4 @@
-var todayDate = new Date(), avgCourse;
+var todayDate = new Date();
 var userList = ["Все пользователи"], dateList = {};
 
 $(document).ready(function () {
