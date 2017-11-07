@@ -92,7 +92,7 @@ function drawJournal(page, direction) {
     if (user === "Все пользователи") {
         user = "";
     }
-    var userReqStr = (priv === 'admin') ? "&user=" + user : "";
+    var userReqStr = "&user=" + user;
     $.ajax({
         url: apiServer + "/journal",
         type: 'get',
