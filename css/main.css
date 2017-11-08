@@ -4,7 +4,7 @@
     --color-light: #CAe4db;
     --color-accent: rgb(230, 230, 29);
     --color-dark: #1A2930;
-    --color-middle: #7a9d96;
+    --color-middle: rgb(111, 127, 158);
     --color-bright: #ececec;
     --color-darkaccent: rgb(241, 201, 66);
 }
@@ -21,9 +21,14 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
+input[type="number"] {
+    text-align: right;
+}
+
 body {
     font-family: 'Source Sans Pro', sans-serif;
     background-color: snow;
+    margin: 0;
 }
 
 a {
@@ -87,11 +92,11 @@ b, strong {
     color: darkgray;
 }
 .wrapper {
-    margin: 15px auto;
-    box-shadow: -2px 2px 0.5em rgba(0, 0, 0, 0.5);
+    margin: auto;
     padding: 10px;
     background-color: var(--color-bright);
     z-index: 0;
+    position: inherit;
 }
 
 .button_pane table {
@@ -266,6 +271,7 @@ input[readonly] {
     padding: 0;
     display: inline-block;
     vertical-align: middle;
+    white-space: nowrap;
 }
 .align_right {
     text-align: right;
@@ -653,8 +659,7 @@ input.validate:valid:not(:placeholder-shown) {
     height: 100%;
     top: 0;
     left: 0;
-    border-right: 1px ridge;
-    box-shadow: 1px 0 4px rgba(6, 3, 3, 0.41);
+    border-right: 1px ridge var(--color-middle);
     padding: 0;
 }
 
@@ -676,7 +681,7 @@ button.accordion {
     background-color: var(--color-accent);
     color: var(--color-dark);
     cursor: pointer;
-    padding: 18px;
+    padding: 12px;
     width: 100%;
     text-align: left;
     border: none;
@@ -692,7 +697,6 @@ button.accordion.active, button.accordion:hover {
 
 .accordion_panel {
     padding: 0;
-    background-color: var(--color-light);
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
@@ -747,31 +751,10 @@ button.accordion.active:after {
     content: "\2212";
 }
 
-#sidebar_minimize {
-    position: fixed;
-    z-index: 10;
-    left: 11%;
-    top: 0.5em;
-    transition: 0.2s;
-    font-size: 35px;
-    border: none;
-    padding: 5px 15px;
-    background-color: var(--color-accent);
-    cursor: pointer;
-}
-
-#sidebar_minimize.active {
-    left: 1%;
-    background-color: var(--color-darkaccent);
-}
-
-.sidebar_lists {
-    margin-top: 5em;
-}
-
 .accordion_panel li {
-    padding: 4px 10px;
-    background-color: whitesmoke;
+    padding: 2px 3px;
+    line-height: 1em;
+    font-size: 15px;
 }
 
 #mentor_invites li {
@@ -789,7 +772,8 @@ button.accordion.active:after {
 #header {
     margin: auto;
     background-color: var(--color-middle);
-    padding: 0;
+    padding: 10px;
+    position: inherit;
 }
 
 @keyframes bounce {
@@ -876,12 +860,13 @@ button.accordion.active:after {
     color: var(--color-dark);
 }
 .totalRemainders li {
-    padding: 0 10px;
+    padding: 0 3px;
     font-weight: 600;
     font-size: 16px;
 }
 .totalRemainders ul {
-    padding: 10px;
+    padding: 0;
+    margin: 5px 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
     list-style: none;

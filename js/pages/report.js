@@ -87,7 +87,6 @@ function reBuildTable() {
             "authorization": localStorage.getItem('token')
         },
         success: function (data) {
-            console.log(data);
             var overallRemains = 0, overallConsume = 0, overallComing = 0, overallIO = 0, overallComiss = 0,
                 overallFinres = 0;
             var operation_data = '', sortedNoncryptoData = {},
@@ -114,22 +113,34 @@ function reBuildTable() {
                 operation_data += '<tr>';
                 operation_data += '<td>' + value.paym + '</td>';
 
-                operation_data += '<td>' + value.remainder.toFixed(2) + '</td>';
+                operation_data += '<td>' + value.remainder.toLocaleString('ru-RU', {
+                    maximumFractionDigits: 2
+                }) + '</td>';
                 overallRemains += value.remainder;
 
-                operation_data += '<td>' + value.consumption.toFixed(2) + '</td>';
+                operation_data += '<td>' + value.consumption.toLocaleString('ru-RU', {
+                    maximumFractionDigits: 2
+                }) + '</td>';
                 overallConsume += value.consumption;
 
-                operation_data += '<td>' + value.coming.toFixed(2) + '</td>';
+                operation_data += '<td>' + value.coming.toLocaleString('ru-RU', {
+                    maximumFractionDigits: 2
+                }) + '</td>';
                 overallComing += value.coming;
 
-                operation_data += '<td>' + value.transaction.toFixed(2) + '</td>';
+                operation_data += '<td>' + value.transaction.toLocaleString('ru-RU', {
+                    maximumFractionDigits: 2
+                }) + '</td>';
                 overallIO += value.transaction;
 
-                operation_data += '<td>' + value.commiss.toFixed(2) + '</td>';
+                operation_data += '<td>' + value.commiss.toLocaleString('ru-RU', {
+                    maximumFractionDigits: 2
+                }) + '</td>';
                 overallComiss += value.commiss;
 
-                operation_data += '<td>' + value.cur_fin_res.toFixed(2) + '</td>';
+                operation_data += '<td>' + value.cur_fin_res.toLocaleString('ru-RU', {
+                    maximumFractionDigits: 2
+                }) + '</td>';
                 overallFinres += value.cur_fin_res;
 
                 operation_data += '</tr>';
@@ -137,12 +148,24 @@ function reBuildTable() {
 
             operation_data += '<tr class="overall">';
             operation_data += '<td>' + 'ИТОГО:' + '</td>';
-            operation_data += '<td>' + overallRemains.toFixed(2) + '</td>';
-            operation_data += '<td>' + overallConsume.toFixed(2) + '</td>';
-            operation_data += '<td>' + +overallComing.toFixed(2) + '</td>';
-            operation_data += '<td>' + overallIO.toFixed(2) + '</td>';
-            operation_data += '<td>' + overallComiss.toFixed(2) + '</td>';
-            operation_data += '<td>' + overallFinres.toFixed(2) + '</td>';
+            operation_data += '<td>' + overallRemains.toLocaleString('ru-RU', {
+                maximumFractionDigits: 2
+            }) + '</td>';
+            operation_data += '<td>' + overallConsume.toLocaleString('ru-RU', {
+                maximumFractionDigits: 2
+            }) + '</td>';
+            operation_data += '<td>' + overallComing.toLocaleString('ru-RU', {
+                maximumFractionDigits: 2
+            }) + '</td>';
+            operation_data += '<td>' + overallIO.toLocaleString('ru-RU', {
+                maximumFractionDigits: 2
+            }) + '</td>';
+            operation_data += '<td>' + overallComiss.toLocaleString('ru-RU', {
+                maximumFractionDigits: 2
+            }) + '</td>';
+            operation_data += '<td>' + overallFinres.toLocaleString('ru-RU', {
+                maximumFractionDigits: 2
+            }) + '</td>';
             operation_data += '</tr>';
             $("#loading").hide();
             $("#report_table").append(operation_data);

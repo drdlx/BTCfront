@@ -1,10 +1,5 @@
-<button id="sidebar_minimize"><i class="fa fa-th-list" aria-hidden="true"></i></button>
 <div class="sidebar col-md-2" id="sidebar_block">
     <div class="sidebar_lists">
-        <div class="totalRemainders">
-            <ul id="totalRemainders">
-            </ul>
-        </div>
         <button class="accordion">Резервы <img id="reserves_loader" src="../img/loader.gif" width="22px"></button>
         <ul class="accordion_panel" id="reserves">
         </ul>
@@ -36,33 +31,6 @@
         reserveSwitches = [], switchesID = {};
 
     buildCachedTabs();
-
-    //minimize button toggle
-    document.getElementById('sidebar_minimize').onclick = function () {
-        this.classList.toggle("active");
-        var sidebar = document.getElementById('sidebar_block');
-        if (sidebar.style.maxWidth) {
-            sidebar.style.maxWidth = null;
-            localStorage.setItem('sidebar_minimize', 'false')
-        } else {
-            sidebar.style.maxWidth = 0 + "px";
-            localStorage.setItem('sidebar_minimize', 'true')
-        }
-    };
-
-    //auto-minimize if required
-    if (localStorage.getItem('sidebar_minimize') === 'true') {
-        var sidebar = $("#sidebar_block"), minButton = $("#sidebar_minimize");
-        sidebar.addClass('notransition');
-        minButton.addClass('notransition');
-        sidebar[0].offsetHeight;
-        minButton[0].offsetHeight;
-        minButton.click();
-        setTimeout(function () {
-            sidebar.removeClass('notransition');
-            minButton.removeClass('notransition');
-        }, 200);
-    }
 
     //accordion lists toggle
     var acc = document.getElementsByClassName('accordion');
@@ -174,10 +142,22 @@
                     let operation = value.operation;
                     switch (operation) {
                         case "pay":
-                            operation_data += '<li><b>Куплено:</b> <span class="green"><b>' + value.btc + '</b></span> за <span class="red"><b>' + value.rub + ' RUB'  + '</b></span> по курсу <b>' + value.course + '</b></li>';
+                            operation_data += '<li><b>Куплено:</b> <span class="green"><b>' + value.btc.toLocaleString('ru-RU', {
+                                maximumFractionDigits: 8
+                            }) + '</b></span> за <span class="red"><b>' + value.rub.toLocaleString('ru-RU', {
+                                maximumFractionDigits: 2
+                            }) + ' RUB' + '</b></span> по курсу <b>' + value.course.toLocaleString('ru-RU', {
+                                maximumFractionDigits: 2
+                            }) + '</b></li>';
                             break;
                         case "sell":
-                            operation_data += '<li><b>Продано:</b> <span class="red"><b>' + value.btc + '</b></span> за <span class="green"><b>' + value.rub + '</span> RUB'  + '</b> по курсу <b>' + value.course + '</b></li>';
+                            operation_data += '<li><b>Продано:</b> <span class="red"><b>' + value.btc.toLocaleString('ru-RU', {
+                                maximumFractionDigits: 8
+                            }) + '</b></span> за <span class="green"><b>' + value.rub.toLocaleString('ru-RU', {
+                                maximumFractionDigits: 2
+                            }) + '</span> RUB' + '</b> по курсу <b>' + value.course.toLocaleString('ru-RU', {
+                                maximumFractionDigits: 2
+                            }) + '</b></li>';
                             break;
                         case "translate":
                             var sourceRes = reservesSidebar.find(function (a) {
@@ -190,7 +170,9 @@
                             } else {
                                 sourceRes = (sourceRes.responsible === username) ? sourceRes.responsible : sourceRes.owner;
                             }
-                            operation_data += '<li><b>Перевод:</b> ' + ((sourceRes === username) ? 'отправлено <span class="red"><b>' : 'получено <span class="green"><b>') + value.transaction + '</span> ' + value.currency + ((sourceRes === username) ? '</b> на <b>' : '</b> на <b>') + value.destination + '</b></li>';
+                            operation_data += '<li><b>Перевод:</b> ' + ((sourceRes === username) ? 'отправлено <span class="red"><b>' : 'получено <span class="green"><b>') + value.transaction.toLocaleString('ru-RU', {
+                                maximumFractionDigits: 8
+                            }) + '</span> ' + value.currency +  '</b> на <b>' + value.destination + '</b></li>';
                             break;
                     }
                 });
@@ -240,7 +222,10 @@
 
     function buildRemainderTab() {
         if (reservesRemainders.length !== 0) {
-            $("#reserves").html('');
+            $("#reserves").html('            <div class="totalRemainders">\n' +
+                '<ul id="totalRemainders">' +
+                '</ul>' +
+                '</div>');
             var operational_data = "", numberLimiter = 2;
             $.each(reservesRemainders, function (key, value) {
                 operational_data += '<li>';
@@ -248,7 +233,10 @@
                     return a.currency === value.currency
                 }).isCrypto === true) ? 8 : 2;
                 operational_data += "<span class='align_left col-md-5'>" + value.title + ':</span><span class="align_right col-md-7">' +
-                    value.remainder.toFixed(numberLimiter) + ' ' + value.currency + "</span>";
+                    value.remainder.toLocaleString('ru-RU', {
+                        maximumFractionDigits: numberLimiter,
+                        minimumFractionDigits: numberLimiter
+                    }) + ' ' + value.currency + "</span>";
                 operational_data += '</li>';
             });
             $("#reserves").append(operational_data);
@@ -277,7 +265,9 @@
             });
             $.each(creditList, function (key, value) {
                 operational_data += '<li>';
-                operational_data += '<span class=\'align_left col-md-5\'>' + key + '</span><span class=\'align_right col-md-7\'> ' + value.toFixed(2) + '</span>';
+                operational_data += '<span class=\'align_left col-md-5\'>' + key + '</span><span class=\'align_right col-md-7\'> ' + value.toLocaleString('ru-RU', {
+                    maximumFractionDigits: 2
+                }) + '</span>';
                 operational_data += '</li>';
             });
             $("#credits").append(operational_data);
@@ -306,7 +296,9 @@
             });
             $.each(debitList, function (key, value) {
                 operational_data += '<li>';
-                operational_data += '<span class=\'align_left col-md-5\'>' + key + '</span><span class=\'align_right col-md-7\'> ' + value.toFixed(2) + "</span>";
+                operational_data += '<span class=\'align_left col-md-5\'>' + key + '</span><span class=\'align_right col-md-7\'> ' + value.toLocaleString('ru-RU', {
+                    maximumFractionDigits: 2
+                }) + "</span>";
                 operational_data += '</li>';
             });
             $("#debits").append(operational_data);
@@ -341,7 +333,10 @@
                     return a.currency === key
                 }).isCrypto === true) ? 8 : 2;
                 operational_data += "<li><span class='align_left col-md-5'>" + key + "</span><span class='align_right col-md-7'>" +
-                    value.toFixed(numberLimiter) + "</span>";
+                    value.toLocaleString('ru-RU', {
+                        maximumFractionDigits: numberLimiter,
+                        minimumFractionDigits: numberLimiter
+                    }) + "</span>";
             });
             $("#totalRemainders").html(operational_data);
         } else {
@@ -387,7 +382,9 @@
     function replyToReserveSwitch(id, reply) {
         var reserveList = "";
         $.each(switchesID[id], function (key, value) {
-            reserveList += '<li><span class="align_left col-md-5">' + value.reserve + ':</span><span class="align_right col-md-7">' + value.remainder + ' ' + '</span></li>';
+            reserveList += '<li><span class="align_left col-md-5">' + value.reserve + ':</span><span class="align_right col-md-7">' + value.remainder.toLocaleString('ru-RU', {
+                maximumFractionDigits: 8,
+            }) + ' ' + '</span></li>';
         });
         swal({
             title: "Подтверждение",

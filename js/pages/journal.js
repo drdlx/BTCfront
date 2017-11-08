@@ -1,9 +1,13 @@
-var currDateJournal = new Date(), day = currDateJournal.getDate(), month = currDateJournal.getMonth() + 1,
+var currDateJournal = new Date(),
+    day = currDateJournal.getDate(),
+    month = currDateJournal.getMonth() + 1,
     year = currDateJournal.getFullYear();
-var page = 0, currenciesJournal = [];
+var page = 0,
+    currenciesJournal = [];
 const display = 20;
 var todayDate = new Date();
-var userList = ["Все пользователи"], dateList = {};
+var userList = ["Все пользователи"],
+    dateList = {};
 
 $(document).ready(function () {
     var r1 = function (username) {
@@ -11,20 +15,24 @@ $(document).ready(function () {
         if (username !== "Все пользователи") {
             userReqStr = (priv === 'admin') ? "&user=" + username : "";
         }
-        var currDateJournal = new Date(), day = currDateJournal.getDate(), month = currDateJournal.getMonth() + 1,
+        var currDateJournal = new Date(),
+            day = (currDateJournal.getDate() < 10) ? "0" + currDateJournal.getDate() : currDateJournal.getDate(),
+            month = currDateJournal.getMonth() + 1,
             year = currDateJournal.getFullYear();
         return $.ajax({
             url: apiServer + '/journal',
             type: 'GET',
             crossDomain: true,
-            data: userReqStr + "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=1/1/1990",
+            data: userReqStr + "&dateEnd=" + year + "-" + month + "-" + day + "&dateBegin=1990-01-01",
             headers: {
                 "authorization": localStorage.getItem('token')
             },
             success: function (data) {
                 dateList = {};
                 $.each(data, function (key, value) {
-                    var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1,
+                    var currDate = new Date(value.date),
+                        day = currDate.getDate(),
+                        month = currDate.getMonth() + 1,
                         year = currDate.getFullYear();
                     dateList[day + "/" + month + "/" + year] = day + "/" + month + "/" + year;
                 });
@@ -49,12 +57,16 @@ $(document).ready(function () {
         fillSelectFromArray(document.getElementById("report_user"), userList);
         document.getElementById("report_user").value = username;
         //======fill datePicker
-        var todayDay = todayDate.getDate(), todayMonth = todayDate.getMonth() + 1, todayYear = todayDate.getFullYear();
+        var todayDay = todayDate.getDate(),
+            todayMonth = todayDate.getMonth() + 1,
+            todayYear = todayDate.getFullYear();
         $("#report_date").val(todayDay + "/" + todayMonth + "/" + todayYear);
         $("#report_date").datepicker({
             dateFormat: 'd/m/yy',
             beforeShowDay: function (date) {
-                var currDate = new Date(date), day = currDate.getDate(), month = currDate.getMonth() + 1,
+                var currDate = new Date(date),
+                    day = currDate.getDate(),
+                    month = currDate.getMonth() + 1,
                     year = currDate.getFullYear();
                 var hDate = day + "/" + month + "/" + year;
                 var highlight = dateList[hDate];
@@ -87,8 +99,11 @@ $(document).ready(function () {
 
 
 function drawJournal(page, direction) {
-    var user = $("#report_user").val(), date = $("#report_date").val().split('/'),
-    dateDay = date[0], dateMonth = date[1], dateYear = date[2];
+    var user = $("#report_user").val(),
+        date = $("#report_date").val().split('/'),
+        dateDay = (date[0] < 10) ? "0" + date[0] : date[0],
+        dateMonth = date[1],
+        dateYear = date[2];
     if (user === "Все пользователи") {
         user = "";
     }
@@ -96,16 +111,19 @@ function drawJournal(page, direction) {
     $.ajax({
         url: apiServer + "/journal",
         type: 'get',
-        headers: {'authorization': token},
-        data: "&dateEnd=" + dateMonth + '/' + dateDay + '/' + dateYear + "&dateBegin=" + dateMonth + '/' + dateDay + '/' + dateYear  + "&begin="
-        + (display * page) + "&end=" + (display * page + display) + userReqStr,
+        headers: {
+            'authorization': token
+        },
+        data: "&dateEnd=" + dateYear + "-" + dateMonth + "-" + dateDay + "&dateBegin=" + dateYear + "-" + dateMonth + "-" + dateDay + "&begin=" +
+        (display * page) + "&end=" + (display * page + display) + userReqStr,
         success: function (data) {
             if (data && data.length > 0) {
                 $("#report_table").find("tr:gt(0)").remove();
                 $("#loading").show();
                 var operation_data = '';
                 $.each(data, function (key, value) {
-                    var operation = '', rowClass = '';
+                    var operation = '',
+                        rowClass = '';
                     switch (value.operation) {
                         case "pay":
                             operation = "Покупка";
@@ -123,7 +141,9 @@ function drawJournal(page, direction) {
                     //Date
                     operation_data += '<tr class="' + rowClass + '">';
                     var parsedDate = value.date.split('T'),
-                        parsedDay = parsedDate[0].split('-')[2], parsedMonth = parsedDate[0].split('-')[1], parsedYear = parsedDate[0].split('-')[0];
+                        parsedDay = parsedDate[0].split('-')[2],
+                        parsedMonth = parsedDate[0].split('-')[1],
+                        parsedYear = parsedDate[0].split('-')[0];
                     operation_data += '<td>' + parsedDay + '/' + parsedMonth + '/' + parsedYear + " " + parsedDate[1].substring(0, parsedDate[1].indexOf(".")) + '</td>';
                     //Operation
                     operation_data += '<td>' + operation + '</td>';
@@ -135,7 +155,8 @@ function drawJournal(page, direction) {
                     operation_data += '<td>' + destination + '</td>';
 
                     //Non-crypto checkout
-                    var rub = 0, rubClass = "";
+                    var rub = 0,
+                        rubClass = "";
                     var non_crypto_currency = (value.operation === "translate") ? value.currency : value.currencyNonCrypto;
                     if (value.operation === "pay") {
                         rub = -value.rub;
@@ -153,9 +174,12 @@ function drawJournal(page, direction) {
                             rub = value.transaction;
                         }
                     }
-                    operation_data += '<td class="' + rubClass + '">' + rub.toFixed(2) + ' ' + non_crypto_currency + '</td>';
+                    operation_data += '<td class="' + rubClass + '">' + rub.toLocaleString('ru-RU', {
+                        maximumFractionDigits: 2,
+                    }) + ' ' + non_crypto_currency + '</td>';
                     //Crypto checkout
-                    var btc = 0, btcClass = "";
+                    var btc = 0,
+                        btcClass = "";
                     var crypto_currency = (value.operation === "translate") ? value.currency : value.currencyCrypto;
                     if (value.operation === "pay") {
                         btc = value.btc;
@@ -173,10 +197,20 @@ function drawJournal(page, direction) {
                             crypto_currency = "";
                         }
                     }
-                    operation_data += '<td class="' + btcClass + '">' + btc.toFixed(8) + ' ' + crypto_currency +'</td>';
-                    operation_data += '<td>' + value.commiss + ' ' + non_crypto_currency + '</td>';
-                    operation_data += '<td>' + ((value.operation === "translate") ? 0 : value.bot_commiss) + ' ' + crypto_currency + '</td>';
-                    operation_data += '<td>' + ((value.operation === "translate") ? -value.commiss : value.cur_fin_res) + '</td>';
+                    operation_data += '<td class="' + btcClass + '">' + btc.toLocaleString('ru-RU', {
+                        maximumFractionDigits: 8,
+                    }) + ' ' + crypto_currency + '</td>';
+                    operation_data += '<td>' + value.commiss.toLocaleString('ru-RU', {
+                        maximumFractionDigits: 2
+                    }) + ' ' + non_crypto_currency + '</td>';
+                    operation_data += '<td>' + ((value.operation === "translate") ? 0 : value.bot_commiss.toLocaleString('ru-RU', {
+                        maximumFractionDigits: 8,
+                    })) + ' ' + crypto_currency + '</td>';
+                    operation_data += '<td>' + ((value.operation === "translate") ? -value.commiss.toLocaleString('ru-RU', {
+                        maximumFractionDigits: 2
+                    }) : value.cur_fin_res.toLocaleString('ru-RU', {
+                        maximumFractionDigits: 2
+                    })) + '</td>';
                     operation_data += '</tr>';
                 });
                 $("#report_table").append(operation_data);

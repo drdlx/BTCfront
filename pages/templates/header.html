@@ -54,7 +54,9 @@
                     });
                 }
                 $("#finres_header").html(dailyFinresHeader.toFixed(2));
-                sessionStorage.setItem('header_finres', dailyFinresHeader.toFixed(2));
+                sessionStorage.setItem('header_finres', dailyFinresHeader.toLocaleString('ru-RU', {
+                    maximumFractionDigits: 2
+                }));
             },
             error: function (err) {
                 sessionStorage.setItem('header_finres', 0);
@@ -72,7 +74,9 @@
                             return a.currency === value.currency;
                         }).isCrypto) {
                         headerReserves.push(value);
-                        avgData += '<li><b>' + value.currency + ' </b><span class="align_left col-md-5"> ' + value.title + ':</span><span class="align_right col-md-5">' + value.average_course.toFixed(2) + '</span></li>'
+                        avgData += '<li><b>' + value.currency + ' </b><span class="align_left col-md-5"> ' + value.title + ':</span><span class="align_right col-md-5">' + value.average_course.toLocaleString('ru-RU', {
+                            maximumFractionDigits: 2
+                        }) + '</span></li>'
                     }
                 });
                 $("#avg_header").html(avgData);
