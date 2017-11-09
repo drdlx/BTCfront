@@ -1,14 +1,6 @@
 var delayTimer, avg, xtraData, rubAccounts =[],
     btcAccounts = [], reservesSell = [];
 $(document).ready(function () {
-    if (sessionStorage.getItem('header_avg') !== null) {
-        avg = sessionStorage.getItem('header_avg');
-    } else {
-        avg = 0;
-    }
-    document.getElementById('avg_course').innerHTML = avg;
-
-
     var currencies;
     var r1 = getCurrencyList(function (data) {
         currencies = data;

@@ -31,32 +31,34 @@
     </div>
     <form method="post" id="post_form">
         <div class="input_block">
-            <label for="source">Источник</label>
-            <select id="source" name="source" required onchange="fillOutputSelect(this.value)">
+            <label for="source" class="col-md-5 align_left">Источник</label>
+            <select id="source" class="col-md-6 align_right" name="source" required onchange="fillOutputSelect(this.value)">
                 <option disabled selected value="" hidden>Загрузка...</option>
             </select>
         </div>
         <div class="input_block">
-            <label for="destination">Назначение</label>
-            <select id="destination" name="destination" required onchange="checkOutput(this.value)">
+            <label for="destination" class="col-md-5 align_left">Назначение</label>
+            <select id="destination" class="col-md-6 align_right" name="destination" required onchange="checkOutput(this.value)">
                 <option disabled selected value="" hidden>Выберите источник</option>
             </select>
         </div>
-        <div class="input_block middle">
-            <label for="description">Описание</label>
-            <input type="text" name="description" id="description" maxlength="50" placeholder="Текст описания">
+        <div class="input_block">
+            <label for="description" class="col-md-5 align_left">Описание</label>
+            <textarea class="col-md-6 align_left" name="description" id="description" maxlength="50" placeholder="Текст описания" required ></textarea>
         </div>
-        <div class="input_block middle">
-            <label for="transaction">Сумма</label>
-            <input type="number" name="transaction" id="transaction" min="0" step="0.00000001" placeholder="0" required>
+        <div class="input_block">
+            <label for="transaction" class="col-md-5 align_left">Сумма</label>
+            <input class="col-md-5 align_right" type="number" name="transaction" id="transaction" min="0" step="0.00000001" placeholder="0" required>
+            <span class="currency col-md-1 transparent">AAA</span>
         </div>
-        <div class="input_block middle">
-            <label for="commiss">Комиссия</label>
-            <input type="number" name="commiss" id="commiss" step="0.00000001" min="0" value="0" required>
+        <div class="input_block">
+            <label for="commiss" class="col-md-5 align_left">Комиссия</label>
+            <input class="col-md-5 align_right" type="number" name="commiss" id="commiss" step="0.00000001" min="0" value="0" required>
+            <span class="currency col-md-1 transparent">AAA</span>
         </div>
-        <div class="input_block middle">
-            <label for="percent">Процентная ставка (сутки)</label>
-            <input type="number" name="percent" id="percent" step="0.01" min="0" max="100" value="0" required>
+        <div class="input_block">
+            <label for="percent" class="col-md-5 align_left">Процентная ставка (сутки)</label>
+            <input class="col-md-6 align_right" type="number" name="percent" id="percent" step="0.01" min="0" max="100" value="0" required>
         </div>
         <div class="centered">
             <button class="button submit_button" type="submit">Отправить</button>

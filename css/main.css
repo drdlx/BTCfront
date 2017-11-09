@@ -63,7 +63,9 @@ video {
     -ms-transition: none !important;
     transition: none !important;
 }
-
+textarea {
+    vertical-align: middle;
+}
 fieldset {
     border: 0;
     margin: 0;
@@ -179,7 +181,9 @@ button.quick_access:hover {
     transition-duration: 0.4s;
     color: white;
 }
-
+.transparent {
+    color: transparent;
+}
 .quick_access.unaccepted {
     background-color: red;
     color: white;
@@ -207,15 +211,18 @@ button.quick_access:hover {
     text-align: center;
 }
 
+.currency {
+    padding: 0;
+}
+
 .input_block {
-    display: inline-block;
-    width: 47%;
+    width: 45%;
     padding: 10px;
-    margin-top: 7px;
+    margin: auto;
     background-color: snow;
     border-radius: 5px;
     text-align: center;
-    font-size: 1.25em;
+    font-size: 14px;
 }
 .settings_block {
     display: inline-block;
@@ -248,7 +255,6 @@ input[readonly] {
     background-color: rgba(246, 255, 206, 0.36);
     border: rgba(125, 96, 19, 0.3) outset 2px;
     border-radius: 5px;
-    text-align: center;
 }
 
 .date_event a {

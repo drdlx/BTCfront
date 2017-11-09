@@ -58,7 +58,7 @@ $("#post_form").on('submit', function (e) {
 
 function fillOutputSelect(inputValue) {
     var found = false;
-    //checking if an input is a reserve
+    //checking if input is a reserve
     for (var i = 0; i < userReserves.length; i++) {
         if (userReserves[i].title === inputValue) {
             selectedCurrency = userReserves[i].currency;
@@ -72,12 +72,13 @@ function fillOutputSelect(inputValue) {
                 }
             });
             fillSelectFromArray(document.getElementById('destination'), result1);
+            $(".currency").html(selectedCurrency).removeClass('transparent');
             found = true;
             sourceType = 'reserve';
             break;
         }
     }
-    //checking if an input is an agent
+    //checking if input is an agent
     if (!found) {
         for (var j = 0; j < agents.length; j++) {
             if (agents[j].agentname === inputValue) {
@@ -104,16 +105,17 @@ function fillOutputSelect(inputValue) {
 
 function checkOutput(outputValue) {
     var found = false;
-    //checking if an output is a reserve
+    //checking if output is a reserve
     for (var i = 0; i < userReserves.length; i++) {
         if (userReserves[i].title === outputValue) {
             found = true;
             destType = 'reserve';
             selectedCurrency = userReserves[i].currency;
+            $(".currency").html(selectedCurrency).removeClass('transparent');
             break;
         }
     }
-    //checking if an input is an agent
+    //checking if output is an agent
     if (!found) {
         for (var j = 0; j < agents.length; j++) {
             if (agents[j].agentname === outputValue && agents[j].internal === false) {
