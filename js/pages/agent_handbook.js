@@ -78,7 +78,7 @@ function buildTable() {
                 operational_data += '<tr id="tr' + idNum + "\" class='" + className + "'>";
                 operational_data += '<td id="td' + idNum + "\">" + value.agentname + '</td>';
 
-                var internalStr = ((value.internal === true) ? 'Да' : 'Нет');
+                var internalStr = ((value.internal === true) ? value.privilege : 'Нет');
                 operational_data += '<td>' + internalStr + '</td>';
                 operational_data += '<td>' + transformValue(value.First_Name) + '</td>';
                 operational_data += '<td>' + transformValue(value.Last_Name) + '</td>';
