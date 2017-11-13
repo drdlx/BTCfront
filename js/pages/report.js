@@ -25,7 +25,9 @@ $(document).ready(function () {
                 var arr = data.reports.noncrypto;
                 dateList = {};
                 $.each(arr, function (key, value) {
-                    var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1,
+                    var currDate = new Date(value.date),
+                        day = (currDate.getDate() < 10) ? "0" + currDate.getDate() : currDate.getDate(),
+                        month = ((currDate.getMonth() + 1) < 10) ? "0" + (currDate.getMonth() + 1) : currDate.getMonth() + 1,
                         year = currDate.getFullYear();
                     dateList[day + "/" + month + "/" + year] = day + "/" + month + "/" + year;
                 });
@@ -79,8 +81,8 @@ function reBuildTable() {
     $("#loading").show();
     var user = $("#report_user").val(),
         date = $("#report_date").val().split('/'),
-        dateDay = date[0],
-        dateMonth = date[1],
+        dateDay = (date[0] < 10) ? "0" + date[0] : date[0],
+        dateMonth = (date[1] < 10) ? "0" + date[1] : date[1],
         dateYear = date[2];
     if (user === "Все пользователи") {
         user = "";
