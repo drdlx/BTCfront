@@ -17,7 +17,7 @@ $(document).ready(function () {
         }
         var currDateJournal = new Date(),
             day = (currDateJournal.getDate() < 10) ? "0" + currDateJournal.getDate() : currDateJournal.getDate(),
-            month = currDateJournal.getMonth() + 1,
+            month = (currDateJournal.getMonth() + 1 < 10) ? "0" + currDateJournal.getMonth() + 1 : currDateJournal.getMonth() + 1,
             year = currDateJournal.getFullYear();
         return $.ajax({
             url: apiServer + '/journal',
@@ -30,10 +30,10 @@ $(document).ready(function () {
             success: function (data) {
                 dateList = {};
                 $.each(data, function (key, value) {
-                    var currDate = new Date(value.date),
-                        day = currDate.getDate(),
-                        month = currDate.getMonth() + 1,
-                        year = currDate.getFullYear();
+                    var currDate = value.date.substring(0, value.date.indexOf('T')).split('-'),
+                        day = currDate[2],
+                        month = currDate[1],
+                        year = currDate[0];
                     dateList[day + "/" + month + "/" + year] = day + "/" + month + "/" + year;
                 });
             }
@@ -65,8 +65,8 @@ $(document).ready(function () {
             dateFormat: 'd/m/yy',
             beforeShowDay: function (date) {
                 var currDate = new Date(date),
-                    day = currDate.getDate(),
-                    month = currDate.getMonth() + 1,
+                    day = (currDate.getDate() < 10) ? "0" + currDate.getDate() : currDate.getDate(),
+                    month = (currDate.getMonth() + 1 < 10) ? "0" + currDate.getMonth() + 1 : currDate.getMonth() + 1,
                     year = currDate.getFullYear();
                 var hDate = day + "/" + month + "/" + year;
                 var highlight = dateList[hDate];
@@ -102,7 +102,7 @@ function drawJournal(page, direction) {
     var user = $("#report_user").val(),
         date = $("#report_date").val().split('/'),
         dateDay = (date[0] < 10) ? "0" + date[0] : date[0],
-        dateMonth = date[1],
+        dateMonth = (date[1] < 10) ? "0" + date[1] : date[1],
         dateYear = date[2];
     if (user === "Все пользователи") {
         user = "";

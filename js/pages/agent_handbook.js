@@ -51,13 +51,13 @@ function buildTable() {
             $("#empty_notification").html("Нет добавленных агентов");
         } else {
             $("#empty_notification").html("");
-            $("#handbook_table").html('<tr>\n' +
-                '<th>Отображаемое имя</th>\n' +
-                '<th>Пользователь</th>\n' +
-                '<th>Имя</th>\n' +
-                '<th>Фамилия</th>\n' +
-                '<th>Телефон</th>\n' +
-                '<th>E-mail</th>\n' +
+            $("#handbook_table").html('<tr>' +
+                '<th>Отображаемое имя</th>' +
+                '<th>Пользователь</th>' +
+                '<th>Имя</th>' +
+                '<th>Фамилия</th>' +
+                '<th>Телефон</th>' +
+                '<th>E-mail</th>' +
                 '</tr>');
             var idNum = 0;
             var removeButton = "", addStudentButton = "", xtraData = '';

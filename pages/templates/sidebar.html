@@ -50,7 +50,7 @@
             var panel = $(acc[i]).next();
             panel.addClass("notransition");
             $(acc[i]).click();
-            setTimeout(function () {
+            setTimeout(function (panel) {
                 panel.removeClass('notransition');
             }, 200);
         }
@@ -222,13 +222,27 @@
 
     function buildRemainderTab() {
         if (reservesRemainders.length !== 0) {
-            $("#reserves").html('            <div class="totalRemainders">\n' +
+            $("#reserves").html('<div class="totalRemainders">' +
                 '<ul id="totalRemainders">' +
                 '</ul>' +
                 '</div>');
-            var operational_data = "", numberLimiter = 2;
+            var operational_data = "", numberLimiter = 2, currentCurrency = "";
+            reservesRemainders.sort(function (a, b) {
+                var compare = a.currency.localeCompare(b.currency);
+                if (compare === 0) {
+                    return b.remainder - a.remainder;
+                } else {
+                    return compare;
+                }
+            });
             $.each(reservesRemainders, function (key, value) {
+                //whitespace for new currency
+                if (currentCurrency !== value.currency) {
+                    operational_data += '<li></li>'
+                }
+                currentCurrency = value.currency;
                 operational_data += '<li>';
+                //determines how much digits after comma (2 for normal and 8 for crypto)
                 numberLimiter = (currenciesSidebar.find(function (a) {
                     return a.currency === value.currency
                 }).isCrypto === true) ? 8 : 2;
@@ -250,25 +264,51 @@
     function buildCreditTab() {
         if (creditsSidebar.length !== 0) {
             $("#credits").html('');
-            var operational_data = "", creditList = {}, currentUser = "", creditSum = 0;
+            var operational_data = "", creditList = {}, currentUser = "", creditSum = 0, currentCurrency = "", totalCredits = {};
             creditsSidebar.sort(function (a1, a2) {
-                return a1.debet.localeCompare(a2.debet);
+                let compare = a1.debet.localeCompare(a2.debet);
+                if (compare === 0) {
+                    return a1.currency.localeCompare(a2.currency);
+                } else {
+                    return compare;
+                }
             });
+            //count
             $.each(creditsSidebar, function (key, value) {
-                if (value.debet === currentUser && currentUser !== "") {
+                if (value.debet === currentUser && currentUser !== ""
+                    && value.currency === currentCurrency && currentCurrency !== "") {
                     creditSum += value.debts;
                 } else {
                     creditSum = value.debts;
                 }
                 currentUser = value.debet;
-                creditList[currentUser] = creditSum;
+                currentCurrency = value.currency;
+                totalCredits[currentCurrency] = (currentCurrency in totalCredits) ? totalCredits[currentCurrency] + value.debts : value.debts;
+                creditList[currentUser] = (currentUser in creditList) ? creditList[currentUser] : {};
+                creditList[currentUser][currentCurrency] = creditSum;
             });
-            $.each(creditList, function (key, value) {
+            //draw
+            //---totalCredits
+            operational_data += '<div class="totalRemainders"><ul>Всего:';
+            $.each(totalCredits, function (currencyKey, sumVal) {
                 operational_data += '<li>';
-                operational_data += '<span class=\'align_left col-md-5\'>' + key + '</span><span class=\'align_right col-md-7\'> ' + value.toLocaleString('ru-RU', {
-                    maximumFractionDigits: 2
-                }) + '</span>';
+                operational_data += '<span class="align_left col-md-5">' + currencyKey + '</span>';
+                operational_data += '<span class="align_right col-md-7">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';
                 operational_data += '</li>';
+            });
+            operational_data += '</ul></div>';
+            //---PersonalCredits
+            $.each(creditList, function (userKey, currencyVal) {
+                operational_data += userKey;
+                operational_data += '<li><ul>';
+                $.each(currencyVal, function (currencyKey, sumVal) {
+                    operational_data += "<li>";
+                    operational_data += '<span class=\'align_left col-md-5\'>' + currencyKey + '</span><span class=\'align_right col-md-7\'> ' + sumVal.toLocaleString('ru-RU', {
+                        maximumFractionDigits: 8
+                    }) + '</span>';
+                    operational_data += "</li>";
+                });
+                operational_data += '</ul></li>';
             });
             $("#credits").append(operational_data);
         } else {
@@ -281,25 +321,51 @@
     function buildDebitTab() {
         if (debetsSidebar.length !== 0) {
             $("#debits").html('');
-            var operational_data = "", debitList = {}, currentUser = "", debitSum = 0;
+            var operational_data = "", debitList = {}, currentUser = "", debitSum = 0, currentCurrency = "", totalDebits = {};
             debetsSidebar.sort(function (a1, a2) {
-                return a1.credit.localeCompare(a2.credit);
+                let compare = a1.credit.localeCompare(a2.credit);
+                if (compare === 0) {
+                    return a1.currency.localeCompare(a2.currency);
+                } else {
+                    return compare;
+                }
             });
+            //count
             $.each(debetsSidebar, function (key, value) {
-                if (value.credit === currentUser && currentUser !== "") {
+                if (value.credit === currentUser && currentUser !== ""
+                    && value.currency === currentCurrency && currentCurrency !== "") {
                     debitSum += value.debts;
                 } else {
                     debitSum = value.debts;
                 }
                 currentUser = value.credit;
-                debitList[currentUser] = debitSum;
+                currentCurrency = value.currency;
+                totalDebits[currentCurrency] = (currentCurrency in totalDebits) ? totalDebits[currentCurrency] + value.debts : value.debts;
+                debitList[currentUser] = (currentUser in debitList) ? debitList[currentUser] : {};
+                debitList[currentUser][currentCurrency] = debitSum;
             });
-            $.each(debitList, function (key, value) {
+            //draw
+            //---totalDebits
+            operational_data += '<div class="totalRemainders"><ul>Всего:';
+            $.each(totalDebits, function (currencyKey, sumVal) {
                 operational_data += '<li>';
-                operational_data += '<span class=\'align_left col-md-5\'>' + key + '</span><span class=\'align_right col-md-7\'> ' + value.toLocaleString('ru-RU', {
-                    maximumFractionDigits: 2
-                }) + "</span>";
+                operational_data += '<span class="align_left col-md-5">' + currencyKey + '</span>';
+                operational_data += '<span class="align_right col-md-7">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';
                 operational_data += '</li>';
+            });
+            operational_data += '</ul></div>';
+            //---personalDebits
+            $.each(debitList, function (userKey, currencyVal) {
+                operational_data += userKey;
+                operational_data += '<li><ul>';
+                $.each(currencyVal, function (currencyKey, sumVal) {
+                    operational_data += '<li>';
+                    operational_data += '<span class=\'align_left col-md-5\'>' + currencyKey + '</span><span class=\'align_right col-md-7\'> ' + sumVal.toLocaleString('ru-RU', {
+                        maximumFractionDigits: 8
+                    }) + "</span>";
+                    operational_data += '</li>';
+                });
+                operational_data += '</ul></li>';
             });
             $("#debits").append(operational_data);
         } else {

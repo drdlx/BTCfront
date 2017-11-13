@@ -3,6 +3,12 @@ getCurrencyList(function (data) {
 });
 
 $(document).ready(function () {
+    document.getElementById('numberCard').addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/[^\dA-Z]/g, '').replace(/(.{4})/g, '$1 ').trim();
+    });
+    document.getElementById('validity').addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/[^\dA-Z]/g, '').replace(/([0-9]{2})/, '$1\/').trim();
+    });
     $("#add_form").hide();
     $("#add_button").click(function () {
         $("#add_form").toggle(500);
@@ -46,10 +52,14 @@ function buildTable() {
             $("#empty_notification").html("");
             $("#handbook_table").html('<tr>\n' +
                 '<th>Отображаемое имя</th>\n' +
-                '<th>Банк</th>\n' +
-                '<th>Валюта</th>\n' +
-                '<th>Владелец</th>\n' +
-                '<th>Ответственный</th>\n' +
+                '<th>Банк</th>' +
+                '<th>Валюта</th>' +
+                '<th>Владелец</th>' +
+                '<th>Ответственный</th>' +
+                '<th>Держатель</th>' +
+                '<th>Номер</th>' +
+                '<th>Срок действия</th>' +
+                '<th>Оплачиваемая</th>' +
                 '</tr>');
             var idNum = 0, xtraTools = "", operational_data = "", xtraClass = "";
             $.each(reserves, function (key, value) {
@@ -63,15 +73,17 @@ function buildTable() {
                     operational_data += '<td>' + transformValue(value.bank) + '</td>';
                     operational_data += '<td>' + transformValue(value.currency) + '</td>';
                     operational_data += '<td>' + transformValue(value.owner) + '</td>';
-
+                    operational_data += '<td>' + transformValue(value.responsible) + '</td>';
+                    operational_data += '<td>' + transformValue(value.legalOwner) + '</td>';
+                    operational_data += '<td>' + transformValue(value.numberCard) + '</td>';
+                    operational_data += '<td>' + transformValue(value.validity) + '</td>';
                     if (value.owner === username) {
                         xtraTools = '<div class="button_block"><a onclick="removeEntry(' + idNum + ")\"" + '">' +
                             '<i class="fa fa-times red" aria-hidden="true"></i></a></div>';
                     } else {
                         xtraTools = "";
                     }
-
-                    operational_data += '<td>' + transformValue(value.responsible) + xtraTools + '</td>';
+                    operational_data += '<td>' + ((value.chargeable === true) ? "Да" : "Нет") + xtraTools + '</td>';
                     operational_data += '</tr>';
 
                     idNum++;
@@ -265,7 +277,7 @@ function toggleResponsibilityBlock() {
     $('input:checkbox').prop("checked", false);
     selected = [];
     $(".absolute_checkbox").toggleClass("active");
-    $("#changeResponsibleActivate").toggleClass("active");
+    $("#changeResponsibleActivate").toggleClass("active").toggle("disabled");
     $("#changeResponsibleButtons").toggleClass("active");
     $("#responsibleMsg").toggle(200);
 }

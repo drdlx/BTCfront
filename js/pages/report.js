@@ -8,7 +8,9 @@ $(document).ready(function () {
         if (username !== "Все пользователи") {
             userReqStr = (priv === 'admin') ? "&user=" + username : "";
         }
-        var currDateHeader = new Date(), day = currDateHeader.getDate(), month = currDateHeader.getMonth() + 1,
+        var currDateHeader = new Date(),
+            day = (currDateHeader.getDate() < 10) ? "0" + currDateHeader.getDate() : currDateHeader.getDate(),
+            month = ((currDateHeader.getMonth() + 1) < 10) ? "0" + (currDateHeader.getMonth() + 1) : currDateHeader.getMonth() + 1,
             year = currDateHeader.getFullYear();
         return $.ajax({
             url: apiServer + request,
@@ -19,12 +21,13 @@ $(document).ready(function () {
                 "authorization": localStorage.getItem('token')
             },
             success: function (data) {
+                console.log(data);
                 var arr = data.reports.noncrypto;
                 dateList = {};
                 $.each(arr, function (key, value) {
                     var currDate = new Date(value.date), day = currDate.getDate(), month = currDate.getMonth() + 1,
                         year = currDate.getFullYear();
-                    dateList[month + "/" + day + "/" + year] = month + "/" + day + "/" + year;
+                    dateList[day + "/" + month + "/" + year] = day + "/" + month + "/" + year;
                 });
             }
         });
@@ -42,13 +45,15 @@ $(document).ready(function () {
         document.getElementById("report_user").value = username;
         //======fill datePicker
         var todayDay = todayDate.getDate(), todayMonth = todayDate.getMonth() + 1, todayYear = todayDate.getFullYear();
-        $("#report_date").val(todayMonth + "/" + todayDay + "/" + todayYear);
+        $("#report_date").val(todayDay + "/" + todayMonth + "/" + todayYear);
         $("#report_date").datepicker({
-            dateFormat: 'm/d/yy',
+            dateFormat: 'd/m/yy',
             beforeShowDay: function (date) {
-                var currDate = new Date(date), day = currDate.getDate(), month = currDate.getMonth() + 1,
+                var currDate = new Date(date),
+                    day = (currDate.getDate() < 10) ? "0" + currDate.getDate() : currDate.getDate(),
+                    month = (currDate.getMonth() + 1 < 10) ? "0" + currDate.getMonth() + 1 : currDate.getMonth() + 1,
                     year = currDate.getFullYear();
-                var hDate = month + "/" + day + "/" + year;
+                var hDate = day + "/" + month + "/" + year;
                 var highlight = dateList[hDate];
                 if (highlight) {
                     return [true, "date_event", highlight];
@@ -72,7 +77,11 @@ $(document).ready(function () {
 function reBuildTable() {
     $("#report_table").find("tr:gt(0)").remove();
     $("#loading").show();
-    var user = $("#report_user").val(), date = $("#report_date").val();
+    var user = $("#report_user").val(),
+        date = $("#report_date").val().split('/'),
+        dateDay = date[0],
+        dateMonth = date[1],
+        dateYear = date[2];
     if (user === "Все пользователи") {
         user = "";
     }
@@ -82,7 +91,7 @@ function reBuildTable() {
         url: apiServer + request,
         type: 'GET',
         crossDomain: true,
-        data: userReqStr + "&dateEnd=" + date + "&dateBegin=" + date,
+        data: userReqStr + "&dateEnd=" + dateMonth + "/" + dateDay + "/" + dateYear + "&dateBegin=" + dateMonth + "/" + dateDay + "/" + dateYear,
         headers: {
             "authorization": localStorage.getItem('token')
         },
