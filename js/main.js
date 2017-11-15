@@ -273,6 +273,23 @@ function getReserveSwitches(callback) {
     });
 }
 
+function getPassiveRemainders(callback) {
+    return $.ajax({
+        url: apiServer + '/finres',
+        type: "GET",
+        headers: {'authorization' : token},
+        success: function (data) {
+            callback(data);
+        },
+        error: function (err) {
+            if (err.status === 401) {
+                tokenTimedOut();
+            }
+            callback(err.status);
+        }
+    });
+}
+
 function clearHistory(callback) {
     return $.ajax({
         url: apiServer + '/deleteMyOperations',

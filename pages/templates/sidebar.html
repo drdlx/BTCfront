@@ -1,3 +1,4 @@
+<script type="text/javascript" src="../js/vendor/nhpup.js"></script>
 <div class="sidebar col-md-2" id="sidebar_block">
     <div class="sidebar_lists">
         <button class="accordion">Резервы <img id="reserves_loader" src="../img/loader.gif" width="22px"></button>
@@ -28,12 +29,13 @@
 <script>
     var creditsSidebar = [], debetsSidebar = [], reservesRemainders = [], reservesSidebar = [],
         mentorInvites = [], mentorsId = {}, currenciesSidebar = [], totalRemainders = {},
-        reserveSwitches = [], switchesID = {};
+        reserveSwitches = [], switchesID = {}, passiveRemainders = {};
 
     buildCachedTabs();
 
     //accordion lists toggle
     var acc = document.getElementsByClassName('accordion');
+
     for (var i = 0; i < acc.length; i++) {
         acc[i].onclick = function () {
             this.classList.toggle("active");
@@ -52,26 +54,13 @@
             $(acc[i]).click();
             setTimeout(function (panel) {
                 panel.removeClass('notransition');
-            }, 200);
+            }, 200, panel);
         }
     }
 
     reBuildSidebarContent();
 
     function reBuildSidebarContent() {
-        getCredits(function (data) {
-            creditsSidebar = [];
-            debetsSidebar = [];
-            $.each(data.credit, function (key, value) {
-                creditsSidebar.push(value);
-            });
-            $.each(data.debet, function (key, value) {
-                debetsSidebar.push(value);
-            });
-            buildCreditTab();
-            buildDebitTab();
-        });
-
         var q1 = getRemainders(function (data) {
             reservesRemainders = [];
             totalRemainders = {};
@@ -89,7 +78,11 @@
             currenciesSidebar = data;
         });
 
-        $.when(q1, q2).done(function () {
+        var q3 = getReserveList(function (data) {
+            reservesSidebar = data;
+        });
+
+        $.when(q1, q2, q3).done(function () {
             buildRemainderTab();
             buildTotalRemainders();
 
@@ -100,19 +93,36 @@
                     panel.addClass("notransition");
                     $(acc[i]).click();
                     $(acc[i]).click();
-                    setTimeout(function () {
+                    setTimeout(function (panel) {
                         panel.removeClass('notransition');
-                    }, 250);
+                    }, 200, panel);
                 }
             }
         });
 
-        var q3 = getReserveList(function (data) {
-            reservesSidebar = data;
-        });
-
         $.when(q3).done(function () {
             buildHistoryBlock();
+        });
+
+        var q4 = getCredits(function (data) {
+            creditsSidebar = [];
+            debetsSidebar = [];
+            $.each(data.credit, function (key, value) {
+                creditsSidebar.push(value);
+            });
+            $.each(data.debet, function (key, value) {
+                debetsSidebar.push(value);
+            });
+
+        });
+
+        var q5 = getPassiveRemainders(function (data) {
+            passiveRemainders = data;
+        });
+
+        $.when(q4, q5).done(function () {
+            buildCreditTab();
+            buildDebitTab();
         });
 
         getMentorInvites(function (data) {
@@ -139,10 +149,28 @@
                 var operation_data = 'Последние операции';
                 $("#sidebarHistory").html("");
                 $.each(data, function (key, value) {
-                    let operation = value.operation;
+                    let operation = value.operation, popUpData = "", datet = "";
                     switch (operation) {
                         case "pay":
-                            operation_data += '<li><b>Куплено:</b> <span class="green"><b>' + value.btc.toLocaleString('ru-RU', {
+                            //popup message
+                            popUpData = "\'";
+                            datet = value.date.substring(0, value.date.indexOf('T')).split("-");
+                            popUpData += datet[2] + "/" + datet[1] + "/" + datet[0] + ": " +
+                                value.paym + " <i class=\\'fa fa-long-arrow-right\\' aria-hidden=\\'true\\'></i> " + value.paymCrypto +
+                                " | куплено " + value.btc + " " + reservesSidebar.find(function (a) {
+                                    return a.title === value.paymCrypto;
+                                }).currency +
+                                " за " + value.rub + " " + reservesSidebar.find(function (a) {
+                                    return a.title === value.paym;
+                            }).currency +
+                                " по курсу " + value.course + " (новый средний курс равен " + reservesSidebar.find(function (a) {
+                                    return a.title === value.paymCrypto;
+                                }).average_course.toFixed(2) + ") " +
+                                ((value.commiss > 0) ? "(+ком." + value.commiss +")" : "") + ((value.bot_commiss > 0) ? ", сервисный сбор " + value.bot_commiss : "") +
+                                ", финрез по операции: " + value.cur_fin_res +
+                                "\'";
+                            //block content
+                            operation_data += '<li onmouseover="nhpup.popup(' + popUpData + ',' + "{'width' : 'auto'}" + ')"><b>Куплено:</b> <span class="green"><b>' + value.btc.toLocaleString('ru-RU', {
                                 maximumFractionDigits: 8
                             }) + '</b></span> за <span class="red"><b>' + value.rub.toLocaleString('ru-RU', {
                                 maximumFractionDigits: 2
@@ -151,7 +179,22 @@
                             }) + '</b></li>';
                             break;
                         case "sell":
-                            operation_data += '<li><b>Продано:</b> <span class="red"><b>' + value.btc.toLocaleString('ru-RU', {
+                            //popup message
+                            popUpData = "\'";
+                            datet = value.date.substring(0, value.date.indexOf('T')).split("-");
+                            popUpData += datet[2] + "/" + datet[1] + "/" + datet[0] + ": " +
+                                value.paymCrypto + " <i class=\\'fa fa-long-arrow-right\\' aria-hidden=\\'true\\'></i> " + value.paym +
+                                " | продано " + value.btc + " " + reservesSidebar.find(function (a) {
+                                    return a.title === value.paymCrypto;
+                                }).currency +
+                                " за " + value.rub + " " + reservesSidebar.find(function (a) {
+                                    return a.title === value.paym;
+                                }).currency +
+                                " по курсу " + value.course +
+                                ((value.commiss > 0) ? " (+ком." + value.commiss +")" : "") + ((value.bot_commiss > 0) ? ", сервисный сбор " + value.bot_commiss : "") +
+                                ", финрез по операции: " + value.cur_fin_res +
+                                "\'";
+                            operation_data += '<li onmouseover="nhpup.popup(' + popUpData + ',' + "{'width' : 'auto'}" + ')"><b>Продано:</b> <span class="red"><b>' + value.btc.toLocaleString('ru-RU', {
                                 maximumFractionDigits: 8
                             }) + '</b></span> за <span class="green"><b>' + value.rub.toLocaleString('ru-RU', {
                                 maximumFractionDigits: 2
@@ -160,6 +203,7 @@
                             }) + '</b></li>';
                             break;
                         case "translate":
+                            //define responsible for initiation of transfer
                             var sourceRes = reservesSidebar.find(function (a) {
                                 if (a.title === value.source) {
                                     return true;
@@ -170,7 +214,10 @@
                             } else {
                                 sourceRes = (sourceRes.responsible === username) ? sourceRes.responsible : sourceRes.owner;
                             }
-                            operation_data += '<li><b>Перевод:</b> ' + ((sourceRes === username) ? 'отправлено <span class="red"><b>' : 'получено <span class="green"><b>') + value.transaction.toLocaleString('ru-RU', {
+                            popUpData = "\'";
+                            datet = value.date.substring(0, value.date.indexOf('T')).split("-");
+                            popUpData += datet[2] + "/" + datet[1] + "/" + datet[0] + ": " + value.source + " <i class=\\'fa fa-long-arrow-right\\' aria-hidden=\\'true\\'></i> " + value.destination + " | " + value.transaction + " " + value.currency + ((value.commiss > 0) ? "(+ком." + value.commiss +")" : "") + ((value.percent > 0) ? "под процент " + value.percent : "") + "\'";
+                            operation_data += '<li onmouseover="nhpup.popup(' + popUpData + ',' + "{'width' : 'auto'}" + ')"><b>Перевод:</b> ' + ((sourceRes === username) ? 'отправлено <span class="red"><b>' : 'получено <span class="green"><b>') + value.transaction.toLocaleString('ru-RU', {
                                 maximumFractionDigits: 8
                             }) + '</span> ' + value.currency +  '</b> на <b>' + value.destination + '</b></li>';
                             break;
@@ -201,7 +248,6 @@
     }
 
     function buildReserveSwitchesTab() {
-        console.log(reserveSwitches);
         if (Object.keys(reserveSwitches).length !== 0) {
             $("#switches").html('');
             var operational_data = "", rowCount = 0;
@@ -226,7 +272,8 @@
                 '<ul id="totalRemainders">' +
                 '</ul>' +
                 '</div>');
-            var operational_data = "", numberLimiter = 2, currentCurrency = "";
+            var operational_data = "", numberLimiter = 2, currentCurrency = "",
+            ownedRemainders = [], switchedRemainders = [], foreignRemainders = [];
             reservesRemainders.sort(function (a, b) {
                 var compare = a.currency.localeCompare(b.currency);
                 if (compare === 0) {
@@ -236,23 +283,47 @@
                 }
             });
             $.each(reservesRemainders, function (key, value) {
-                //whitespace for new currency
-                if (currentCurrency !== value.currency) {
-                    operational_data += '<li></li>'
+                let reserveData = reservesSidebar.find(function (a) {
+                    return a.title === value.title;
+                });
+                if (reserveData.owner === username) {
+                    ownedRemainders.push(value);
+                    if (reserveData.responsible !== username) {
+                        switchedRemainders.push(value);
+                    }
+                } else if (reserveData.responsible === username) {
+                    foreignRemainders.push(value);
                 }
-                currentCurrency = value.currency;
-                operational_data += '<li>';
-                //determines how much digits after comma (2 for normal and 8 for crypto)
-                numberLimiter = (currenciesSidebar.find(function (a) {
-                    return a.currency === value.currency
-                }).isCrypto === true) ? 8 : 2;
-                operational_data += "<span class='align_left col-md-5'>" + value.title + ':</span><span class="align_right col-md-7">' +
-                    value.remainder.toLocaleString('ru-RU', {
-                        maximumFractionDigits: numberLimiter,
-                        minimumFractionDigits: numberLimiter
-                    }) + ' ' + value.currency + "</span>";
-                operational_data += '</li>';
             });
+
+            function buildRemainderCategory(remaindersArray, catName) {
+                if (remaindersArray.length > 0) {
+                    currentCurrency = "";
+                    operational_data += '<b>' + catName + '</b>';
+                    $.each(remaindersArray, function (key, value) {
+                        //whitespace for new currency
+                        if (currentCurrency !== value.currency) {
+                            operational_data += '<li></li>'
+                        }
+                        currentCurrency = value.currency;
+                        operational_data += '<li>';
+                        //determines how much digits after comma (2 for normal and 8 for crypto)
+                        numberLimiter = (currenciesSidebar.find(function (a) {
+                            return a.currency === value.currency
+                        }).isCrypto === true) ? 8 : 2;
+                        operational_data += "<span class='align_left col-md-5'>" + value.title + ':</span><span class="align_right col-md-7">' +
+                            value.remainder.toLocaleString('ru-RU', {
+                                maximumFractionDigits: numberLimiter,
+                                minimumFractionDigits: numberLimiter
+                            }) + ' ' + value.currency + "</span>";
+                        operational_data += '</li>';
+                    });
+                }
+            }
+
+            buildRemainderCategory(ownedRemainders, "Все ваши резервы");
+            buildRemainderCategory(switchedRemainders, "Переданные резервы");
+            buildRemainderCategory(foreignRemainders, "Чужие резервы");
             $("#reserves").append(operational_data);
         } else {
             $("#reserves").html('<li>Нет резервов</li>');
@@ -273,7 +344,7 @@
                     return compare;
                 }
             });
-            //count
+            //count and grouping
             $.each(creditsSidebar, function (key, value) {
                 if (value.debet === currentUser && currentUser !== ""
                     && value.currency === currentCurrency && currentCurrency !== "") {
@@ -288,9 +359,16 @@
                 creditList[currentUser][currentCurrency] = creditSum;
             });
             //draw
-            //---totalCredits
+            //---totalCredits && passive remainder
             operational_data += '<div class="totalRemainders"><ul>Всего:';
             $.each(totalCredits, function (currencyKey, sumVal) {
+                operational_data += '<li>';
+                operational_data += '<span class="align_left col-md-5">' + currencyKey + '</span>';
+                operational_data += '<span class="align_right col-md-7">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';
+                operational_data += '</li>';
+            });
+            operational_data += 'Пассивные остатки:';
+            $.each(passiveRemainders, function (currencyKey, sumVal) {
                 operational_data += '<li>';
                 operational_data += '<span class="align_left col-md-5">' + currencyKey + '</span>';
                 operational_data += '<span class="align_right col-md-7">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';
@@ -345,9 +423,16 @@
                 debitList[currentUser][currentCurrency] = debitSum;
             });
             //draw
-            //---totalDebits
+            //---totalDebits && passive remainders
             operational_data += '<div class="totalRemainders"><ul>Всего:';
             $.each(totalDebits, function (currencyKey, sumVal) {
+                operational_data += '<li>';
+                operational_data += '<span class="align_left col-md-5">' + currencyKey + '</span>';
+                operational_data += '<span class="align_right col-md-7">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';
+                operational_data += '</li>';
+            });
+            operational_data += 'Пассивные остатки:';
+            $.each(passiveRemainders, function (currencyKey, sumVal) {
                 operational_data += '<li>';
                 operational_data += '<span class="align_left col-md-5">' + currencyKey + '</span>';
                 operational_data += '<span class="align_right col-md-7">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';

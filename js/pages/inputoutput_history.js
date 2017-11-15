@@ -104,7 +104,7 @@ function fillTable(data, targetID) {
                     operation_data += '</div></td>';
 
                     if (targetID === '#unaccepted_table') {
-                        xtraData = '<div class="table_row_overlay col-md-7"><button class="accept col-md-6" onclick="acceptEntry(' + rowNumber + ", \'" + source.reserve + "\')\">" +
+                        xtraData = '<div class="table_row_overlay col-md-6"><button class="accept col-md-6" onclick="acceptEntry(' + rowNumber + ", \'" + source.reserve + "\')\">" +
                             '<i class="fa fa-chevron-down" aria-hidden="true">Подтвердить</i></button>';
                         xtraData += '<button class="decline col-md-6" onclick="declineEntry(' + rowNumber + ")\"" + '>' +
                             '<i class="fa fa-times" aria-hidden="true">Отклонить</i></button></div>';

@@ -58,7 +58,7 @@ $(document).ready(function () {
     });
 });
 
-function reCount(initiator) {
+function reCount() {
     getUserParameters(function (data) {
         botComission = data.percentBOT;
     });
@@ -82,15 +82,8 @@ function reCount(initiator) {
         if (isNaN(rubValue)) {
             rubValue = 0;
         }
-        switch (initiator) {
-            case "rub":
-                btcValue = rubValue / courseValue;
-                $("#btc").val(btcValue.toFixed(8));
-                break;
-            default:
-                rubValue = courseValue * btcValue;
-                $("#rub").val(rubValue.toFixed(2));
-        }
+        courseValue = (rubValue / btcValue);
+        $("#course").val(courseValue.toFixed(2));
         botcomissValue = btcValue * botComission;
         $("#bot_commiss").val(botcomissValue.toFixed(8));
 
