@@ -61,7 +61,7 @@ function fillTable(data, targetID) {
                 //====hidden buttons=====
                 var xtraData = "";
                 if (targetID === '#unaccepted_table') {
-                    xtraData = '<div class="table_row_overlay col-md-6"><button class="accept col-md-6" onclick="acceptEntry(' + rowNumber + ", \'" + source.reserve + "\')\">" +
+                    xtraData = '<div class="table_row_overlay col-md-6"><button class="accept col-md-6" onclick="acceptEntry(' + rowNumber + ")\">" +
                         '<i class="fa fa-chevron-down" aria-hidden="true">Подтвердить</i></button>';
                     xtraData += '<button class="decline col-md-6" onclick="declineEntry(' + rowNumber + ")\"" + '>' +
                         '<i class="fa fa-times" aria-hidden="true">Отклонить</i></button></div>';
@@ -115,15 +115,12 @@ function fillTable(data, targetID) {
     }
 }
 
-function acceptEntry(id, sourceReserve) {
-    var currency = "", userReservesOptions = {};
-    //determine currency
-    for (var j = 0; j < IOReserves.length; j++) {
-        if (IOReserves[j].title === sourceReserve) {
-            currency = IOReserves[j].currency;
-            break;
-        }
-    }
+function acceptEntry(id) {
+    console.log(unacceptedList);
+    var currency = unacceptedList.data.find(function (a) {
+        return a._id === unacceptedID[id];
+    }).currency, userReservesOptions = {};
+
     for (var i = 0; i < IOReserves.length; i++) {
         if (IOReserves[i].currency === currency && IOReserves[i].responsible === username) {
             userReservesOptions[IOReserves[i].title] = IOReserves[i].title;
