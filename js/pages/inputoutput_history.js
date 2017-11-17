@@ -55,69 +55,58 @@ function fillTable(data, targetID) {
         $.each(data.data, function (key, value) {
             rowNumber++;
             var source = {};
-            getParticipantData(value.source, function (data) {
-                var xtraData = "";
-                source = data;
+            var destination = {};
+            getParticipantData(value.destination, function (data) {
                 operation_data += '<tr id="' + targetID.substring(1, targetID.length) + "_tr" + rowNumber + '\">';
+                //====hidden buttons=====
+                var xtraData = "";
+                if (targetID === '#unaccepted_table') {
+                    xtraData = '<div class="table_row_overlay col-md-6"><button class="accept col-md-6" onclick="acceptEntry(' + rowNumber + ", \'" + source.reserve + "\')\">" +
+                        '<i class="fa fa-chevron-down" aria-hidden="true">Подтвердить</i></button>';
+                    xtraData += '<button class="decline col-md-6" onclick="declineEntry(' + rowNumber + ")\"" + '>' +
+                        '<i class="fa fa-times" aria-hidden="true">Отклонить</i></button></div>';
+                    unacceptedID["" + rowNumber] = value._id;
+                }
+                if (targetID === '#report_table') {
+                    acceptedID["" + rowNumber] = value._id;
+                }
+                //====date column=====
+                var datet = value.date.substring(0, value.date.indexOf('T')).split("-");
+                operation_data += '<td>' + datet[2] + "/" + datet[1] + "/" + datet[0] + xtraData + '</td>';
+                //====destination column=====
+                destination = data;
                 operation_data += '<td><div class="transfer_participant">' +
-                    '<span class="transfer_data"><i class="fa fa-male" aria-hidden="true"></i>' + source.agent + '</span>';
-                if (source.reserve !== null) {
-                    operation_data += '<span class="transfer_data"><i class="fa fa-credit-card" aria-hidden="true"></i>' + source.reserve + '</span>';
+                    '<span class="transfer_data"><i class="fa fa-male" aria-hidden="true"></i>' + destination.agent + '</span>';
+                if (destination.reserve !== null) {
+                    operation_data += '<span class="transfer_data"><i class="fa fa-credit-card" aria-hidden="true"></i>' + destination.reserve + '</span>';
                 }
                 operation_data += '</div></td>';
-                var destination = {};
-                getParticipantData(value.destination, function (data) {
-                    destination = data;
-                    //======forming comission string and getting a currency========
-                    var commiss = value.commiss;
-                    var comStr = (commiss > 0) ? " (+" + commiss + ")" : "";
-                    var curStr = "",
-                        creditStr = (value.percent > 0) ? "<span class='red'> " + value.percent + "%</span>" : "";
-                    //====trying to get currency from source
-                    if (source.reserve !== null) {
-                        for (var j = 0; j < IOReserves.length; j++) {
-                            if (IOReserves[j].title === source.reserve) {
-                                curStr = IOReserves[j].currency;
-                                break;
-                            }
-                        }
-                    }
-                    //====if we have failed, then we are got to get currency from destination
-                    if (curStr === "" && destination.reserve !== null) {
-                        for (var n = 0; n < IOReserves.length; n++) {
-                            if (IOReserves[n].title === destination.reserve) {
-                                curStr = IOReserves[n].currency;
-                                break;
-                            }
-                        }
-                    }
-                    operation_data += '<td class="transfer_arrow">' +
-                        '<div class="description">' + value.description + '</div>' +
-                        '<img src="../img/arrow.png" width="50px">' + value.transaction + '<span class="red">' + comStr + "</span> " + curStr + creditStr
+
+                //======forming comission string and getting a currency========
+                var commiss = value.commiss;
+                var comStr = (commiss > 0) ? " (+" + commiss + ")" : "";
+                var curStr = value.currency,
+                    creditStr = (value.percent > 0) ? "<span class='red'> " + value.percent + "%</span>" : "";
+                //====operation details column=====
+                operation_data += '<td class="transfer_arrow">' +
+                    '<div class="description">' + value.description + '</div>' +
+                    '<img src="../img/arrow.png" width="30px">' + value.transaction.toLocaleString("ru-RU", {maximumFractionDigits: 2}) + '<span class="red">' + comStr + "</span> " + curStr + creditStr +
                     '</td>';
 
+                getParticipantData(value.source, function (data) {
+                    source = data;
+
+                    //====source column=====
                     operation_data += '<td><div class="transfer_participant">' +
-                        '<span class="transfer_data"><i class="fa fa-male" aria-hidden="true"></i>' + destination.agent + '</span>';
-                    if (destination.reserve !== null) {
-                        operation_data += '<span class="transfer_data"><i class="fa fa-credit-card" aria-hidden="true"></i>' + destination.reserve + '</span>';
+                        '<span class="transfer_data"><i class="fa fa-male" aria-hidden="true"></i>' + source.agent + '</span>';
+                    if (source.reserve !== null) {
+                        operation_data += '<span class="transfer_data"><i class="fa fa-credit-card" aria-hidden="true"></i>' + source.reserve + '</span>';
                     }
                     operation_data += '</div></td>';
-
-                    if (targetID === '#unaccepted_table') {
-                        xtraData = '<div class="table_row_overlay col-md-6"><button class="accept col-md-6" onclick="acceptEntry(' + rowNumber + ", \'" + source.reserve + "\')\">" +
-                            '<i class="fa fa-chevron-down" aria-hidden="true">Подтвердить</i></button>';
-                        xtraData += '<button class="decline col-md-6" onclick="declineEntry(' + rowNumber + ")\"" + '>' +
-                            '<i class="fa fa-times" aria-hidden="true">Отклонить</i></button></div>';
-                        unacceptedID["" + rowNumber] = value._id;
-                    }
-                    if (targetID === '#report_table') {
-                        acceptedID["" + rowNumber] = value._id;
-                    }
-                    var datet = value.date.substring(0, value.date.indexOf('T')).split("-");
-                    operation_data += '<td>' + datet[2] + "/" + datet[1] + "/" + datet[0] + xtraData + '</td>';
                     operation_data += '</tr>';
                 });
             });
+
         });
         $(targetID + " tr th").removeClass("hidden");
         $(targetID).append(operation_data);

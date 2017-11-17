@@ -107,6 +107,9 @@ b, strong {
     font-size: 0.5em;
     color: darkgray;
 }
+textarea.align_left {
+    white-space: normal;
+}
 .wrapper {
     margin: auto;
     padding: 10px;
@@ -567,7 +570,7 @@ input.validate:valid:not(:placeholder-shown) {
     background-color: rgba(29, 29, 29, 0.11);
     width: 25%;
     transition-duration: 0.5s;
-    padding: 10px 0;
+    padding: 5px 0;
 }
 
 .transfer_participant {
@@ -604,7 +607,7 @@ input.validate:valid:not(:placeholder-shown) {
     vertical-align: middle;
 }
 
-.transfer_table tr td:last-child {
+.transfer_table tr td:first-child {
     width: 15%;
     text-align: center;
     font-size: 20px;

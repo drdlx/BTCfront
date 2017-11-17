@@ -2,6 +2,7 @@ var gulp = require('gulp'),
     browsersync = require('browser-sync'),
     gulp_jshint = require('gulp-jshint'),
     sass = require('gulp-sass'),
+    autoprefixer = require('gulp-autoprefixer'),
     jshint = require('jshint');
 
 var path = {
@@ -44,5 +45,6 @@ gulp.task('img:build', function () {
 
 gulp.task('css:build', function () {
     gulp.src(path.src.css)
+        .pipe(autoprefixer())
         .pipe(gulp.dest(path.build.css))
 });

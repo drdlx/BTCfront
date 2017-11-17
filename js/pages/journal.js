@@ -147,12 +147,12 @@ function drawJournal(page, direction) {
                     operation_data += '<td>' + parsedDay + '/' + parsedMonth + '/' + parsedYear + " " + parsedDate[1].substring(0, parsedDate[1].indexOf(".")) + '</td>';
                     //Operation
                     operation_data += '<td>' + operation + '</td>';
-                    //Source
-                    var source = (value.operation === "translate") ? value.source : value.paym;
-                    operation_data += '<td>' + source + '</td>';
                     //Destination
                     var destination = (value.operation === "translate") ? value.destination : value.paymCrypto;
                     operation_data += '<td>' + destination + '</td>';
+                    //Source
+                    var source = (value.operation === "translate") ? value.source : value.paym;
+                    operation_data += '<td>' + source + '</td>';
 
                     //Non-crypto checkout
                     var rub = 0,
@@ -200,12 +200,15 @@ function drawJournal(page, direction) {
                     operation_data += '<td class="' + btcClass + '">' + btc.toLocaleString('ru-RU', {
                         maximumFractionDigits: 8,
                     }) + ' ' + crypto_currency + '</td>';
+                    //Commission
                     operation_data += '<td>' + value.commiss.toLocaleString('ru-RU', {
                         maximumFractionDigits: 2
                     }) + ' ' + non_crypto_currency + '</td>';
+                    //Service commission (crypto)
                     operation_data += '<td>' + ((value.operation === "translate") ? 0 : value.bot_commiss.toLocaleString('ru-RU', {
                         maximumFractionDigits: 8,
                     })) + ' ' + crypto_currency + '</td>';
+                    //Finres
                     operation_data += '<td>' + ((value.operation === "translate") ? -value.commiss.toLocaleString('ru-RU', {
                         maximumFractionDigits: 2
                     }) : value.cur_fin_res.toLocaleString('ru-RU', {
