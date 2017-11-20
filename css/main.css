@@ -277,7 +277,10 @@ input[readonly] {
     background: #42B373 none !important;
     color: #ffffff !important;
 }
-
+.date_radio p {
+    margin: 0;
+    display: inline-block;
+}
 .green {
     color: #48ad1e;
 }
