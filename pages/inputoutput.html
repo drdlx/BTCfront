@@ -29,7 +29,7 @@
         <span class="option"><a href="sell_form.html">Продажа</a></span>
         <span class="selected_option"><a>Ввод/Вывод</a></span>
     </div>
-    <form method="post" id="post_form">
+    <form method="post" id="post_form" onkeypress="return event.keyCode !== 13;">
         <div class="input_block">
             <label for="source" class="col-md-5 align_left">Источник</label>
             <select id="source" class="col-md-6 align_right" name="source" required onchange="fillOutputSelect(this.value)">

@@ -28,7 +28,7 @@
         <span class="selected_option"><a>Продажа</a></span>
         <span class="option"><a href="inputoutput.html">Ввод/Вывод</a></span>
     </div>
-    <form method="post" id="post_form">
+    <form method="post" id="post_form" onkeypress="return event.keyCode !== 13;">
         <div class="input_block">
             <label for="paym" class="col-md-5 align_left">Резерв зачисления</label>
             <select name="paym" id="paym" required class="col-md-6 align_right">
