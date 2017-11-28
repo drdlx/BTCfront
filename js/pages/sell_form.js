@@ -87,7 +87,7 @@ function reCount() {
         botcomissValue = btcValue * botComission;
         $("#bot_commiss").val(botcomissValue.toFixed(8));
 
-        var finrez = getDealFinrez(rubValue, avg, btcValue, botcomissValue, comissValue);
+        var finrez = getDealFinrez("sell", rubValue, avg, btcValue, botcomissValue, comissValue);
         var finrez_field = document.getElementById('deal_finrez');
         var finrez_string = "";
         if (finrez > 0) {

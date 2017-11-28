@@ -1,5 +1,5 @@
 var todayDate = new Date(), dateType = "";
-var userList = ["Все пользователи"], dateList = {};
+var userList = [], dateList = {};
 
 $(document).ready(function () {
     $('input[name=type]').on('change', function () {
@@ -19,16 +19,14 @@ $(document).ready(function () {
     });
     //get all available dates for current user
     var r1 = function (username) {
-        var request = (priv === 'admin') ? '/admin/reportfull' : '/reportfull', userReqStr = "&user=";
-        if (username !== "Все пользователи") {
-            userReqStr = (priv === 'admin') ? "&user=" + username : "";
-        }
+        var userReqStr = "&user=" + username;
+
         var currDateHeader = new Date(),
             day = (currDateHeader.getDate() < 10) ? "0" + currDateHeader.getDate() : currDateHeader.getDate(),
             month = ((currDateHeader.getMonth() + 1) < 10) ? "0" + (currDateHeader.getMonth() + 1) : currDateHeader.getMonth() + 1,
             year = currDateHeader.getFullYear();
         return $.ajax({
-            url: apiServer + request,
+            url: apiServer + '/reportRemainder',
             type: 'GET',
             crossDomain: true,
             data: userReqStr + "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=1/1/1990",
@@ -37,18 +35,9 @@ $(document).ready(function () {
             },
             success: function (data) {
                 console.log(data);
-                var arr = data.reports.noncrypto,
-                arr2 = data.reports.crypto;
                 dateList = {};
-                $.each(arr, function (key, value) {
-                    var currDate = new Date(value.date),
-                        day = (currDate.getDate() < 10) ? "0" + currDate.getDate() : currDate.getDate(),
-                        month = ((currDate.getMonth() + 1) < 10) ? "0" + (currDate.getMonth() + 1) : currDate.getMonth() + 1,
-                        year = currDate.getFullYear();
-                    dateList[day + "/" + month + "/" + year] = day + "/" + month + "/" + year;
-                });
-                $.each(arr2, function (key, value) {
-                    var currDate = new Date(value.date),
+                $.each(data, function (key, value) {
+                    var currDate = new Date(key),
                         day = (currDate.getDate() < 10) ? "0" + currDate.getDate() : currDate.getDate(),
                         month = ((currDate.getMonth() + 1) < 10) ? "0" + (currDate.getMonth() + 1) : currDate.getMonth() + 1,
                         year = currDate.getFullYear();
@@ -126,22 +115,18 @@ function reBuildTable() {
         date2 = date1, date2Day = dateDay, date2Month = dateMonth, date2Year = dateYear;
     if (dateType === 'multiple') {
         date2 = $("#report2_date").val().split('/');
-        dateDay = (date1[0] - 1 < 10) ? "0" + date1[0] - 1 : date1[0] - 1,
         date2Day = (date2[0] < 10) ? "0" + date2[0] : date2[0];
         date2Month = (date2[1] < 10) ? "0" + date2[1] : date2[1];
         date2Year = date2[2];
     }
-    if (user === "Все пользователи") {
-        user = "";
-    }
+
     var dateRequest = [dateMonth + "/" + dateDay + "/" + dateYear, date2Month + "/" + date2Day + "/" + date2Year];
-    var userReqStr = (priv === 'admin') ? "&user=" + user : "";
+    var userReqStr = (priv === 'admin') ? "&user=" + user : "&user=" + username;
     dateRequest.sort(function (a, b) {
         return a > b;
     });
-    var request = (localStorage.getItem('permission') === 'admin') ? '/admin/reportfull' : '/reportfull';
     $.ajax({
-        url: apiServer + request,
+        url: apiServer + '/reportRemainder',
         type: 'GET',
         crossDomain: true,
         data: userReqStr + "&dateEnd=" + dateRequest[1] + "&dateBegin=" + dateRequest[0],
@@ -149,11 +134,34 @@ function reBuildTable() {
             "authorization": localStorage.getItem('token')
         },
         success: function (data) {
-            var operation_data = '', sortedNoncryptoData = {},
-                fullData = data.reports.noncrypto.concat(data.reports.crypto),
-                myOwn = [], foreign = [], shared = [];
+            var operation_data = '<tr><th></th>', myOwn = {};
+            //heads
+            $.each(data, function (key, value) {
+                $.each(value.OwnAndResReserv, function (kkey, reserve) {
+                    if (!(reserve.title in myOwn)) {
+                        myOwn[reserve.title] = {};
+                    }
+                    myOwn[reserve.title][key] = reserve.remainder;
+                });
 
-            console.log(fullData);
+                var headDate = key.split('/');
+                operation_data += '<th>' + headDate[1] + '\.' + headDate[0] + '</th>';
+            });
+            console.log(myOwn);
+            operation_data += '</tr><tr>';
+            var cols = Object.keys(data).length + 1;
+            operation_data += '<td colspan="' + cols + '" class="report-user-header">Резервы</td>';
+            operation_data += '</tr><tr>';
+            //reserves section
+            operation_data += '<td colspan="' + cols + '"> Мои резервы </td></tr>';
+
+            $.each(myOwn, function (title, date) {
+                operation_data += "<tr><td>" + title + "</td>";
+                $.each(date, function (key, val) {
+                    operation_data += "<td>" + val + "</td>";
+                });
+                operation_data+= '</tr>';
+            });
 
             $("#loading").hide();
             $("#report_table").append(operation_data);

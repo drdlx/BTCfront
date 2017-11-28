@@ -304,9 +304,11 @@ function clearHistory(callback) {
     });
 }
 
-function getDealFinrez(income, avgCourse, btcOutcome, botCommiss, comiss) {
-    var result;
-    result = (income - (avgCourse * btcOutcome) - (botCommiss * avgCourse) - comiss).toFixed(2);
+function getDealFinrez(operation, income, avgCourse, btcOutcome, botCommiss, comiss) {
+    var result = 0;
+    if (operation === 'sell') {
+        result = (income - (avgCourse * btcOutcome) - (botCommiss * avgCourse) - comiss).toFixed(2);
+    }
     return parseFloat(result);
 }
 

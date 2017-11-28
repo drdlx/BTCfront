@@ -93,7 +93,7 @@ function reCount() {
         var prognosisLine = document.getElementById('avg_prognosis');
         //prognosis field setter
         boughtTotal = totalRemainders[cryptoCurrency];
-        getAvgPrognose(rubResult, btcValue, boughtTotal, function (data) {
+        getAvgPrognose(rubResult, btcValue, boughtTotal, comissValue, botcomissValue, function (data) {
             var percentage = ((data / (avgCourse / 100)) - 100);
             var percentage_string = "";
             if (percentage > 0) {
@@ -112,7 +112,7 @@ function reCount() {
                 percentage_string = 0;
             }
             prognosisLine.innerHTML = '; Новый ср. курс: ' + newAvrg.toFixed(2) + ' (' + percentage_string + '%)';
-            var finrez = getDealFinrez(0, newAvrg, 0, botcomissValue, comissValue);
+            var finrez = getDealFinrez("buy", 0, newAvrg, 0, botcomissValue, comissValue);
             document.getElementById('deal_finrez').innerHTML = '; Финрез сделки: ' + finrez;
             xtraData = "&average_course=" + newAvrg + "&cur_fin_res=" + finrez;
             $("#submit_button").prop("disabled", false);
@@ -133,8 +133,8 @@ function setCryptoCurrency() {
     reCount();
 }
 
-function getAvgPrognose(spent, bought, totalB, callback) {
-    var result = ((totalB * avgCourse) + spent) / (totalB + bought);
+function getAvgPrognose(spent, bought, totalB, commiss, botCommiss, callback) {
+    var result = ((totalB * avgCourse) + spent + commiss) / (totalB + bought - botCommiss);
     callback(result);
 }
 
