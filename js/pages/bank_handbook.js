@@ -1,3 +1,5 @@
+var banks, idBanks = {};
+
 $(document).ready(function () {
     if (localStorage.getItem('permission') === 'admin') {
         $("#add_form").hide();
@@ -5,7 +7,7 @@ $(document).ready(function () {
             $("#add_form").toggle(500);
         });
         $("#add_bank").show();
-        fillCurrencySelect();
+        fillCurrencySelect("#currency");
         $("#add_form").on('submit', function (e) {
             e.preventDefault();
             var bankNameVal = $("#bank").val(),
@@ -37,8 +39,7 @@ $(document).ready(function () {
 
 function buildTable() {
     getBankList(function (data) {
-        console.log(data);
-        var banks = data;
+        banks = data;
         if (banks.length === 0) {
             $("#empty_notification").html("Нет созданных банков");
         } else {
@@ -51,6 +52,7 @@ function buildTable() {
             var idNum = 0;
             var xtraTools = "";
             $.each(banks, function (key, value) {
+                idBanks[idNum] = value;
                 operational_data += '<tr id="tr' + idNum + "\">";
                 operational_data += '<td id="td' + idNum + "\">" + transformValue(value.bank) + '</td>';
 
@@ -58,6 +60,8 @@ function buildTable() {
                 if (priv === 'admin') {
                     xtraTools += '<a class="delete_button" onclick="removeEntry(' + idNum + ")\"" + '">' +
                         '<i class="fa fa-times" aria-hidden="true"></i></a>';
+                    xtraTools += '<a class="delete_button" onclick="updateEntry(' + idNum + ")\"" + '">' +
+                        '<i class="fa fa-pencil" aria-hidden="true"></i></a>';
                 }
                 xtraTools += '</div>';
 
@@ -72,27 +76,26 @@ function buildTable() {
     });
 }
 
-function fillCurrencySelect() {
+function fillCurrencySelect(target) {
     getCurrencyList(function (data) {
         $.each(data, function (key, value) {
             var opt_data = "<option value=\"";
-            opt_data  += value.currency + "\" >";
+            opt_data += value.currency + "\" >";
             opt_data += value.currency;
             opt_data += "</option>";
-            $("#currency").append(opt_data);
+            $(target).append(opt_data);
         });
-        $("#currency").multiselect({
+        $(target).multiselect({
             nonSelectedText: 'Выберите валюты'
         });
     });
 }
 
 function transformValue(value) {
-    return ((value != null) && (value !="")) ? value : '-';
+    return ((value != null) && (value != "")) ? value : '-';
 }
 
 function removeEntry(id) {
-    console.log("clicked on row #" + id);
     swal({
         title: "Удаление",
         text: "Вы действительно хотите удалить запись " + document.getElementById("td" + id).innerHTML + "?",
@@ -113,6 +116,46 @@ function removeEntry(id) {
                     },
                     error: function (err) {
                         swal("Ошибка при удалении записи", "", "warning");
+                    }
+                });
+            }
+        });
+}
+
+function updateEntry(id) {
+    fillCurrencySelect("#currencyEdit");
+    swal({
+        title: "Редактирование",
+        html: '<h3> Банк ' + idBanks[id].bank + '</h3>' +
+        '<div class="settings_block middle"><label for="currencyEdit">Валюты: </label>' +
+        '<select multiple="multiple" id="currencyEdit" name="currency[]" class="form-control" required>' +
+        '</select></div>',
+        showCancelButton: true,
+        focusCancel: true,
+        preConfirm: function () {
+            return new Promise(function (resolve, reject) {
+                if ($("#currencyEdit").val().length < 1) {
+                    reject("Проверьте правильность всех полей");
+                }
+                else {
+                    resolve($("#currencyEdit").val());
+                }
+            });
+        }
+    })
+        .then(function (isPressed) {
+            if (isPressed) {
+                $.ajax({
+                    url: apiServer + '/banks_up',
+                    type: 'post',
+                    headers: {'authorization': token},
+                    data: "&bank=" + idBanks[id].bank + "&id=" + idBanks[id]._id + "&currency=" + isPressed,
+                    success: function (data) {
+                        swal("Запись успешно овновлена", "", "success");
+                        buildTable();
+                    },
+                    error: function (err) {
+                        swal("Ошибка при обновлении записи", "", "warning");
                     }
                 });
             }
