@@ -29,7 +29,8 @@
     }
     //requesting info
     var userReqStrHeader = (priv === 'admin') ? "&user=" + username : "";
-    var currDateHeader = new Date(), day = currDateHeader.getDate(), month = currDateHeader.getMonth() + 1,
+    var currDateHeader = new Date(), day = (currDateHeader.getDate() < 10) ? "0" + currDateHeader.getDate() : currDateHeader.getDate(),
+        month = ((currDateHeader.getMonth() + 1) < 10) ? "0" + (currDateHeader.getMonth() + 1) : currDateHeader.getMonth() + 1,
         year = currDateHeader.getFullYear();
     var avgHeader = 0, dailyFinresHeader = 0, headerReserves = [], headerCurrencies = [];
     $("#header_username").html(username);
@@ -75,7 +76,7 @@
                         }).isCrypto) {
                         headerReserves.push(value);
                         avgData += '<li><b>' + value.currency + ' </b><span class="align_left col-md-5"> ' + value.title + ':</span><span class="align_right col-md-5">' + value.average_course.toLocaleString('ru-RU', {
-                            maximumFractionDigits: 2
+                            maximumFractionDigits: 8
                         }) + '</span></li>'
                     }
                 });

@@ -297,6 +297,7 @@ input[readonly] {
     display: inline-block;
     vertical-align: middle;
     white-space: nowrap;
+    overflow: hidden;
 }
 .align_right {
     text-align: right;
