@@ -1,7 +1,59 @@
 var delayTimer, avg, xtraData, rubAccounts =[],
-    btcAccounts = [], reservesSell = [];
+    btcAccounts = [], reservesSell = [], lastDate = "", lastTime = "";;
 $(document).ready(function () {
     var currencies;
+
+    var todayDate = new Date();
+    var todayDay = todayDate.getDate(), todayMonth = todayDate.getMonth() + 1, todayYear = todayDate.getFullYear(),
+        cHrs = (todayDate.getHours() < 10) ? "0" + todayDate.getHours() : todayDate.getHours(),
+        cMin = (todayDate.getMinutes() < 10) ? "0" + todayDate.getMinutes() : todayDate.getMinutes(),
+        cSec = (todayDate.getSeconds() < 10) ? "0" + todayDate.getSeconds() : todayDate.getSeconds();
+    $("#date").datepicker({
+        dateFormat: 'd/m/yy',
+        beforeShowDay: function (date) {
+            var hDate = new Date(date);
+            if (hDate >= (new Date(lastDate[0], lastDate[1] - 1, lastDate[2])) && hDate <= todayDate) {
+                return [true, "date_event"];
+            }  else {
+                return [false, "", ""];
+            }
+        }
+    });
+    $("#date").change(function () {
+        if ($("#date").val() === todayDay + "/" + todayMonth + "/" + todayYear) {
+            $("#date").val($("#date").val() + " " + cHrs + ":" + cMin + ":" + cSec);
+        }   else if ($("#date").val() === lastDate[2] + "/" + lastDate[1] + "/" + lastDate[0]) {
+            let nDate = new Date(lastDate[0] + "-" + lastDate[1] + "-" + lastDate[2]);
+            nDate.setHours(lastTime[0]);
+            nDate.setMinutes(lastTime[1]);
+            nDate.setSeconds(lastTime[2] + 1);
+            $("#date").val($("#date").val() + " " + nDate.getHours() + ":" + nDate.getMinutes() + ":" + nDate.getSeconds());
+        } else {
+            $("#date").val($("#date").val() + " 00:00:01");
+        }
+    });
+
+    //getting last opertaion date and time
+    var r3 = function () {
+        var currDate = new Date(),
+            day = (currDate.getDate() < 10) ? "0" + currDate.getDate() : currDate.getDate(),
+            month = (currDate.getMonth() + 1 < 10) ? "0" + currDate.getMonth() + 1 : currDate.getMonth() + 1,
+            year = currDate.getFullYear();
+        return $.ajax({
+            url: apiServer + "/journal",
+            type: 'get',
+            headers: {'authorization': token},
+            data: "&begin=0&end=1" + "&dateEnd=" + year + "-" + ((month < 10) ? "0" + month : month) + "-" + ((day < 10) ? "0" + day : day) + "&dateBegin=" + "&user=" + username,
+            success: function (data) {
+                if (data.length > 0) {
+                    var datet = data[0].date;
+                    lastDate = datet.substring(0, datet.indexOf('T')).split("-");
+                    lastTime = datet.substring(datet.indexOf('T') + 1, datet.indexOf('.')).split(":");
+                }
+            }
+        });
+    };
+
     var r1 = getCurrencyList(function (data) {
         currencies = data;
     });
@@ -10,7 +62,7 @@ $(document).ready(function () {
         reservesSell = data;
     });
 
-    $.when(r1, r2).done(function () {
+    $.when(r1, r2, r3()).done(function () {
         $.each(reservesSell, function (key, value) {
             if (value.responsible === username) {
                 var currency = value.currency;
@@ -41,6 +93,10 @@ $(document).ready(function () {
             },
             data: $("#post_form").serialize() + xtraData,
             success: function () {
+                var datet = $("#date").val();
+                lastDate = datet.substring(0, datet.indexOf(' ')).split("/");
+                lastDate = (lastDate[2] + "-" + lastDate[1] + "-" + lastDate[0]).split("-");
+                lastTime = datet.substring(datet.indexOf(' ') + 1, datet.length).split(":");
                 document.getElementById('post_form').reset();
                 document.getElementById('deal_finrez').innerHTML = "";
                 $("#submit_button").prop("disabled", true);

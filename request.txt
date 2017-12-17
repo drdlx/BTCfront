@@ -1,5 +1,7 @@
 ﻿'/auth' - аутентификация
 /createNewUser'-создание нового юзера(админ)
+POST /recoverpass  отправляешь имеил
+POST /newpass отправляешь код подтверждения и новый пароль
 _______________________________________
 '/pay'- добавдение покупки
  begin=0 end=0 last=true
@@ -18,6 +20,8 @@ _______________________________________
 /reportfullBTC'-полный отчет по резервам битков
 /reportcredit - кредиты
 /reportRemainder отчет по балансу
+/trafficOnReserves?&reserv=Sber-Nikita&dateBegin=2017-12-01&dateEnd=2017-12-11 -движения по резервам
+/creditTransaction?credit=Qaz777?debet=oyuna - взаиморасчеты
 _______________________________________
 получение справочников
 '/currency'

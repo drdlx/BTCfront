@@ -6,11 +6,12 @@
     <link rel="stylesheet" href="../css/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/vendor/jquery-ui.min.css">
+    <title>Ввод\вывод</title>
     <script src="../js/vendor/jquery-3.2.1.min.js"></script>
     <script src="../js/main.js"></script>
+    <script src="../js/vendor/jquery-ui.min.js"></script>
     <script src="../js/vendor/sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Ввод\вывод</title>
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
@@ -50,6 +51,11 @@
             <label for="transaction" class="col-md-5 align_left">Сумма</label>
             <input class="col-md-5 align_right" type="number" name="transaction" id="transaction" step="0.00000001" placeholder="0" required>
             <span class="currency col-md-1 transparent">AAA</span>
+        </div>
+        <div class="input_block">
+            <label for="date" class="col-md-5 align_left">Дата\время</label>
+            <input type="text" name="date" id="date" required readonly
+                   class="col-md-6 align_right">
         </div>
         <div class="input_block">
             <label for="commiss" class="col-md-5 align_left">Комиссия</label>
