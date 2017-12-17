@@ -156,9 +156,9 @@ function reBuildTable() {
                     }
                     operation_data += '<td>' + op + "</td>";
                     operation_data += '<td>' + ((val.destination === reserve) ? val.amount : "") + '</td>';
-                    sumPlus += ((val.destination === reserve) ? val.amount : "");
+                    sumPlus += ((val.destination === reserve) ? val.amount : 0);
                     operation_data += '<td>' + ((val.source === reserve) ? val.amount : "") + '</td>';
-                    sumMinus += ((val.source === reserve) ? val.amount : "");
+                    sumMinus += ((val.source === reserve) ? val.amount : 0);
                     operation_data += '<td>' + val.remainderOnEnded + '</td>';
                     sumRemainder = val.remainderOnEnded;
                     operation_data += '<tr>';
