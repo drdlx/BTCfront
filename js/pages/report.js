@@ -1,4 +1,4 @@
-var todayDate = new Date(), dateType = "";
+var dateType = "";
 var reserveList = [], minDate = "", maxDate = "";
 
 $(document).ready(function () {
@@ -54,7 +54,7 @@ $(document).ready(function () {
             };
             r1($(this).val());
             //======fill datePicker
-            $("#report_date").val("");
+            $("#report_date, #report2_date").val("");
             $("#report_date").datepicker({
                 dateFormat: 'd/m/yy',
                 beforeShowDay: function (date) {

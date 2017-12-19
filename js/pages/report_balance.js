@@ -1,5 +1,5 @@
 var todayDate = new Date(), dateType = "";
-var userList = [], dateList = {}, currencyList, reserveList;
+var userList = [], dateList = {}, currencyList = [], reserveList = [];
 
 $(document).ready(function () {
     $('input[name=type]').on('change', function () {
@@ -113,6 +113,7 @@ $(document).ready(function () {
 function reBuildTable() {
     $("#report_table").find("tr").remove();
     $("#loading").show();
+    //forming dates for request
     var user = $("#report_user").val(),
         date1 = $("#report_date").val().split('/'),
         dateDay = (date1[0] < 10) ? "0" + date1[0] : date1[0],
@@ -125,7 +126,6 @@ function reBuildTable() {
         date2Month = (date2[1] < 10) ? "0" + date2[1] : date2[1];
         date2Year = date2[2];
     }
-
     var dateRequest = [dateMonth + "/" + dateDay + "/" + dateYear, date2Month + "/" + date2Day + "/" + date2Year];
     var userReqStr = (priv === 'admin') ? "&user=" + user : "&user=" + username;
     dateRequest.sort(function (a, b) {
@@ -167,13 +167,29 @@ function reBuildTable() {
             }
             function countDebitBlock(sourceArray, block, sumObj) {
                 $.each(sourceArray, function (kkey, item) {
+                    //creating new objects
                     if (!(item.credit in block)) {
                         block[item.credit] = {};
                     }
                     if (!(item.currency in block[item.credit])) {
                         block[item.credit][item.currency] = {};
                     }
-                    block[item.credit][item.currency][item.date] = item.debts;
+                    //transforming crypto-currencies into valuable fiat
+                    let currentCurrency = item.currency, avg_course = 1;
+                    if (currencyList.find(function (a) {
+                            return a.currency === currentCurrency;
+                        }).isCrypto === true) {
+                        let count = 0, sumAvg = 0;
+                        $.each(reserveList, function (objK, val) {
+                            if ((val.owner === user || val.responsible === user) && val.currency === currentCurrency) {
+                                count++;
+                                sumAvg += val.average_course;
+                            }
+                        });
+                        avg_course = sumAvg / count;
+                    }
+
+                    block[item.credit][item.currency][item.date] = (item.debts * avg_course);
 
                     //sum
                     if (!(item.credit in sumObj)) {

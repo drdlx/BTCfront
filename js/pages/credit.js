@@ -24,7 +24,11 @@ $(document).ready(function () {
             }
         });
         //======fill reserve select
-        fillSelectFromArray(document.getElementById("report_user"), userList);
+        if (priv === 'user') {
+            fillSelectFromArray(document.getElementById("report_user"), [username]);
+        } else {
+            fillSelectFromArray(document.getElementById("report_user"), userList);
+        }
         fillSelectFromArray(document.getElementById("report_credit"), userList);
         //======listening for changes
         $("#report_user, #report_credit").change(function () {
@@ -118,8 +122,6 @@ function reBuildTable() {
             "authorization": localStorage.getItem('token')
         },
         success: function (data) {
-            console.log("&debet=" + debit + "&credit=" + credit + "&dateEnd=" + dateRequest[1] + "&dateBegin=" + dateRequest[0]);
-            console.log(data);
             var operation_data = '', beginRemainder = 0;
             if (data.length > 0) {
                 //counting remainder on start
@@ -139,9 +141,9 @@ function reBuildTable() {
                     operation_data += '<tr>';
                     operation_data += '<td>' + val.date.substring(0, val.date.indexOf('T')) + " " + val.date.substring(val.date.indexOf('T') + 1, val.date.indexOf('.')) + "</td>";
                     operation_data += '<td>' + val.description + "</td>";
-                    operation_data += '<td>' + ((val.user === credit) ? val.transaction : "") + '</td>';
-                    sumPlus += ((val.user === credit) ? val.transaction : 0);
-                    operation_data += '<td>' + ((val.user === debit) ? val.transaction : "") + '</td>';
+                    operation_data += '<td>' + ((val.destination === debit) ? val.transaction : "") + '</td>';
+                    sumPlus += ((val.destination === debit) ? val.transaction : 0);
+                    operation_data += '<td>' + ((val.source === debit) ? val.transaction : "") + '</td>';
                     sumMinus += ((val.source === debit) ? val.transaction : 0);
                     operation_data += '<td>' + val.__v + '</td>';
                     sumRemainder = val.__v;
