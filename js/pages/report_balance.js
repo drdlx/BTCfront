@@ -34,7 +34,6 @@ $(document).ready(function () {
                 "authorization": localStorage.getItem('token')
             },
             success: function (data) {
-                console.log(data);
                 dateList = {};
                 $.each(data, function (key, value) {
                     var currDate = new Date(key),
@@ -140,7 +139,6 @@ function reBuildTable() {
             "authorization": localStorage.getItem('token')
         },
         success: function (data) {
-            console.log(data);
             var operation_data = '<tr><th></th>',
                 myOwn = {}, foreign = {}, switched = {}, debits = {}, credits = {},
                 ownSum = [], foreignSum = [], switchedSum = [], debitsSum = {}, creditsSum = {},
@@ -179,14 +177,14 @@ function reBuildTable() {
                     if (currencyList.find(function (a) {
                             return a.currency === currentCurrency;
                         }).isCrypto === true) {
-                        let count = 0, sumAvg = 0;
+                        let sumRemaindr = 0, sumAvg = 0;
                         $.each(reserveList, function (objK, val) {
                             if ((val.owner === user || val.responsible === user) && val.currency === currentCurrency) {
-                                count++;
-                                sumAvg += val.average_course;
+                                sumRemaindr += val.remainder;
+                                sumAvg += val.average_course * val.remainder;
                             }
                         });
-                        avg_course = sumAvg / count;
+                        avg_course = sumAvg / sumRemaindr;
                     }
 
                     block[item.credit][item.currency][item.date] = (item.debts * avg_course);
@@ -210,7 +208,22 @@ function reBuildTable() {
                     if (!(item.currency in block[item.debet])) {
                         block[item.debet][item.currency] = {};
                     }
-                    block[item.debet][item.currency][item.date] = item.debts;
+
+                    //transforming crypto-currencies into valuable fiat
+                    let currentCurrency = item.currency, avg_course = 1;
+                    if (currencyList.find(function (a) {
+                            return a.currency === currentCurrency;
+                        }).isCrypto === true) {
+                        let sumRemaindr = 0, sumAvg = 0;
+                        $.each(reserveList, function (objK, val) {
+                            if ((val.owner === user || val.responsible === user) && val.currency === currentCurrency) {
+                                sumRemaindr += val.remainder;
+                                sumAvg += val.average_course * val.remainder;
+                            }
+                        });
+                        avg_course = sumAvg / sumRemaindr;
+                    }
+                    block[item.debet][item.currency][item.date] = (item.debts * avg_course);
 
                     //sum
                     if (!(item.debet in sumObj)) {
@@ -287,7 +300,6 @@ function reBuildTable() {
                 var headDate = key.split('/');
                 operation_data += '<th>' + headDate[1] + '\.' + headDate[0] + '</th>';
             });
-            console.log("debits obj", debits);
             operation_data += '</tr><tr class="report-user-header">';
             //reserves section
             operation_data += '<td colspan="' + cols + '" class="report-user-header">Резервы</td>';
