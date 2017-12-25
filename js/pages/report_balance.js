@@ -142,7 +142,7 @@ function reBuildTable() {
             var operation_data = '<tr><th></th>',
                 myOwn = {}, foreign = {}, switched = {}, debits = {}, credits = {},
                 ownSum = [], foreignSum = [], switchedSum = [], debitsSum = {}, creditsSum = {},
-                finres = {};
+                equity = {}, finres = {};
             var cols = Object.keys(data).length + 1;
 
             function countReserveBlock(sourceArray, block, sumObj) {
@@ -153,6 +153,9 @@ function reBuildTable() {
                     }
                     if (!(reserve.date in finres)) {
                         finres[reserve.date] = 0;
+                    }
+                    if (!(reserve.date in equity)) {
+                        equity[reserve.date] = 0;
                     }
                     block[reserve.title][reserve.date] = (currencyList.find(function (a) {
                         return a.currency === reserve.currency;
@@ -196,8 +199,8 @@ function reBuildTable() {
                     if (!(item.date in sumObj[item.credit])) {
                         sumObj[item.credit][item.date] = 0;
                     }
-                    sumObj[item.credit][item.date] += item.debts;
-                    finres[item.date] -= item.debts;
+                    sumObj[item.credit][item.date] += item.debts * avg_course;
+                    equity[item.date] -= item.debts;
                 });
             }
             function countCreditBlock(sourceArray, block, sumObj) {
@@ -232,8 +235,8 @@ function reBuildTable() {
                     if (!(item.date in sumObj[item.debet])) {
                         sumObj[item.debet][item.date] = 0;
                     }
-                    sumObj[item.debet][item.date] += item.debts;
-                    finres[item.date] += item.debts;
+                    sumObj[item.debet][item.date] += item.debts * avg_course;
+                    equity[item.date] += item.debts;
                 });
             }
             function drawReserveBlock(block, sumObj) {
@@ -241,7 +244,7 @@ function reBuildTable() {
                     operation_data += '<td><b>' + sumObj[i].toLocaleString('ru-RU', {
                         maximumFractionDigits: 2
                     }) + '</b></td>';
-                    finres[Object.keys(finres)[i]] += sumObj[i];
+                    equity[Object.keys(equity)[i]] += sumObj[i];
                 }
                 operation_data += '</tr>';
                 $.each(block, function (title, date) {
@@ -276,7 +279,9 @@ function reBuildTable() {
 
                         for (var j = 0; j < currencySet.length; j++) {
                             operation_data += '<tr>';
-                            operation_data += '<td>' + currencySet[j] + '</td>';
+                            operation_data += '<td>' + currencySet[j].toLocaleString('ru-RU', {
+                                maximumFractionDigits: 2
+                            }) + '</td>';
                             $.each(obj[currencySet[j]], function (date, remainders) {
                                 operation_data += '<td>' + remainders.toLocaleString('ru-RU', {
                                     maximumFractionDigits: 2
@@ -311,13 +316,13 @@ function reBuildTable() {
             operation_data += '<td><b>Мои резервы в подотчете</b></td>';
             drawReserveBlock(foreign, foreignSum);
             //debits section
-            operation_data += '<tr class="report-user-header"><td colspan="' + cols + '">Дебит</td></tr>';
+            operation_data += '<tr class="report-user-header"><td colspan="' + cols + '">Дебеторская задолженность</td></tr>';
             drawSettlementsBlock(debits, debitsSum);
             //credits section
-            operation_data += '<tr class="report-user-header"><td colspan="' + cols + '">Кредит</td></tr>';
+            operation_data += '<tr class="report-user-header"><td colspan="' + cols + '">Кредиторская задолженность</td></tr>';
             drawSettlementsBlock(credits, creditsSum);
-            operation_data += '<tr class="report-user-header"><td class>Финрез</td>';
-            $.each(finres, function (date, sum) {
+            operation_data += '<tr class="report-user-header"><td class>Собственный капитал</td>';
+            $.each(equity, function (date, sum) {
                operation_data += '<td>' + sum.toLocaleString('ru-RU', {
                    maximumFractionDigits: 2
                }) + '</td>';
