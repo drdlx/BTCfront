@@ -155,12 +155,12 @@ function reBuildTable() {
                             break;
                     }
                     operation_data += '<td>' + op + "</td>";
-                    operation_data += '<td>' + ((val.destination === reserve) ? val.amount : "") + '</td>';
+                    operation_data += '<td>' + ((val.destination === reserve) ? val.amount.toLocaleString("ru-RU", { maximumFractionDigits: 8, minimumFractionDigits: 2}) : "") + '</td>';
                     sumPlus += ((val.destination === reserve) ? val.amount : 0);
-                    operation_data += '<td>' + ((val.source === reserve) ? val.amount : "") + '</td>';
+                    operation_data += '<td>' + ((val.source === reserve) ? val.amount.toLocaleString("ru-RU", { maximumFractionDigits: 8, minimumFractionDigits: 2}) : "") + '</td>';
                     sumMinus += ((val.source === reserve) ? val.amount : 0);
                     operation_data += '<td>' + val.remainderOnEnded + '</td>';
-                    sumRemainder = val.remainderOnEnded;
+                    sumRemainder = val.remainderOnEnded.toLocaleString("ru-RU", { maximumFractionDigits: 8, minimumFractionDigits: 2});
                     operation_data += '<tr>';
                 });
                 operation_data += '<tr><td colspan="2">Итого:</td><td>' + sumPlus + '</td><td>' + sumMinus + '</td><td>' + sumRemainder + '</td></tr>'

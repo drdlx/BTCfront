@@ -141,11 +141,11 @@ function reBuildTable() {
                     operation_data += '<tr>';
                     operation_data += '<td>' + val.date.substring(0, val.date.indexOf('T')) + " " + val.date.substring(val.date.indexOf('T') + 1, val.date.indexOf('.')) + "</td>";
                     operation_data += '<td>' + val.description + "</td>";
-                    operation_data += '<td>' + ((val.destination === debit) ? val.transaction : "") + '</td>';
+                    operation_data += '<td>' + ((val.destination === debit) ? (val.transaction.toLocaleString("ru-RU", { maximumFractionDigits: 8, minimumFractionDigits: 2})) : "") + '</td>';
                     sumPlus += ((val.destination === debit) ? val.transaction : 0);
-                    operation_data += '<td>' + ((val.source === debit) ? val.transaction : "") + '</td>';
+                    operation_data += '<td>' + ((val.source === debit) ? val.transaction.toLocaleString("ru-RU", { maximumFractionDigits: 8, minimumFractionDigits: 2}) : "") + '</td>';
                     sumMinus += ((val.source === debit) ? val.transaction : 0);
-                    operation_data += '<td>' + val.__v + '</td>';
+                    operation_data += '<td>' + val.__v.toLocaleString("ru-RU", { maximumFractionDigits: 8, minimumFractionDigits: 2}) + '</td>';
                     sumRemainder = val.__v;
                     operation_data += '<tr>';
                 });
