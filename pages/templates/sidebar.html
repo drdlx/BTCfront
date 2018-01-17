@@ -140,11 +140,15 @@
     }
 
     function buildHistoryBlock() {
+        let currDateSidebar = new Date(),
+            day = (currDateSidebar.getDate() < 10) ? "0" + currDateSidebar.getDate() : currDateSidebar.getDate(),
+            month = (currDateSidebar.getMonth() + 1 < 10) ? "0" + currDateSidebar.getMonth() + 1 : currDateSidebar.getMonth() + 1,
+            year = currDateSidebar.getFullYear();
         $.ajax({
             url: apiServer + "/journal",
             type: 'get',
             headers: {'authorization': token},
-            data: "&begin=0&end=5" + "&dateEnd=" + year + "-" + ((month < 10) ? "0" + month : month) + "-" + ((day < 10) ? "0" + day : day) + "&dateBegin=" + "&user=" + username,
+            data: "&begin=0&end=5" + "&dateEnd=" + year + "-" + month + "-" + day + "&dateBegin=" + "&user=" + username,
             success: function (data) {
                 var operation_data = 'Последние операции';
                 $("#sidebarHistory").html("");

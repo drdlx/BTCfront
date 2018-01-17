@@ -132,14 +132,14 @@ $(document).ready(function () {
 function drawJournal(page, direction) {
     var user = $("#report_user").val(),
         date1 = $("#report_date").val().split('/'),
-        dateDay = date1[0],
-        dateMonth = date1[1],
+        dateDay = (date1[0] < 10) ? "0" + date1[0] : date1[0],
+        dateMonth = (date1[1] < 10) ? "0" + date1[1] : date1[1],
         dateYear = date1[2],
         date2 = date1, date2Day = dateDay, date2Month = dateMonth, date2Year = dateYear;
     if (dateType === 'multiple') {
         date2 = $("#report2_date").val().split('/');
-        date2Day = date2[0];
-        date2Month = date2[1];
+        date2Day = (date2[0] < 10) ? "0" + date2[0] : date2[0];
+        date2Month = (date2[1] < 10) ? "0" + date2[1] : date2[1];
         date2Year = date2[2];
     }
     var dateRequest = [dateYear + "-" + dateMonth + "-" + dateDay, date2Year + "-" + date2Month + "-" + date2Day];
