@@ -81,7 +81,7 @@ $(document).ready(function () {
             beforeShowDay: function (date) {
                 var currDate = new Date(date),
                     day = (currDate.getDate() < 10) ? "0" + currDate.getDate() : currDate.getDate(),
-                    month = (currDate.getMonth() + 1 < 10) ? "0" + currDate.getMonth() + 1 : currDate.getMonth() + 1,
+                    month = (currDate.getMonth() + 1 < 10) ? "0" + (currDate.getMonth() + 1) : currDate.getMonth() + 1,
                     year = currDate.getFullYear();
                 var hDate = day + "/" + month + "/" + year;
                 var highlight = dateList[hDate];
@@ -97,7 +97,7 @@ $(document).ready(function () {
             beforeShowDay: function (date) {
                 var currDate = new Date(date),
                     day = (currDate.getDate() < 10) ? "0" + currDate.getDate() : currDate.getDate(),
-                    month = (currDate.getMonth() + 1 < 10) ? "0" + currDate.getMonth() + 1 : currDate.getMonth() + 1,
+                    month = (currDate.getMonth() + 1 < 10) ? "0" + (currDate.getMonth() + 1) : currDate.getMonth() + 1,
                     year = currDate.getFullYear();
                 var hDate = day + "/" + month + "/" + year;
                 var highlight = dateList[hDate];

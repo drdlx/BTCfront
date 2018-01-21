@@ -4,7 +4,7 @@ $(document).ready(function () {
     var r3 = function () {
         var currDate = new Date(),
             day = (currDate.getDate() < 10) ? "0" + currDate.getDate() : currDate.getDate(),
-            month = (currDate.getMonth() + 1 < 10) ? "0" + currDate.getMonth() + 1 : currDate.getMonth() + 1,
+            month = (currDate.getMonth() + 1 < 10) ? "0" + (currDate.getMonth() + 1) : currDate.getMonth() + 1,
             year = currDate.getFullYear();
         return $.ajax({
             url: apiServer + "/journal",
