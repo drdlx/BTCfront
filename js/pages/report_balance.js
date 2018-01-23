@@ -25,16 +25,18 @@ $(document).ready(function () {
             day = (currDateHeader.getDate() < 10) ? "0" + currDateHeader.getDate() : currDateHeader.getDate(),
             month = ((currDateHeader.getMonth() + 1) < 10) ? "0" + (currDateHeader.getMonth() + 1) : currDateHeader.getMonth() + 1,
             year = currDateHeader.getFullYear();
+        console.log(userReqStr + "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=01/01/1990");
         return $.ajax({
             url: apiServer + '/reportRemainder',
             type: 'GET',
             crossDomain: true,
-            data: userReqStr + "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=1/1/1990",
+            data: userReqStr + "&dateEnd=" + month + "/" + day + "/" + year + "&dateBegin=01/01/1990",
             headers: {
                 "authorization": localStorage.getItem('token')
             },
             success: function (data) {
                 dateList = {};
+                console.log(data);
                 $.each(data, function (key, value) {
                     var currDate = new Date(key),
                         day = (currDate.getDate() < 10) ? "0" + currDate.getDate() : currDate.getDate(),
