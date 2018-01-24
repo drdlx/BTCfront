@@ -1,28 +1,50 @@
 <script type="text/javascript" src="../js/vendor/nhpup.js"></script>
-<div class="sidebar col-md-2" id="sidebar_block">
-    <div class="sidebar_lists">
-        <button class="accordion">Резервы <img id="reserves_loader" src="../img/loader.gif" width="22px"></button>
-        <ul class="accordion_panel" id="reserves">
-        </ul>
-        <button class="accordion">Дебиторы <img id="credit_loader" src="../img/loader.gif" width="22px"></button>
-        <ul class="accordion_panel" id="credits">
-        </ul>
-        <button class="accordion">Кредиторы <img id="debit_loader" src="../img/loader.gif" width="22px"></button>
-        <ul class="accordion_panel" id="debits">
-        </ul>
-        <div class="hidden" id="mentor_invites">
-            <button class="accordion" id="mentor_button">Приглашения</button>
-            <ul class="accordion_panel" id="mentor">
-            </ul>
+<div class="sidebar" id="sidebar_block">
+    <div id="main_accordion" class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <button class="accordion row panel-toggle collapsed" data-parent="#main_accordion"
+                            href="#collapse0ne" data-toggle="collapse">
+                        <span class="col-md-5 accordion_title">Резервы</span>
+                        <div class="col-md-6 accordion_remainders" id="reserve_remainders"></div>
+                    </button>
+                </h4>
+            </div>
+            <div id="collapse0ne" class="panel-body collapse in">
+                <ul id="reserves" class="accordion_panel">
+                </ul>
+            </div>
         </div>
-        <div class="hidden" id="reserves_switches">
-            <button class="accordion" id="reserves_switches_button">Передача резервов</button>
-            <ul class="accordion_panel" id="switches">
-            </ul>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <button class="row accordion panel-toggle collapsed" data-parent="#main_accordion"
+                            href="#collapseTwo" data-toggle="collapse">
+                        <span class="col-md-5 accordion_title">Дебиторы</span>
+                        <div class="col-md-6 accordion_remainders" id="debit_remainders"></div>
+                    </button>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-body collapse in">
+                <ul id="credits" class="accordion_panel">
+                </ul>
+            </div>
         </div>
-        <div class="sidebarHistory">
-            <ul id="sidebarHistory">
-            </ul>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <button class="row accordion panel-toggle collapsed" data-parent="#main_accordion"
+                            href="#collapseThree" data-toggle="collapse">
+                        <span class="col-md-5 accordion_title">Кредиторы</span>
+                        <div class="col-md-6 accordion_remainders" id="credit_remainders"></div>
+                    </button>
+                </h4>
+            </div>
+            <div id="collapseThree" class="panel-body collapse in">
+                <ul id="debits" class="accordion_panel">
+                </ul>
+            </div>
         </div>
     </div>
 </div>
@@ -32,32 +54,6 @@
         reserveSwitches = [], switchesID = {}, passiveRemainders = {};
 
     buildCachedTabs();
-
-    //accordion lists toggle
-    var acc = document.getElementsByClassName('accordion');
-
-    for (var i = 0; i < acc.length; i++) {
-        acc[i].onclick = function () {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-                sessionStorage.setItem('headerPanel' + panel.id, 'false');
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + 30 + "px";
-                sessionStorage.setItem('headerPanel' + panel.id, 'true');
-            }
-        };
-        if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
-            var panel = $(acc[i]).next();
-            panel.addClass("notransition");
-            $(acc[i]).click();
-            setTimeout(function (panel) {
-                panel.removeClass('notransition');
-            }, 200, panel);
-        }
-    }
-
     reBuildSidebarContent();
 
     function reBuildSidebarContent() {
@@ -85,23 +81,10 @@
         $.when(q1, q2, q3).done(function () {
             buildRemainderTab();
             buildTotalRemainders();
-
-            var acc = document.getElementsByClassName('accordion');
-            for (var i = 0; i < acc.length; i++) {
-                if (sessionStorage.getItem('headerPanel' + acc[i].nextElementSibling.id) === 'true') {
-                    var panel = $(acc[i]).next();
-                    panel.addClass("notransition");
-                    $(acc[i]).click();
-                    $(acc[i]).click();
-                    setTimeout(function (panel) {
-                        panel.removeClass('notransition');
-                    }, 200, panel);
-                }
-            }
         });
 
         $.when(q3).done(function () {
-            buildHistoryBlock();
+            //buildHistoryBlock();
         });
 
         var q4 = getCredits(function (data) {
@@ -367,21 +350,16 @@
             });
             //draw
             //---totalCredits && passive remainder
-            operational_data += '<div class="totalRemainders"><ul>Всего:';
+            operational_data += '<ul>';
             $.each(totalCredits, function (currencyKey, sumVal) {
-                operational_data += '<li>';
-                operational_data += '<span class="align_left col-md-5">' + currencyKey + '</span>';
-                operational_data += '<span class="align_right col-md-7">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';
+                operational_data += '<li class="row">';
+                operational_data += '<span class="align_left col-md-4">' + currencyKey + '</span>';
+                operational_data += '<span class="align_right col-md-8">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';
                 operational_data += '</li>';
             });
-            /* TODO           operational_data += 'Пассивные остатки:';
-                        $.each(passiveRemainders, function (currencyKey, sumVal) {
-                            operational_data += '<li>';
-                            operational_data += '<span class="align_left col-md-5">' + currencyKey + '</span>';
-                            operational_data += '<span class="align_right col-md-7">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';
-                            operational_data += '</li>';
-                        });*/
-            operational_data += '</ul></div>';
+            operational_data += '</ul>';
+            $("#debit_remainders").html(operational_data);
+            operational_data = "<ul>";
             //---PersonalCredits
             $.each(creditList, function (userKey, currencyVal) {
                 operational_data += userKey;
@@ -395,6 +373,7 @@
                 });
                 operational_data += '</ul></li>';
             });
+            operational_data += '</ul>';
             $("#credits").append(operational_data);
         } else {
             $("#credits").html('<li>Нет должников</li>');
@@ -432,21 +411,16 @@
             });
             //draw
             //---totalDebits && passive remainders
-            operational_data += '<div class="totalRemainders"><ul>Всего:';
+            operational_data += '<ul>';
             $.each(totalDebits, function (currencyKey, sumVal) {
-                operational_data += '<li>';
-                operational_data += '<span class="align_left col-md-5">' + currencyKey + '</span>';
-                operational_data += '<span class="align_right col-md-7">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';
+                operational_data += '<li class="row">';
+                operational_data += '<span class="align_left col-md-4">' + currencyKey + '</span>';
+                operational_data += '<span class="align_right col-md-8">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';
                 operational_data += '</li>';
             });
-            /* TODO           operational_data += 'Пассивные остатки:';
-                        $.each(passiveRemainders, function (currencyKey, sumVal) {
-                            operational_data += '<li>';
-                            operational_data += '<span class="align_left col-md-5">' + currencyKey + '</span>';
-                            operational_data += '<span class="align_right col-md-7">' + sumVal.toLocaleString('ru-RU', {maximumFractionDigits: 8}) + '</span>';
-                            operational_data += '</li>';
-                        });*/
-            operational_data += '</ul></div>';
+            operational_data += '</ul>';
+            $("#credit_remainders").html(operational_data);
+            operational_data = "<ul>";
             //---personalDebits
             $.each(debitList, function (userKey, currencyVal) {
                 operational_data += userKey;
@@ -460,6 +434,7 @@
                 });
                 operational_data += '</ul></li>';
             });
+            operational_data += "</ul>";
             $("#debits").append(operational_data);
         } else {
             $("#debits").html('<li>Нет долгов</li>');
@@ -485,21 +460,22 @@
 
     function buildTotalRemainders() {
         if (Object.keys(totalRemainders).length !== 0) {
-            $("#totalRemainders").html("");
-            var operational_data = "Всего:";
+            $("#reserve_remainders").html("");
+            var operational_data = "<ul>";
             $.each(totalRemainders, function (key, value) {
                 var numberLimiter = (currenciesSidebar.find(function (a) {
                     return a.currency === key
                 }).isCrypto === true) ? 8 : 2;
-                operational_data += "<li><span class='align_left col-md-5'>" + key + "</span><span class='align_right col-md-7'>" +
+                operational_data += "<li class='row'><span class='align_left col-md-4'>" + key + "</span><span class='align_right col-md-8'>" +
                     value.toLocaleString('ru-RU', {
                         maximumFractionDigits: numberLimiter,
                         minimumFractionDigits: numberLimiter
-                    }) + "</span>";
+                    }) + "</span></li>";
             });
-            $("#totalRemainders").html(operational_data);
+            operational_data += "</ul>";
+            $("#reserve_remainders").html(operational_data);
         } else {
-            $("#totalRemainders").html("");
+            $("#reserve_remainders").html("");
         }
     }
 

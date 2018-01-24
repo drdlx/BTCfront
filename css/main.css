@@ -1,14 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 :root {
     --color-light: #CAe4db;
     --color-accent: rgb(230, 230, 29);
     --color-dark: #1A2930;
-    --color-middle: rgb(111, 127, 158);
+    --color-middle: #008786;
     --color-bright: #ececec;
     --color-darkaccent: rgb(241, 201, 66);
 }
-
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
 html {
     color: #222;
     font-size: 1em;
@@ -26,7 +30,7 @@ input[type="number"] {
 }
 
 body {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     background-color: snow;
     margin: 0;
 }
@@ -46,7 +50,10 @@ hr {
     margin: 1em 0;
     padding: 0;
 }
-
+ul {
+    padding: 0;
+    margin: 0;
+}
 audio,
 canvas,
 iframe,
@@ -94,8 +101,9 @@ b, strong {
     font-weight: 700;
 }
 .header {
+    font-family: 'OpenSans-Light', sans-serif;
+    font-size: 12px;
     text-align: center;
-    font-size: 3em;
     padding: 5px;
     color: #444;
 }
@@ -111,7 +119,6 @@ textarea.align_left {
     white-space: normal;
 }
 .wrapper {
-    margin: auto;
     padding: 10px;
     background-color: var(--color-bright);
     z-index: 0;
@@ -681,7 +688,6 @@ input.validate:valid:not(:placeholder-shown) {
 }
 
 .sidebar {
-    position: fixed;
     background-color: rgba(241, 242, 243, 0.22);
     height: 100%;
     top: 0;
@@ -704,8 +710,8 @@ option.reserve {
     border-radius: 10px;
 }
 
-button.accordion {
-    background-color: var(--color-accent);
+button.accordion, .panel.accordion {
+    background-color: white;
     color: var(--color-dark);
     cursor: pointer;
     padding: 12px;
@@ -714,29 +720,38 @@ button.accordion {
     border: none;
     outline: none;
     transition: 0.4s;
-    font-weight: 800;
-    border-bottom: 1px solid rgba(72, 72, 72, 0.15);
+    font-weight: 500;
+    font-size: 13px;
 }
-
-button.accordion.active, button.accordion:hover {
-    background-color: var(--color-darkaccent);
+.panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: inherit;
 }
 
 .accordion_panel {
     padding: 0;
-    max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
     list-style: none;
     margin: 0;
 }
-
+.accordion_remainders {
+    list-style: none;
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 100;
+    overflow-x: hidden;
+}
+.accordion_title {
+    margin: auto;
+}
 #sidebar_block {
     overflow-x: hidden;
     overflow-y: scroll;
     transition: max-width 0.2s ease-out;
-    background-color: var(--color-bright);
-    color: var(--color-middle);
+    background-color: white;
+    font-weight: 200;
 }
 #sidebar_block::-webkit-scrollbar {
     display: none;
@@ -766,22 +781,24 @@ button.accordion.active, button.accordion:hover {
     font-size: 26px;
     margin-left: 13px;
 }
-button.accordion:after {
-    content: '\002B';
+button.accordion .accordion_title:after {
+    font-family: FontAwesome;
+    content: "\f0da";
     color: black;
     font-weight: bold;
     float: right;
-    margin-left: 5px;
+    margin: auto;
 }
 
-button.accordion.active:after {
-    content: "\2212";
+button.accordion:not(.collapsed) .accordion_title:after {
+    font-family: FontAwesome;
+    content: "\f0d7";
 }
 
 .accordion_panel li {
     padding: 2px 3px;
     line-height: 1em;
-    font-size: 15px;
+    font-size: 12px;
 }
 
 #mentor_invites li {
@@ -797,10 +814,10 @@ button.accordion.active:after {
 }
 
 #header {
-    margin: auto;
-    background-color: var(--color-middle);
+    margin-left: auto;
     padding: 10px;
     position: inherit;
+    background: white;
 }
 
 @keyframes bounce {
@@ -826,62 +843,40 @@ button.accordion.active:after {
 #logo, #header_info, #header_user {
     display: inline-block;
     vertical-align: middle;
+    margin: auto;
 }
 #header_username {
     overflow-x: hidden;
 }
 #header_info div {
-    background-color: var(--color-light);
-    color: var(--color-dark);
-    padding: 0.4em;
-    margin: 4px;
-    display: inline-block;
+    display: inline-table;
     justify-content: space-between;
     vertical-align: middle;
+    color: var(--color-dark);
 }
-
-#header_user i {
-    font-size: 4em;
-    color: var(--color-accent);
+#header_info i {
+    font-size: 11px;
+}
+#header_info .finres_today {
+    padding: 0.4em;
+    margin: 4px;
+    text-align: left;
 }
 #header_username {
-    font-size: 2em;
-    text-decoration: underline;
-    color: var(--color-light);
-    margin-left: 2.3em;
-    position: absolute;
-    top: 0;
+    font-size: 12px;
 }
-.user_dropdown {
-    display: none;
-    position: absolute;
-    min-width: 150px;
-    background-color: var(--color-accent);
-    z-index: 115;
-    box-shadow: -1px 1px 4px var(--color-dark);
-    margin-left: 4em;
-    top: 2.8em;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.user_dropdown a:hover {
-    background-color: var(--color-darkaccent);
-}
-
-.user_dropdown a {
-    color: var(--color-dark);
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    transition: 0.2s;
+#header_info img {
+    vertical-align: text-bottom;
 }
 .user-icon {
     cursor: pointer;
     display: inline-block;
 }
-.user-icon:hover .user_dropdown {
-    display: block;
+.header_logout {
+    font-size: 20px;
+    color: var(--color-middle);
+    display: inline-block;
+    vertical-align: middle;
 }
 .totalRemainders {
     color: var(--color-dark);
