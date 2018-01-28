@@ -16,121 +16,25 @@
 </head>
 <body>
 <script>
-    $(function(){
+    $(function () {
         $("#sidebar").load("templates/sidebar.html");
         $("#header").load("templates/header.html");
+        $("#sidebar2").load("templates/sidebar2.html");
     });
 </script>
 <div id="header"></div>
-<div class="row">
+<div class="row main_container">
     <div id="sidebar" class="col-md-2"></div>
     <div class="wrapper col-md-8">
-    <div class="header">
-        Главная
+        <div class="row">
+            <div class="col-md-2 pane_button"><p>Операции</p></div>
+            <div class="col-md-2 pane_button"><p>Операции</p></div>
+            <div class="col-md-2 pane_button"><p>Операции</p></div>
+            <div class="col-md-2 pane_button"><p>Операции</p></div>
+            <div class="col-md-2 pane_button"><p>Операции</p></div>
+        </div>
     </div>
-    <div class="button_pane">
-        <table>
-            <tr class="menu_header">
-                <td colspan="5">
-                    Операции
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-1">
-                    <a href="buy_form.html">
-                        <button class="button">Покупка</button>
-                    </a>
-                    <a href="buy_history.html">
-                        <button class="quick_access"><i class="fa fa-clock-o" aria-hidden="true"></i></button>
-                    </a>
-                </td>
-                <td class="col-md-1">
-                    <a href="sell_form.html">
-                        <button class="button">Продажа</button>
-                    </a>
-                    <a href="sell_history.html">
-                        <button class="quick_access"><i class="fa fa-clock-o" aria-hidden="true"></i></button>
-                    </a>
-                </td>
-                <td class="col-md-1">
-                    <a href="inputoutput.html">
-                        <button class="button">Вывод\ввод</button>
-                    </a>
-                    <a href="inputoutput_history.html">
-                        <button class="quick_access" id="quick_transfer_button"><i class="fa fa-clock-o" aria-hidden="true"></i></button>
-                    </a>
-                </td>
-            </tr>
-            <tr class="menu_header">
-                <td colspan="5">
-                    Справочники
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-1">
-                    <a href="reserve_handbook.html">
-                        <button class="button">Резервы</button>
-                    </a>
-                </td>
-                <td class="col-md-1">
-                    <a href="agent_handbook.html">
-                        <button class="button">Контрагенты</button>
-                    </a>
-                </td>
-                <td class="col-md-1">
-                    <a href="bank_handbook.html">
-                        <button class="button">Банки</button>
-                    </a>
-                </td>
-                <td class="col-md-1">
-                    <a href="currency_handbook.html">
-                        <button class="button">Валюты</button>
-                    </a>
-                </td>
-            </tr>
-            <tr class="menu_header">
-                <td colspan="5">
-                    Статистика
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-1">
-                    <a href="report.html">
-                        <button class="button">Движение по резервам</button>
-                    </a>
-                </td>
-                <td class="col-md-1">
-                    <a href="report_balance.html">
-                        <button class="button">Отчет по балансу</button>
-                    </a>
-                </td>
-                <td class="col-md-1">
-                    <a href="journal.html">
-                        <button class="button">Журнал операций</button>
-                    </a>
-                </td>
-                <td class="col-md-1">
-                    <a href="credit.html">
-                        <button class="button">Взаиморасчеты</button>
-                    </a>
-                </td>
-            </tr>
-            <tr class="menu_header hidden">
-                <td colspan="5">
-                    Администрирование
-                </td>
-            </tr>
-            <tr class="hidden">
-                <td class="col-md-1">
-                    <a href="registration.html">
-                        <button class="button">Добавить пользователя</button>
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div>
-    <div class="col-md-2"></div>
+    <div id="sidebar2" class="col-md-2"></div>
 </div>
 </body>
 </html>

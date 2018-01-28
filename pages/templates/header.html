@@ -73,26 +73,6 @@
                 $("#finres_header").html(0);
             }
         });
-
-        //avg courses section
-/*        var avgData = "";
-        getCurrencyList(function (data) {
-            headerCurrencies = data;
-            getReserveList(function (data) {
-                $.each(data, function (key, value) {
-                    if (value.responsible === username && headerCurrencies.find(function (a) {
-                            return a.currency === value.currency;
-                        }).isCrypto) {
-                        headerReserves.push(value);
-                        avgData += '<li><b>' + value.currency + ' </b><span class="align_left col-md-5"> ' + value.title + ':</span><span class="align_right col-md-5">' + value.average_course.toLocaleString('ru-RU', {
-                            maximumFractionDigits: 8
-                        }) + '</span></li>'
-                    }
-                });
-                $("#avg_header").html(avgData);
-                sessionStorage.setItem('header_avg', avgData);
-            });
-        });*/
     }
 
     function showSettingsScreen() {
