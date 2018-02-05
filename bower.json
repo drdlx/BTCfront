@@ -1,9 +1,10 @@
 {
   "name": "btc_trade",
-  "description": "no description",
+  "description": "btc trading frontend",
   "main": "",
   "authors": [
     "Sunfox <egor.sharoha@gmail.com>"
+    "drdlx <drdlx.users.noreply@github.com>"
   ],
   "license": "ISC",
   "homepage": "",

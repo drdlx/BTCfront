@@ -15,10 +15,17 @@ a {
     width: 100%;
     height: 50px;
     margin-bottom: 15px;
-
 }
-.sidebar-top__content {
-    margin-left: 45px;
+.sidebar__logo {
+    float: left;
+    
+    font-family: 'Didact Gothic', sans-serif;
+    font-size: 24pt;
+    margin-left: 55px;
+    cursor: default; /* TODO gonna be a link */
+}
+.sidebar__logo_green {
+    color: #51bab6;
 }
 .sidebar-left {
     display: block;
@@ -34,27 +41,26 @@ a {
     display: block;
 }
 .wrap-main {
-    margin-left: 45px;
+    /*margin-left: 45px;*/
 }
 
 .panel {
-    display: inline-block;
     background-color: #ffffff;
-    height: 90vh; /*TODO make it in percentages*/
-    width: 300px; /*TODO make it in percentages*/
-    position: static;
+    height: 590px; /*TODO make it in percentages*/
+    /*width: 300px; /*TODO make it in percentages*/
+    margin: 0 auto;
 }
 
 .panel-action {
     float: left;
-    margin-right: 5px;
+    width: 300px;
 }
 .panel-main {
-    float: inherit;
-    width: 655px;
-    margin-left: auto;
-    margin-right: 5px;
+    position: relative;
+    width: 745px;
 }
 .panel-info {
+    display: inline;
     float: right;
+    width: 300px;
 }
