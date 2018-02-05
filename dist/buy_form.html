@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<script src="../js/privilege.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/vendor/jquery-ui.min.css">
+    <title>Покупка</title>
+    <script src="../js/vendor/jquery-3.2.1.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/vendor/jquery-ui.min.js"></script>
+    <script src="../js/vendor/sweetalert2.all.min.js"></script>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body>
+<script>
+    $(function () {
+        $("#sidebar").load("templates/sidebar.html");
+        $("#header").load("templates/header.html");
+    });
+</script>
+<div id="header"></div>
+<div id="sidebar"></div>
+<div class="wrapper col-md-8">
+    <div class="header">
+        <span class="selected_option"><a>Покупка</a></span>
+        <span class="option"><a href="sell_form.html">Продажа</a></span>
+        <span class="option"><a href="inputoutput.html">Ввод/Вывод</a></span>
+    </div>
+    <form method="post" id="post_form" onkeypress="return event.keyCode !== 13;">
+        <div class="input_block">
+            <label for="paym" class="col-md-5 align_left">Резерв для оплаты</label>
+            <select name="paym" id="paym" required class="col-md-6 align_right">
+                <option disabled selected value="" hidden>Загрузка...</option>
+            </select>
+        </div>
+        <div class="input_block">
+            <label for="paymCrypto" class="col-md-5 align_left">Резерв зачисления</label>
+            <select name="paymCrypto" id="paymCrypto" required class="col-md-6 align_right" onchange="setCryptoCurrency()">
+                <option disabled selected value="" hidden>Загрузка...</option>
+            </select>
+        </div>
+        <div class="input_block">
+            <label for="btc" class="col-md-5 align_left">Поступило</label>
+            <input type="number" name="btc" required id="btc" step="0.00000001" min="0" onkeyup="reCount()"
+                   placeholder="0.00000000" class="col-md-6 align_right">
+        </div>
+        <div class="input_block">
+            <label for="rub" class="col-md-5 align_left">Расход Р</label>
+            <input type="number" name="rub" required id="rub" step="0.01" min="0" placeholder="0" class="col-md-6 align_right" onkeyup="reCount()">
+        </div>
+        <div class="input_block">
+            <label for="course" class="col-md-5 align_left">Курс сделки</label>
+            <input type="number" name="course" required id="course" step="0.0000001" min="0"
+                   placeholder="0" class="col-md-6 align_right">
+        </div>
+        <div class="input_block">
+            <label for="commiss" class="col-md-5 align_left">Комиссия</label>
+            <input type="number" name="commiss" id="commiss" step="0.01" min="0" value="0" onkeyup="reCount('commiss')" required
+                   class="col-md-6 align_right">
+        </div>
+        <div class="input_block">
+            <label for="date" class="col-md-5 align_left">Дата\время</label>
+            <input type="text" name="date" id="date" required readonly
+                   class="col-md-6 align_right">
+        </div>
+        <div class="input_block">
+            <label for="bot_commiss" class="col-md-5 align_left">Сервисный сбор</label>
+            <input type="number" class="col-md-6 align_right" name="bot_commiss" id="bot_commiss" readonly step="0.01" min="0" value="0">
+            <a onclick="setNewBotComiss()" class="settings"><i class="fa fa-cog" aria-hidden="true"></i></a>
+        </div>
+        <div class="info_block">
+            Текущий ср. курс: <span id="avg_course"></span><span id="avg_prognosis"></span><span id="deal_finrez"
+                                                                                                 class="red"></span>
+        </div>
+        <div class="centered">
+            <button class="button submit_button" type="submit" disabled id="submit_button">Отправить</button>
+        </div>
+    </form>
+    <div>
+        <a href="menu.html">
+            <button class="button exit_button">В меню</button>
+        </a>
+        <a href="buy_history.html">
+            <button class="button exit_button">История операций</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>
+<script src="../js/pages/buy_form.js">
+</script>

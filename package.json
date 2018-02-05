@@ -1,7 +1,7 @@
 {
   "name": "btc_trade",
   "version": "1.0.0",
-  "description": "no description",
+  "description": "frontend ptc part",
   "license": "ISC",
   "repository": "",
   "devDependencies": {
@@ -14,9 +14,10 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "browser-sync": "^2.23.6",
     "chart.js": "^2.7.0",
     "gulp-install": "^1.1.0",
-    "jquery-ui": "^1.12.1",
+    "popper.js": "^1.12.9",
     "sweetalert": "^2.0.4",
     "sweetalert2": "^6.10.1"
   }

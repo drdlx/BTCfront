@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<script src="../js/privilege.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/vendor/jquery-ui.min.css">
+    <title>Ввод\вывод</title>
+    <script src="../js/vendor/jquery-3.2.1.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/vendor/jquery-ui.min.js"></script>
+    <script src="../js/vendor/sweetalert2.all.min.js"></script>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body>
+<script>
+    $(function () {
+        $("#sidebar").load("templates/sidebar.html");
+        $("#header").load("templates/header.html");
+    });
+</script>
+<div id="header"></div>
+<div id="sidebar"></div>
+<div class="wrapper col-md-8">
+    <div class="header">
+        <span class="option"><a href="buy_form.html">Покупка</a></span>
+        <span class="option"><a href="sell_form.html">Продажа</a></span>
+        <span class="selected_option"><a>Ввод/Вывод</a></span>
+    </div>
+    <form method="post" id="post_form" onkeypress="return event.keyCode !== 13;">
+        <div class="input_block">
+            <label for="source" class="col-md-5 align_left">Источник</label>
+            <select id="source" class="col-md-6 align_right" name="source" required onchange="fillOutputSelect(this.value)">
+                <option disabled selected value="" hidden>Загрузка...</option>
+            </select>
+        </div>
+        <div class="input_block">
+            <label for="destination" class="col-md-5 align_left">Назначение</label>
+            <select id="destination" class="col-md-6 align_right" name="destination" required onchange="checkOutput(this.value)">
+                <option disabled selected value="" hidden>Выберите источник</option>
+            </select>
+        </div>
+        <div class="input_block">
+            <label for="description" class="col-md-5 align_left">Описание</label>
+            <textarea class="col-md-6 align_left" name="description" id="description" maxlength="350" placeholder="Текст описания" required ></textarea>
+        </div>
+        <div class="input_block">
+            <label for="transaction" class="col-md-5 align_left">Сумма</label>
+            <input class="col-md-5 align_right" type="number" name="transaction" id="transaction" step="0.00000001" placeholder="0" required>
+            <span class="currency col-md-1 transparent">AAA</span>
+        </div>
+        <div class="input_block">
+            <label for="commiss" class="col-md-5 align_left">Комиссия</label>
+            <input class="col-md-5 align_right" type="number" name="commiss" id="commiss" step="0.00000001" min="0" value="0" required>
+            <span class="currency col-md-1 transparent">AAA</span>
+        </div>
+        <div class="input_block">
+            <label for="date" class="col-md-5 align_left">Дата\время</label>
+            <input type="text" name="date" id="date" required readonly
+                   class="col-md-6 align_right">
+        </div>
+        <div class="input_block">
+            <label for="percent" class="col-md-5 align_left">Процентная ставка (сутки)</label>
+            <input class="col-md-6 align_right" type="number" name="percent" id="percent" step="0.01" min="0" max="100" value="0" required>
+        </div>
+        <div class="centered">
+            <button class="button submit_button" type="submit">Отправить</button>
+        </div>
+    </form>
+    <div>
+        <a href="menu.html">
+            <button class="button exit_button">В меню</button>
+        </a>
+        <a href="inputoutput_history.html">
+            <button class="button exit_button">История операций</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>
+<script src="../js/pages/inputoutput.js"></script>
