@@ -28,20 +28,3 @@ a {
 .wrap-main {
     width: 100%;
 }
-
-.panel {
-    background-color: #ffffff;
-    height: 590px; /*TODO make it in percentages*/
-    width: 300px; /*TODO make it in percentages*/
-    margin: 0 auto;
-}
-.panel-action {
-    float: left;    
-}
-.panel-main {
-    position: relative;
-    width: 745px; /*TODO make it in percentages*/
-}
-.panel-info {
-    float: right;    
-}
