@@ -18,7 +18,6 @@ a {
 }
 .sidebar__logo {
     float: left;
-    
     font-family: 'Didact Gothic', sans-serif;
     font-size: 24pt;
     margin-left: 55px;
@@ -41,26 +40,25 @@ a {
     display: block;
 }
 .wrap-main {
-    /*margin-left: 45px;*/
+    width: 100%;
 }
 
 .panel {
     background-color: #ffffff;
     height: 590px; /*TODO make it in percentages*/
-    /*width: 300px; /*TODO make it in percentages*/
+    width: 300px; /*TODO make it in percentages*/
     margin: 0 auto;
 }
 
 .panel-action {
     float: left;
-    width: 300px;
+    
 }
 .panel-main {
     position: relative;
-    width: 745px;
+    width: 745px; /*TODO make it in percentages*/
 }
 .panel-info {
-    display: inline;
     float: right;
-    width: 300px;
+    
 }
