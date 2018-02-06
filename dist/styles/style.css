@@ -1,3 +1,6 @@
+/*
+* === HEADER SETTINGS ===
+*/
 .sidebar-top {
     display: block;
     background-color: #ffffff;
@@ -16,6 +19,9 @@
     color: #51bab6;
 }
 
+/*
+* === MAIN STYLE SETTINGS ===
+*/
 body {
     position: relative;
     margin: 0;
@@ -50,10 +56,8 @@ a {
     width: 300px; /*TODO make it in percentages*/
     margin: 0 auto;
 }
-
 .panel-action {
-    float: left;
-    
+    float: left;    
 }
 .panel-main {
     position: relative;
