@@ -8,17 +8,43 @@
     height: 50px;
     margin-bottom: 15px;
 }
-.sidebar__logo {
+.sidebar-top-wrap {
+    margin-left: 45px;
+}
+.sidebar-top__line-break {
+    display: inline-block;
+    width: 2px;
+    height: 30px;
+    margin-top: 0px; /*TODO Make it 10px*/
+    margin-left: 15%;
+    background-color: #008786;
+}
+.sidebar-top__section {
+    display: block;
+    padding-left: 20px;
+}
+.sidebar-top__logo {
     float: left;
     font-family: 'Didact Gothic', sans-serif;
     font-size: 24pt;
-    margin-left: 55px;
     cursor: default; /* TODO gonna be a link */
+    width: 20%;
 }
-.sidebar__logo_green {
+.sidebar-top__logo_green {
     color: #51bab6;
 }
 
+.sidebar-top__income {
+    margin-top: 6px;
+    border-left: 2px solid;
+    border-color: #008786;
+    display: inline-block;
+    font-size: 10pt;
+    width: 20%;
+}
+.sidebar-top__income_header {
+    color: rgba(48, 48, 48, 0.89);
+}
 .panel {
     background-color: #ffffff;
     height: 590px; /*TODO make it in percentages*/
