@@ -60,37 +60,30 @@
     margin-right: 30px;
     cursor: pointer;
 }
-.sidebar-top__arrow-dropdown {
+.sidebar-top__button:hover {
+    background-color: #fcfcfc;
+}
+.sidebar-top__image {
     display: inline-block;
     vertical-align: middle;
+    background-size: cover;
+    background-position: center;
+}
+.sidebar-top__image_arrow-dropdown {
     background-image: url("/images/arrow-down.png");
     width: 7px;
     height: 8px;
-    background-size: cover;
-    background-position: center;
 }
-.sidebar-top__avatar {
-    display: inline-block;
-    vertical-align: middle;
+.sidebar-top__image_avatar {
     background-image: url('/images/userpic-mock-small.png'); /*TODO mocked for now*/
     width: 30px;
     height: 30px;
-    background-size: cover;
-    background-position: center;
     border-radius: 50%;
     border-color: #ffffff;
 }
-.sidebar-top__logout {
-    display: inline-block;
-    vertical-align: middle;
+.sidebar-top__image_logout {
     background-image: url('/images/logout.svg'); /*TODO mocked for now*/
-    background-repeat: no-repeat;
     width: 20px;
     height: 20px;
-    background-position: center;
     background-size: 20px 20px;
-    border: 0;
-}
-.sidebar-top__button:hover {
-    background-color: azure;
 }
