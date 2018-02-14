@@ -1,5 +1,5 @@
 /**
-* PANEL SETTINGS
+* PANELS SETTINGS
 **/
 
 .content {
@@ -27,17 +27,32 @@
 .panel-wrap {
 
 }
+/*PANEL SIDEBAR SETTINGS*/
 .panel-sidebar {
     width: 45px;
 }
-.panel-action {
+
+.panel-finances {
     
 }
+.finances__minimized {
+    display: flex;
+    justify-content: space-between;
+}
+.finances__minimized__header {
+    
+}
+.finances__minimized__status {
+    
+}
+/*PANEL MAIN SETTINGS*/
 .panel-main {
     width: 680px;
 }
+
+/*PANEL INFO SETTINGS*/
+
 .panel-info {
-    
 }
 .panel-info__header {
     width: 260px;
@@ -51,14 +66,14 @@
     font-weight: normal;
 }
 .panel-info__ul {
-    /*margin: 0;*/
+    font-weight: 300;
     padding-left: 20px;
-    font-weight: lighter;
 }
 .panel-info__li {
-    /*margin: 0;
-    padding: 0;*/
 }
 .panel-info__operation {
     padding-right: 60px;
+}
+.info__operation-type {
+    font-weight: normal;
 }
