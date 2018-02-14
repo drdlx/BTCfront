@@ -19,9 +19,6 @@ a {
     height: 100%;
     position: fixed;
 }
-.content {
-    display: block;
-}
 .wrap {
     display: block;
 }

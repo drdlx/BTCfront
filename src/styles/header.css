@@ -6,18 +6,10 @@
     background-color: #ffffff;
     width: 100%;
     height: 50px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 .sidebar-top-wrap {
     margin-left: 45px;
-}
-.sidebar-top__line-break {
-    display: inline-block;
-    width: 2px;
-    height: 30px;
-    margin-top: 0px; /*TODO Make it 10px*/
-    margin-left: 15%;
-    background-color: #008786;
 }
 .sidebar-top__section {
     display: block;
@@ -28,7 +20,7 @@
     font-family: 'Didact Gothic', sans-serif;
     font-size: 24pt;
     cursor: default; /* TODO gonna be a link */
-    width: 300px;
+    width: 320px;
 }
 .sidebar-top__logo_green {
     color: #51bab6;
@@ -40,7 +32,7 @@
     border-color: #008786;
     display: inline-block;
     font-size: 10pt;
-    width: 360px;
+    width: 400px;
 }
 .sidebar-top__income_header {
     color: rgba(48, 48, 48, 0.89);

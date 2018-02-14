@@ -1,0 +1,28 @@
+/**
+* PANEL SETTINGS
+**/
+
+.content {
+    display: flex;
+    padding-left:45px;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+}
+.panel {
+    display: flex;
+    padding-top: 20px;
+    background-color: #ffffff;
+    min-height: 590px; /*TODO make it in percentages*/
+    width: 300px;
+    margin: 0;
+}
+.panel-action {
+    
+
+}
+.panel-main {
+    width: 680px;
+}
+.panel-info {
+}
