@@ -2,9 +2,31 @@
     
     {% block main %}
     <main class="content">
-        <div class="panel panel-action">Action</div>
-        <div class="panel panel-main">Main</div>
-        <div class="panel panel-info">Info</div>
+        <section class="panel panel-sidebar">Side</section>
+        <section class="panel panel-action">Action</section>
+        <section class="panel panel-main">Main</section>
+        <section class="panel panel-info">
+            <wrap>
+                <wrap class "panel-wrap">
+                <article class="panel__section">
+                    <div class="panel-info__header"><div class="panel-info__header__text">Средние курсы</div></div>
+                    <ul class="panel-info__ul">
+                        <li class="panel-info__li">BTC EgorTwoBTC: 98 242,48</li>
+                        <li>BTC EgorTwoBTC: 98 242,48</li>
+                        <li>BTC EgorTwoBTC: 98 242,48</li>
+                    </ul>
+                </article>
+                <article class="panel__section">
+                        <div class="panel-info__header"><div class="panel-info__header__text">Последние операции</div></div>
+                        <!-- TODO make it appear from the JS database file -->
+                        <p class="panel-info__operation"><strong>Продано:</strong> 1 BTC за 1 000 000 000 RUB по курсу 1 000 000 000</p>
+                        <p class="panel-info__operation"><strong>Продано:</strong> 1 BTC за 1 000 000 000 RUB по курсу 1 000 000 000</p>
+                        <p class="panel-info__operation"><strong>Продано:</strong> 1 BTC за 1 000 000 000 RUB по курсу 1 000 000 000</p>
+                        <p class="panel-info__operation"><strong>Продано:</strong> 1 BTC за 1 000 000 000 RUB по курсу 1 000 000 000</p>
+                    </article>
+                </wrap>
+            </wrap>
+        </section>
     </main>
 
     {% endblock %}

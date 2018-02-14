@@ -9,7 +9,8 @@
     margin-bottom: 10px;
 }
 .sidebar-top-wrap {
-    margin-left: 45px;
+    /*margin-left: 45px;*/
+    margin-left: 0;
 }
 .sidebar-top__section {
     display: block;
