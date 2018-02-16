@@ -36,14 +36,15 @@
 /*PANEL FINANCES SETTINGS*/
 .panel-finances {
     padding-right: 10px;
+    display: flex;
+    flex-direction: column;
 }
 .finances__minimized {
     display: flex;
-    /*justify-content: space-between;*/
+    justify-content: space-between;
     align-items: center;
 }
 .finances__header {
-    flex: none;
     font-size: 12;
     padding-left: 15px;
     
@@ -54,6 +55,9 @@
 }
 
 /*FINANCES minimized section*/
+.section__finances {
+    margin-bottom: 30px;
+}
 .finances__minimized__status {
     display: flex;
     font-size: 8pt;
@@ -63,7 +67,6 @@
     padding: 0;
     justify-content: center;
     flex-direction: column;
-    padding-left: 125px;
 }
 .status__row {
     display: flex;
@@ -80,7 +83,7 @@
 
 .finances__maximized__wrap {
     padding-left: 15px;
-    
+    margin-bottom: 20px;
     display: flex;
     justify-content: flex-end;
     column-count: 2;
@@ -93,12 +96,6 @@
 .finances__row {
     display: flex;
     flex-direction: row;
-}
-.finances__source {
-
-}
-.finance__value {
-
 }
 
 /*finances misc*/
