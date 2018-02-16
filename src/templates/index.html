@@ -6,14 +6,33 @@
         
         <section class="panel panel-finances">
             <div class="panel__section reserves">
-                <div class="finances__minimized">
-                    <div class="finances__minimized__header">Резервы&nbsp;&#9658;</div>
+                <section class="finances__minimized">
+                    <div class="finances__header finances__header_max">Резервы&nbsp;&#9658;</div>
                     <aside class="finances__minimized__status">
-                        <div class="status__row"><div style="order:0;" class="finances__minimized__cell">RUB&nbsp;&nbsp;&nbsp;</div><div style="order:0;" class="finances__minimized__cell">931 349,00</div></div>
-                        <div class="status__row"><div style="order:1;" class="finances__minimized__cell">BTC&nbsp;&nbsp;&nbsp;</div><div style="order:1;" class="finances__minimized__cell">1,03338000</div></div>
-                        <div class="status__row"><div style="order:2;" class="finances__minimized__cell">EUR&nbsp;&nbsp;&nbsp;</div><div style="order:2;" class="finances__minimized__cell">0,00</div></div>
+                        <div class="status__row"><div style="order:0;" class="finances__minimized__cell status__currency">RUB&nbsp;&nbsp;&nbsp;</div><div style="order:0;" class="finances__minimized__cell status__value">931 349,00</div></div>
+                        <div class="status__row"><div style="order:1;" class="finances__minimized__cell status__currency">BTC&nbsp;&nbsp;&nbsp;</div><div style="order:1;" class="finances__minimized__cell status__value">1,03338000</div></div>
+                        <div class="status__row"><div style="order:2;" class="finances__minimized__cell status__currency">EUR&nbsp;&nbsp;&nbsp;</div><div style="order:2;" class="finances__minimized__cell status__value">0,00</div></div>
                     </aside>
-                </div>
+                </section>
+                <section class="finances__maximized">
+                    <div class="finances__header">Мои резервы&nbsp;&#9658;</div>
+                    <div class="finances__separator finances__separator_opened"></div>
+                    <!-- content -->
+                    <div class="finances__maximized__wrap">
+                        <div class="finances__row">
+                            <div class="finances__source">EgorTwoBTC:&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                            <div class="finances__value">1,03338000 BTC</div>
+                        </div>
+                        <div class="finances__row">
+                                <div class="finances__source">mnmmnmnmmnm:&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                <div class="finances__value">0,00 EUR</div>
+                        </div>
+                        <div class="finances__row">
+                                <div class="finances__source">Egor2lsafdj:&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                <div class="finances__value">999 931 349,00 RUB</div>
+                        </div>
+                    </div>
+                </section>
             </div>
             <div class="debitors"></div>
             <div class="creditors"></div>
