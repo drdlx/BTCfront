@@ -76,8 +76,10 @@
     overflow: hidden;  /*Or flex might break*/
 }
 .status__currency {
+    font-weight: 300;
 }
 .status__value {
+    font-weight: normal;
 }
 
 .finances__maximized__wrap {
@@ -126,19 +128,19 @@
 .main__chart {
     display: flex;
     flex-direction: column;
-    /*justify-content: flex-end;*/
     width: "90%";
 }
 .chart__name {
     margin: 0;
     text-align: right;
+    font-weight: 300;
 }
 .main__buttons {
     padding-top: 40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
+    padding-bottom: 60px;
 }
 .main__button {
     width: 100px;
@@ -154,7 +156,81 @@
 .main__button:hover {
     background-color: #823161;
 }
-
+.main__forms {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    columns: 2;
+    padding-bottom: 60px;
+}
+.main__form {
+    width: 290px;
+    border: 1px solid rgba(151, 151, 151, 0.3);
+    flex-direction: column;
+}
+.main__form__header {
+    position: relative;
+    width: 100px;
+    height: 40px;
+    margin-top: -2px;
+    border-top: solid 2px;
+    border-top-color: #008786;
+    margin-left: -2px;
+    border-left: solid 2px;
+    border-left-color: #008786;
+    padding-left: 10px;
+    padding-top: 5px;
+    color: rgba(27, 26, 26, 0.62);
+    font-size: 15pt;
+    overflow: hidden;
+    z-index: 1;
+}
+.main__form__regular {
+    display: flex;
+    flex-wrap: wrap;
+    column-count: 2;
+    justify-content: flex-end;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow: hidden;
+}
+.main__form__label {
+    display: inline-block;
+    width: 130px;
+    text-align: right;
+}
+.main__form__input {
+    width: 110px;
+    margin-bottom: 10px;
+    border: 1px solid;
+    border-radius: 4px; /* Rounded borders */
+    border-color: rgba(151, 151, 151, 0.3);
+    box-sizing: border-box;
+    margin-left: 20px;
+    text-align: right;
+}
+.main__form__input:focus {
+    outline: none;
+    border-color: #008786;
+}
+.main__form__input__submit {
+    width: 120px;
+    height: 25px;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    background-color: #008786;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    margin-left: auto;
+}
+.main__forms__buy {
+    border-left: 0;
+}
+.main__forms__sell {
+    border-right: 0;
+}
 /* Breadcrumbs */
 .main__breadcrumbs {
     list-style: none;

@@ -19,6 +19,12 @@ a {
     height: 100%;
     position: fixed;
 }*/
+input {
+    font-family: 'Open Sans', sans-serif; 
+}
+button:focus {
+    outline: none;
+}
 .wrap {
     display: block;
 }
