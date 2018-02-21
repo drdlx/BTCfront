@@ -158,16 +158,21 @@
 }
 .main__forms {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    columns: 2;
     padding-bottom: 60px;
+    flex-direction: column;
+    columns: 2;
+}
+.main__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 .main__form {
     width: 290px;
     border: 1px solid rgba(151, 151, 151, 0.3);
     flex-direction: column;
     z-index: 1;
+    margin-bottom: 35px;
 }
 .main__form__header {
     position: relative;
@@ -184,6 +189,7 @@
     
 }
 .main__form__header_buy {
+    order: 1;
     width: 100px;
     height: 40px;
     border-top: solid 2px;
@@ -192,6 +198,7 @@
     border-left-color: #008786;
 }
 .main__form__header_sell {
+    order: 2;
     width: 40px;
     height: 100px;
     border-top: solid 2px;
