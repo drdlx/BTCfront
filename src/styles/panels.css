@@ -77,7 +77,7 @@
     font-weight: 300;
 }
 .status__value {
-    font-weight: normal;
+    font-weight: bold;
 }
 
 .finances__maximized__wrap {
@@ -113,6 +113,7 @@
 }
 
 /*PANEL MAIN SETTINGS*/
+
 
 .panel-main {
     width: 680px;
@@ -153,6 +154,29 @@
 }
 .main__button:hover {
     background-color: #823161;
+}
+
+/* Breadcrumbs */
+.main__breadcrumbs {
+    list-style: none;
+}
+ul.main__breadcrumbs {
+    padding: 0;
+}
+ul.main__breadcrumbs li {
+    display: inline;
+    font-size: 10pt;
+    color: #303030;
+}
+ul.main__breadcrumbs li+li:before {
+    padding: 4px;
+    content: "\003e\00a0";
+}
+ul.main__breadcrumbs li a {
+    text-decoration: none;
+}
+ul.main__breadcrumbs li a:hover {
+    text-decoration: underline;
 }
 
 .main__forms {
@@ -347,29 +371,6 @@
 .footer__outcome__important {
     color: #481634;
 }
-/* Breadcrumbs */
-.main__breadcrumbs {
-    list-style: none;
-}
-ul.main__breadcrumbs {
-    padding: 0;
-}
-ul.main__breadcrumbs li {
-    display: inline;
-    font-size: 10pt;
-    color: #303030;
-}
-ul.main__breadcrumbs li+li:before {
-    padding: 4px;
-    content: "\003e\00a0";
-}
-ul.main__breadcrumbs li a {
-    text-decoration: none;
-}
-ul.main__breadcrumbs li a:hover {
-    text-decoration: underline;
-}
-
 
 /*PANEL INFO SETTINGS*/
 
@@ -387,14 +388,15 @@ ul.main__breadcrumbs li a:hover {
     font-weight: normal;
 }
 .panel-info__ul {
-    font-weight: 300;
+    font-weight: normal;
     padding-left: 20px;
 }
 .panel-info__li {
 }
 .panel-info__operation {
     padding-right: 60px;
+    font-weight: 300;
 }
 .info__operation-type {
-    font-weight: normal;
+    font-weight: bolder;
 }
