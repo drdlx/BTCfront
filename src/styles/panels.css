@@ -289,24 +289,38 @@
     flex-direction: column;
 }
 .rate__container__header {
-    /*padding-left: 10%;*/
     font-weight: bolder;
 }
 .rate__container__inside_count {
-    /*padding-right: 10%;*/
-    /*margin-left: 10%;*/
     border-right: 1px solid #481634;
 }
 .rate__container__inside_mid {
-    /*padding-left: 10%;
-    margin-right: 10%;*/
     border-left: 1px solid #008786;
 }
 
 .main__forms__stats {
     border-bottom: 0;
     border-right: 0;
-    border-color: #ffffff;
+    border-color: rgba(151, 151, 151, 0.3);
+    margin-left: 3%;
+}
+.stats__header {
+    margin-top: 0;
+    margin-left: 0;
+    width: 120px;
+    height: 60px;
+    border-left: solid 2px #008786;
+}
+.stats__subheader {
+    color: #481634;
+    font-weight: bold;
+    font-size: 10pt;
+    margin-top: -40px;
+    margin-left: 20px;
+}
+.stats__circle-chart {
+    margin-top: -10px;
+    margin-left: 10%;
 }
 /* Breadcrumbs */
 .main__breadcrumbs {
