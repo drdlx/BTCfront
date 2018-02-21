@@ -322,6 +322,31 @@
     margin-top: -10px;
     margin-left: 10%;
 }
+.stats__footer {
+    width: 105%;
+    border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+    display: flex;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.stats__footer__percentage {
+    color: rgba(48, 48, 48, 0.6);
+}
+.footer__important {
+    font-size: 30pt;
+    font-weight: bold;
+}
+.footer__percentage__important {
+    color: #008786;
+}
+.footer__percentage__text {
+    margin-top: -10px;
+    color: rgba(48, 48, 48, 0.6);
+}
+.footer__outcome__important {
+    color: #481634;
+}
 /* Breadcrumbs */
 .main__breadcrumbs {
     list-style: none;
