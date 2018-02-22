@@ -1,27 +1,27 @@
 {
-  "name": "btc_trade",
+  "name": "BTCfront",
   "version": "1.0.0",
-  "description": "frontend ptc part",
-  "license": "ISC",
-  "repository": "",
-  "devDependencies": {
-    "browser-sync": "latest",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
-    "gulp-jshint": "latest",
-    "gulp-sass": "latest",
-    "jshint": "latest"
-  },
+  "description": "BTC frontend thingy",
+  "main": "index.js",
+  "repository": "https://github.com/drdlx/BTCfront.git",
+  "author": "Daniil Shelkovnikov <drdlx@users.noreply.github.com>",
+  "license": "MIT",
+  "private": true,
   "dependencies": {
-    "bootstrap": "^3.3.7",
     "browser-sync": "^2.23.6",
-    "bulma": "^0.6.2",
-    "chart.js": "^2.7.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.1.0",
     "gulp-concat": "^2.6.1",
-    "gulp-install": "^1.1.0",
+    "gulp-concat-css": "^3.0.0",
+    "gulp-html-prettify": "^0.0.1",
+    "gulp-less": "^3.5.0",
     "gulp-nunjucks": "^3.1.1",
-    "popper.js": "^1.12.9",
-    "sweetalert": "^2.0.4",
-    "sweetalert2": "^6.10.1"
+    "gulp-nunjucks-render": "^2.2.2",
+    "jquery": "^3.3.1",
+    "less": "^3.0.1",
+    "popper.js": "^1.12.9"
+  },
+  "devDependencies": {
+    "bootstrap": "^4.0.0"
   }
 }

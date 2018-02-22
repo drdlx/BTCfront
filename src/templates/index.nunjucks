@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layout.nunjucks" %}
     
     {% block main %}
     <main class="content">
@@ -177,5 +177,4 @@
                 </div>
         </section>
     </main>
-
     {% endblock %}

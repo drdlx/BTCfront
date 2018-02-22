@@ -4,12 +4,16 @@ var concat = require('gulp-concat');
 //var cssmin = require('gulp-cssmin');        //TODO it's gonna be for production build only, so I don't need it at the moment
 var autoprefixer = require('gulp-autoprefixer');
 var browserSync = require('browser-sync').create();
+var render = require('gulp-nunjucks-render');
+var prettify = require('gulp-html-prettify');
 //var uglify = require('gulp-uglify');        //TODO for production purposes only
 
 var path = {
     css:  'src/styles/*.css',
+    less: 'src/styles/*.less',
     font: 'src/font/*.*',
     html: 'src/templates/*.html',
+    nunjucks: 'src/templates/*.*',
     vendor: {
       css: 'src/vendor/css/*.css'
     },
@@ -25,7 +29,8 @@ var path = {
       mock: 'dist/mockapi/',
       partials: 'dist/partials/',
       js: 'dist/scripts/',
-      html: 'dist/'
+      html: 'dist/',
+      nunjucks: 'dist/'
     }
 };
 
@@ -38,6 +43,19 @@ gulp.task('css', function () {
     }))
     .pipe(concat('style.css'))
     .pipe(gulp.dest(path.dist.css));
+});
+
+gulp.task('less', function() {
+    return gulp.src('path.less')
+        .pipe(less({
+            paths: [ path.join(__dirname, 'bower_components') ]
+        }))
+        .pipe(autoprefixer({
+            browsers: ['last 4 versions'],
+            cascade: false
+        }))
+        .pipe(concat('style.css'))
+        .pipe(gulp.dest(path.dist.css))
 });
 
 /*gulp.task('css-min', function () {
@@ -54,6 +72,14 @@ gulp.task('html', function () {
   return gulp.src(path.html)
     .pipe(nunjucks.compile())
     .pipe(gulp.dest(path.dist.html));
+});
+
+gulp.task('nunjucks', function() {
+  return gulp.src(path.nunjucks)
+  .pipe(render({
+      path: ['src/templates']
+    }))
+  .pipe(gulp.dest(path.dist.nunjucks))
 });
 
 gulp.task('img', function () {
@@ -102,12 +128,14 @@ gulp.task('js', function () {
     .pipe(gulp.dest(path.dist.js));
 });*/
 
-gulp.task('build', ['html', 'css', 'font', 'vendor-css', 'img', 'mock', 'partials', 'js']);
+gulp.task('build', ['html', 'css', 'nunjucks', 'font', 'vendor-css', 'img', 'mock', 'partials', 'js']);
 //gulp.task('prod', ['html', 'css-min', 'font', 'vendor-css-min', 'img', 'mock', 'partials', 'js-min']);
 
 gulp.task('watch', function () {
   gulp.watch(path.css, ['css']);
+  gulp.watch(path.less, ['less']);
   gulp.watch(path.html, ['html']);
+  gulp.watch(path.nunjucks, ['nunjucks']);
   gulp.watch(path.vendor.css, ['vendor-css']);
   gulp.watch(path.img, ['img']);
   gulp.watch(path.font, ['font']);
