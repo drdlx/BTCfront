@@ -5,7 +5,7 @@ var concat = require('gulp-concat');
 var autoprefixer = require('gulp-autoprefixer');
 var browserSync = require('browser-sync').create();
 var render = require('gulp-nunjucks-render');
-var prettify = require('gulp-html-prettify');
+//var prettify = require('gulp-html-prettify');
 //var uglify = require('gulp-uglify');        //TODO for production purposes only
 
 var path = {
