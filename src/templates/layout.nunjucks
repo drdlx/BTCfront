@@ -10,14 +10,13 @@
     
     <link href="https://fonts.googleapis.com/css?family=Didact+Gothic|Open+Sans:300,400&amp;subset=cyrillic-ext" rel="stylesheet">
 
-    <title>BTC Trade</title> <!-- TODO change it later? -->
+    <title>BTC Trade - {{username}}</title> <!-- TODO change it later? -->
   </head>
 
   <body>
 
     <div class= "wrap">
-      <!-- <div class="sidebar-left">
-      </div> -->
+
       {% block header %}
 
         {% include "partials/sidebar-top.nunjucks" %}
@@ -30,6 +29,10 @@
           {% endblock %}
         </div>
     </div>
+  
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="js/main.js"></script>
+  
   </body>
 
 </html>

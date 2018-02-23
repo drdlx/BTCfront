@@ -13,14 +13,15 @@ var path = {
     less: 'src/styles/*.less',
     font: 'src/font/*.*',
     html: 'src/templates/*.html',
-    nunjucks: 'src/templates/*.*',
+    nunjucks: 'src/templates/',
+    nunjucks_files: 'src/templates/*.nunjucks',
     vendor: {
       css: 'src/vendor/css/*.css'
     },
     img: 'src/images/*.*',
     mock: 'src/mockapi/*.json',
     js: 'src/scripts/*.js',
-    partials: 'src/templates/partials/*.html',
+    partials: 'src/templates/partials/*.*',
     dist: {
       img: 'dist/images/',
       css:  'dist/styles/',
@@ -74,10 +75,11 @@ gulp.task('html', function () {
     .pipe(gulp.dest(path.dist.html));
 });
 
+
 gulp.task('nunjucks', function() {
-  return gulp.src(path.nunjucks)
+  return gulp.src(path.nunjucks_files)
   .pipe(render({
-      path: ['src/templates']
+      path: [path.nunjucks]
     }))
   .pipe(gulp.dest(path.dist.nunjucks))
 });
@@ -134,13 +136,13 @@ gulp.task('build', ['html', 'css', 'nunjucks', 'font', 'vendor-css', 'img', 'moc
 gulp.task('watch', function () {
   gulp.watch(path.css, ['css']);
   gulp.watch(path.less, ['less']);
-  gulp.watch(path.html, ['html']);
-  gulp.watch(path.nunjucks, ['nunjucks']);
+  /*gulp.watch(path.html, ['html']);*/
+  gulp.watch(path.nunjucks_files, ['nunjucks']);
   gulp.watch(path.vendor.css, ['vendor-css']);
   gulp.watch(path.img, ['img']);
   gulp.watch(path.font, ['font']);
   gulp.watch(path.mock, ['mock']);
-  gulp.watch(path.partials, ['partials']);
+  gulp.watch(path.partials, ['nunjucks']);
   gulp.watch(path.js, ['js']);
 });
 

@@ -11,6 +11,7 @@
         {% include "partials/panels/panel-finances.nunjucks" %}
         
         {# all the main stuff gonna be here #}    
+        
         <section class="panel panel-main">
             <div class="panel-main__wrap">
                 <nav class="main__breadcrumbs">

@@ -8,9 +8,12 @@
             <div>EgorTwoBTC: 98 242,48</div>
           </div>
           <div class="sidebar-top__section sidebar-top__button-controls">
-            <button class="sidebar-top__button">Баланс <div class="sidebar-top__image sidebar-top__image_arrow-dropdown"></div></button>
-            <button class="sidebar-top__button">Уведомления <div class="sidebar-top__image sidebar-top__image_arrow-dropdown"></div></button>
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle sidebar-top__button">Баланс <div class="caret"></div>
+              </button>
+            </div>
+            <!-- <button class="sidebar-top__button">Уведомления <div class="caret"></div></button>
             <button class="sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_avatar"></div>&nbsp;Hello, EGOR2!</button>
-            <button class="sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_logout"></div></button></a>
+            <button class="sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_logout"></div></button></a> -->
           </div>
         </header>
