@@ -3,6 +3,7 @@
 */
 @import "colors";
 
+//Main settings
 .sidebar-top {
     display: flex;
     background-color: @background-white;
@@ -18,6 +19,7 @@
     display: flex;
     justify-content: center;
 }
+//Logo
 .sidebar-top__logo {
     float: left;
     font-family: 'Didact Gothic', sans-serif;
@@ -30,6 +32,7 @@
     color: @light-green;
 }
 
+//Sections
 .sidebar-top__income {
     height: 80%;
     display: flex;
@@ -47,7 +50,7 @@
     font-weight: normal;
 }
 .sidebar-top__button-controls {
-    
+
 }
 .sidebar-top__button {
     font-family: unset;
@@ -75,18 +78,45 @@
 
 //DROPDOWN SETTINGS
 .sidebar-top__dropdown {
-    /*padding-top: 10px;*/
+    margin-top: 15px;
     box-shadow: 0 4.5px 6px 0 rgba(0, 0, 0, 0.49);
     border: 0;
     padding-right: 10px;
+    font-size: 10pt;
 }
 .sidebar-top__dropdown__button {
+    display: block;
     font-size: 10pt;
-    background-color: @button-background;
+    margin-left: 10px;
     float: right;
-    padding-left: 15%;
-    padding-right: 10%;
-    margin-bottom: 5px;
+    /*margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;*/
+}
+.sidebar-top__dropdown__button_inside {
+  display: flex;
+  align-items: flex-end;
+  background-color: @button-background;
+}
+.dropdown__operation {
+    font-size: 8pt;
+    display: flex;
+    flex-direction: row;
+    margin-left: 5px;
+}
+.dropdown__operation__section {
+    display: flex;
+    flex-direction: row;
+    margin-right: 15px;
+    white-space: nowrap;
+}
+.dropdown__operation__cell {
+    font-size: 8pt;
+    margin-right: 5px;
+    white-space: nowrap;
+}
+.dropdown__operation__date {
+    font-weight: 300;
 }
 
 .sidebar-top__image_avatar {
