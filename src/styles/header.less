@@ -1,9 +1,11 @@
 /*
 * === HEADER SETTINGS ===
 */
+@import "colors";
+
 .sidebar-top {
     display: flex;
-    background-color: #ffffff;
+    background-color: @background-white;
     width: 100%;
     height: 50px;
     margin-bottom: 10px;
@@ -13,6 +15,8 @@
 .sidebar-top__section {
     /*display: block;
     /*padding-left: 20px;*/
+    display: flex;
+    justify-content: center;
 }
 .sidebar-top__logo {
     float: left;
@@ -23,7 +27,7 @@
     font-weight: bolder;
 }
 .sidebar-top__logo_green {
-    color: #51bab6;
+    color: @light-green;
 }
 
 .sidebar-top__income {
@@ -31,29 +35,24 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /*align-items: center;*/
-    /*margin-top: 6px;*/
+    align-items: flex-start;
     border-left: 2px solid;
-    border-color: #008786;
+    border-color: @main-green;
     font-size: 10pt;
     font-weight: bolder;
-    /*width: 400px;*/
     padding-left: 1%;
 }
 .sidebar-top__income_header {
     color: rgba(48, 48, 48, 0.89);
-    padding-bottom: 3%;
     font-weight: normal;
 }
 .sidebar-top__button-controls {
-    /*display: inline;
-    position: absolute;*/
-    /*padding-top: 12px;*/
+    
 }
 .sidebar-top__button {
     font-family: unset;
     font-size: 12pt;
-    background-color: #ffffff;
+    background-color: @background-white;
     border: none;
     text-align: center;
     text-decoration: none;
@@ -63,17 +62,33 @@
 .sidebar-top__button:hover {
     background-color: #fcfcfc;
 }
+.sidebar-top__button:focus {
+    outline: 0;
+    box-shadow: none;
+}
 .sidebar-top__image {
     display: inline-block;
     vertical-align: middle;
     background-size: cover;
     background-position: center;
 }
-.sidebar-top__image_arrow-dropdown {
-    background-image: url("/images/arrow-down.png");
-    width: 7px;
-    height: 8px;
+
+//DROPDOWN SETTINGS
+.sidebar-top__dropdown {
+    /*padding-top: 10px;*/
+    box-shadow: 0 4.5px 6px 0 rgba(0, 0, 0, 0.49);
+    border: 0;
+    padding-right: 10px;
 }
+.sidebar-top__dropdown__button {
+    font-size: 10pt;
+    background-color: @button-background;
+    float: right;
+    padding-left: 15%;
+    padding-right: 10%;
+    margin-bottom: 5px;
+}
+
 .sidebar-top__image_avatar {
     background-image: url('/images/userpic-mock-small.png'); /*TODO mocked for now*/
     width: 30px;

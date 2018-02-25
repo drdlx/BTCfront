@@ -1,19 +1,32 @@
         <header class="sidebar-top">
           <div class="sidebar-top__section sidebar-top__logo">
             <!-- might consider changing it to a picture -->
-            <a href="#"><span class="sidebar-top__logo_green">BTC</span>Trade</a>
+            <a href="/"><span class="sidebar-top__logo_green">BTC</span>Trade</a>
           </div>           
           <div class="sidebar-top__section sidebar-top__income">
             <div class="sidebar-top__income_header">Финрез сегодня</div>
             <div>EgorTwoBTC: 98 242,48</div>
           </div>
-          <div class="sidebar-top__section sidebar-top__button-controls">
+          <div class="sidebar-top__section sidebar-top__button-controls btn-group">
             <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle sidebar-top__button">Баланс <div class="caret"></div>
-              </button>
+              <button class="btn dropdown-toggle sidebar-top__button" type="button" data-toggle="dropdown">Баланс <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="#">HTML</a></li>
+                <li><a href="#">CSS</a></li>
+                <li><a href="#">JavaScript</a></li>
+              </ul>
             </div>
-            <!-- <button class="sidebar-top__button">Уведомления <div class="caret"></div></button>
-            <button class="sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_avatar"></div>&nbsp;Hello, EGOR2!</button>
-            <button class="sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_logout"></div></button></a> -->
+            <div class="dropdown">
+              <button class="btn dropdown-toggle sidebar-top__button" type="button" data-toggle="dropdown">Уведомления <span class="caret"></span></button>
+              <div class="dropdown-menu sidebar-top__dropdown">
+                <div><a href="#" class="sidebar-top__dropdown__button">Детализация</a></div>
+                <div><a href="#">HTML</a></div>
+                <div><a href="#">CSS</a></div>
+                <div><a href="#">JavaScript</a></div>
+              </div>
+            </div>
+            <a href="#" class="btn sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_avatar"></div>&nbsp;Hello, {{username}}!</a>
+            <a href="#" class="btn sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_logout"></div></a>
           </div>
+</div> 
         </header>

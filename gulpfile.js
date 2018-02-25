@@ -1,10 +1,16 @@
 var gulp = require('gulp');
 var nunjucks = require('gulp-nunjucks');
 var concat = require('gulp-concat');
-//var cssmin = require('gulp-cssmin');        //TODO it's gonna be for production build only, so I don't need it at the moment
+
+var less = require('gulp-less');
+var LessAutoprefix = require('less-plugin-autoprefix');
+var autoprefix = new LessAutoprefix({ browsers: ['last 2 versions'] });
+var plumber = require('gulp-plumber');
+
 var autoprefixer = require('gulp-autoprefixer');
 var browserSync = require('browser-sync').create();
 var render = require('gulp-nunjucks-render');
+//var cssmin = require('gulp-cssmin');        //TODO it's gonna be for production build only, so I don't need it at the moment
 //var prettify = require('gulp-html-prettify');
 //var uglify = require('gulp-uglify');        //TODO for production purposes only
 
@@ -47,14 +53,11 @@ gulp.task('css', function () {
 });
 
 gulp.task('less', function() {
-    return gulp.src('path.less')
+    return gulp.src(path.less)
         .pipe(less({
-            paths: [ path.join(__dirname, 'bower_components') ]
-        }))
-        .pipe(autoprefixer({
-            browsers: ['last 4 versions'],
-            cascade: false
-        }))
+          plugins: [autoprefix],
+          paths: [path.less]
+      }))
         .pipe(concat('style.css'))
         .pipe(gulp.dest(path.dist.css))
 });
@@ -130,13 +133,13 @@ gulp.task('js', function () {
     .pipe(gulp.dest(path.dist.js));
 });*/
 
-gulp.task('build', ['html', 'css', 'nunjucks', 'font', 'vendor-css', 'img', 'mock', 'partials', 'js']);
+gulp.task('build', ['html', 'css', 'less', 'nunjucks', 'font', 'vendor-css', 'img', 'mock', 'partials', 'js']);
 //gulp.task('prod', ['html', 'css-min', 'font', 'vendor-css-min', 'img', 'mock', 'partials', 'js-min']);
 
 gulp.task('watch', function () {
   gulp.watch(path.css, ['css']);
   gulp.watch(path.less, ['less']);
-  /*gulp.watch(path.html, ['html']);*/
+  gulp.watch(path.html, ['html']);
   gulp.watch(path.nunjucks_files, ['nunjucks']);
   gulp.watch(path.vendor.css, ['vendor-css']);
   gulp.watch(path.img, ['img']);

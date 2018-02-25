@@ -116,7 +116,7 @@
 
 
 .panel-main {
-    width: 680px;
+    width: 860px;
     display: flex;
     flex-direction: column;
 }
@@ -154,6 +154,7 @@
 }
 .main__button:hover {
     background-color: #823161;
+    text-decoration: none;
 }
 
 /* Breadcrumbs */
@@ -399,4 +400,12 @@ ul.main__breadcrumbs li a:hover {
 }
 .info__operation-type {
     font-weight: bolder;
+}
+
+/*adaptive design for panels */
+@media (max-width: 1300px) {
+    .panel-main {
+        width: 680px;
+    }
+    /*TODO add the additional stuff here including bigger buttons and stuff*/
 }
