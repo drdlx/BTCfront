@@ -19,14 +19,22 @@
             <div class="dropdown">
               <button class="btn dropdown-toggle sidebar-top__button" type="button" data-toggle="dropdown">Уведомления <span class="caret"></span></button>
               <div class="dropdown-menu dropdown-menu-right sidebar-top__dropdown">
+<<<<<<< HEAD
                 <div class="sidebar-top__dropdown__button"><a href="#" class="sidebar-top__dropdown__button_inside">Детализация</a></div>
                   {# TODO make it rendering dynamically #}
                   <div style="padding-top: 20px"></div> {# not a good solution, but it works #}
+=======
+                <a href="#"><div class="sidebar-top__dropdown__button">Детализация</div></a>
+                  {# TODO make it rendering dynamically #}
+>>>>>>> ef3728e016b0b2839485ceb191b70b75ec743c63
                   <div class="dropdown__operation">
                     <div class="dropdown__operation__cell dropdown__operation__date">05.12.2017</div>
                     <div class="dropdown__operation__section">
                       <div class="dropdown__operation__cell">Qaz777</div>
+<<<<<<< HEAD
                       <div class="dropdown__operation__cell">>></div> {# TODO make it with a rendered picture or something #}
+=======
+                      <div class="dropdown__operation__cell">>></div>
                       <div class="dropdown__operation__cell">Qaz777</div>
                     </div>
                     <div class="dropdown__operation__section">
@@ -48,7 +56,64 @@
                       <div class="dropdown__operation__cell">x</div>
                     </div>
                   </div>
+                  <div class="dropdown__operation">
+                    <div class="dropdown__operation__cell dropdown__operation__date">05.12.2017</div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">Qaz777</div>
+                      <div class="dropdown__operation__cell">>></div>
+                      <div class="dropdown__operation__cell">Qaz777</div>
+                    </div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">ЗП Полина</div>
+                    </div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">1 111 RUB</div>
+                    </div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">Sberbank-Visa</div>
+                    </div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">VR-Polina</div>
+                      <div class="dropdown__operation__cell">>></div>
+                      <div class="dropdown__operation__cell">VR-Polina</div>
+                    </div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">v</div>
+                      <div class="dropdown__operation__cell">x</div>
+                    </div>
+                  </div>
+                  <div class="dropdown__operation">
+                    <div class="dropdown__operation__cell dropdown__operation__date">05.12.2017</div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">Qaz777</div>
+                      <div class="dropdown__operation__cell">>></div>
+>>>>>>> ef3728e016b0b2839485ceb191b70b75ec743c63
+                      <div class="dropdown__operation__cell">Qaz777</div>
+                    </div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">ЗП Полина</div>
+                    </div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">1 111 RUB</div>
+                    </div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">Sberbank-Visa</div>
+                    </div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">VR-Polina</div>
+                      <div class="dropdown__operation__cell">>></div>
+                      <div class="dropdown__operation__cell">VR-Polina</div>
+                    </div>
+                    <div class="dropdown__operation__section">
+                      <div class="dropdown__operation__cell">v</div>
+                      <div class="dropdown__operation__cell">x</div>
+                    </div>
+                  </div>
+<<<<<<< HEAD
                 </div>
+=======
+              </div>
+>>>>>>> ef3728e016b0b2839485ceb191b70b75ec743c63
             </div>
             <a href="#" class="btn sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_avatar"></div>&nbsp;Hello, {{username}}!</a>
             <a href="#" class="btn sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_logout"></div></a>
