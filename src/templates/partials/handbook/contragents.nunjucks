@@ -1,0 +1,12 @@
+<div class="tab-pane settings__form__tab" id="contragents">
+  <h3 class="settings__header tabs__header">Справочник контрагентов</h3>
+  <form>
+    <div class="settings__form__row">
+      <div class="settings__form__col">
+        <div><label class="settings__form__label">Новый пароль</label><input type="text" class="settings__form__input"></input></div>
+        <div><label class="settings__form__label">Повторите пароль</label><input type="text"class="settings__form__input"></input></div>
+      </div>
+    </div>
+  </form>
+  <input type="submit" value="Сохранить" class="settings__form__submit">
+</div>

@@ -1,4 +1,4 @@
-//@@import "colors";
+@import "colors";
 
 .settings__top {
 }
@@ -108,14 +108,20 @@
 .settings__form__submit {
   width: 160px;
   height: 30px;
-  border: none;
+  border: 1px solid #979797;
   border-radius: 4px;
-  color: #ffffff;
+  background-color: #ffffff;
   cursor: pointer;
-  background-color: #008786;
   margin-top: 20px;
   margin-bottom: 30px;
   margin-left: auto;
   float: right;
   margin-right: 70px;
+}
+.settings__form__submit:hover {
+  border-color: @main-green;
+}
+.settings__form__submit:active {
+  background-color: @main-green;
+  color: #ffffff;
 }

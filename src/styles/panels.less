@@ -1,6 +1,7 @@
 /**
 * PANELS SETTINGS
 **/
+@import "colors";
 
 .content {
     display: flex;
@@ -262,32 +263,43 @@ ul.main__breadcrumbs li a:hover {
     margin-bottom: 10px;
     border: 1px solid;
     border-radius: 4px; /* Rounded borders */
-    border-color: rgba(151, 151, 151, 0.3);
+    border-color: @border-gray2;
     box-sizing: border-box;
     margin-left: 20px;
     text-align: right;
 }
 .main__form__input:focus {
     outline: none;
-    border-color: #008786;
+    border-color: @main-green;
 }
 .main__form__input__sale:focus {
-    border-color: #481634;
+    border-color: @main-red;
 }
 .main__form__input__submit {
     width: 120px;
     height: 25px;
-    border: none;
     border-radius: 4px;
-    color: #ffffff;
-    cursor: pointer;
-    background-color: #008786;
     margin-top: 20px;
     margin-bottom: 30px;
     margin-left: auto;
+    border: 1px solid #979797;
+    border-radius: 4px;
+    background-color: #ffffff;
+    cursor: pointer;
 }
-.main__form__input__submit__sale {
-    background-color: #481634;
+.main__form__input__submit:hover {
+  border-color: @main-green;
+}
+.main__form__input__submit:active {
+  background-color: @main-green;
+  color: #ffffff;
+}
+.main__form__input__submit__sale:hover {
+  border-color: @main-red;
+}
+.main__form__input__submit__sale:active {
+    color: #ffffff;
+    background-color: @main-red;
 }
 .main__forms__buy {
     border-left: 0;
