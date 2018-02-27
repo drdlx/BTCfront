@@ -1,0 +1,36 @@
+{# RESERVES SECTION #}
+
+<div class="tab-pane active settings__form__tab" id="reserves">
+  <h3 class="settings__header tabs__header">Справочник резервов</h3>
+  <table class="settings__table">
+    <tr>
+      <td></td>
+      <td class="settings__table__cell">RMB</td>
+      <td class="settings__table__cell">RUB</td>
+      <td class="settings__table__cell">DAS</td>
+      <td class="settings__table__cell">LTC</td>
+      <td class="settings__table__cell">BCC</td>
+      <td class="settings__table__cell">USD</td>
+      <td class="settings__table__cell">KZT</td>
+      <td class="settings__table__cell">DOG</td>
+      <td class="settings__table__cell">UAH</td>
+      <td class="settings__table__cell">BTC</td>
+      <td class="settings__table__cell">RUB</td>
+    </tr>
+    <tr class="settings__table__gray-row">
+      <td>Крипто</td>
+      <td class="settings__table__cell"></td>
+      <td class="settings__table__cell">+</td>
+      <td class="settings__table__cell"></td>
+      <td class="settings__table__cell"></td>
+      <td class="settings__table__cell"></td>
+      <td class="settings__table__cell"></td>
+      <td class="settings__table__cell"></td>
+      <td class="settings__table__cell"></td>
+      <td class="settings__table__cell"></td>
+      <td class="settings__table__cell"></td>
+      <td class="settings__table__cell"></td>
+    </tr>
+  </table>
+  <input type="submit" value="Сохранить" class="settings__form__submit">
+</div>

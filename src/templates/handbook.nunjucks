@@ -12,60 +12,37 @@
 
         {# all the main stuff gonna be here #}
 
+{#
+########
+  HANDBOOK
+########
+#}
+
         <section class="panel panel-main">
             <div class="panel-main__wrap">
                 <nav class="main__breadcrumbs">
                     <ul class="main__breadcrumbs">
                         <li><a href="/">Главная</a></li>
-                        <li><a href="#">Настройки профиля</a></li>
+                        <li><a href="#">Справочник</a></li>
                     </ul>
                 </nav>
-                <h3 class="settings__header">Справочник</h3>
-
                 <section class="settings__form">
                   {# tabs menu #}
                   <ul class="nav nav-tabs settings__form__header" role="tablist" id="settings_tab">
-                    <li class="active settings__form__user-header"><a href="#user-info" role="tab" data-toggle="tab" class="settings__form__user-header">резервы</a></li>
-                    <li class="settings__form__user-header"><a href="#password" role="tab" data-toggle="tab" class="settings__form__user-header">контрагенты</a></li>
-                    <li class="settings__form__user-header"><a href="#administration" role="tab" data-toggle="tab" class="settings__form__user-header">банки</a></li>
+                    <li class="active settings__form__user-header"><a href="#reserves" role="tab" data-toggle="tab" class="settings__form__user-header">резервы</a></li>
+                    <li class="settings__form__user-header"><a href="#contragents" role="tab" data-toggle="tab" class="settings__form__user-header">контрагенты</a></li>
+                    <li class="settings__form__user-header"><a href="#banks" role="tab" data-toggle="tab" class="settings__form__user-header">банки</a></li>
                     <li class="settings__form__user-header"><a href="#currencies" role="tab" data-toggle="tab" class="settings__form__user-header">валюты</a></li>
                   </ul>
                   {# tabs content #}
                   <div class="tab-content">
-                    <div class="tab-pane active settings__form__tab" id="user-info">
-                      <table class="settings__table">
-                        <tr>
-                          <td></td>
-                          <td class="settings__table__cell">RMB</td>
-                          <td class="settings__table__cell">RUB</td>
-                          <td class="settings__table__cell">DAS</td>
-                          <td class="settings__table__cell">LTC</td>
-                          <td class="settings__table__cell">BCC</td>
-                          <td class="settings__table__cell">USD</td>
-                          <td class="settings__table__cell">KZT</td>
-                          <td class="settings__table__cell">DOG</td>
-                          <td class="settings__table__cell">UAH</td>
-                          <td class="settings__table__cell">BTC</td>
-                          <td class="settings__table__cell">RUB</td>
-                        </tr>
-                        <tr class="settings__table__gray-row">
-                          <td>Крипто</td>
-                          <td class="settings__table__cell"></td>
-                          <td class="settings__table__cell">+</td>
-                          <td class="settings__table__cell"></td>
-                          <td class="settings__table__cell"></td>
-                          <td class="settings__table__cell"></td>
-                          <td class="settings__table__cell"></td>
-                          <td class="settings__table__cell"></td>
-                          <td class="settings__table__cell"></td>
-                          <td class="settings__table__cell"></td>
-                          <td class="settings__table__cell"></td>
-                          <td class="settings__table__cell"></td>
-                        </tr>
-                      </table>
-                      <input type="submit" value="Сохранить" class="settings__form__submit">
-                    </div>
-                    <div class="tab-pane settings__form__tab" id="password">
+                    {# RESERVES #}
+
+                    {% include "partials//handbook/reserves.nunjucks" %}
+
+                    {# CONTRAGENTS #}
+                    <div class="tab-pane settings__form__tab" id="contragents">
+                      <h3 class="settings__header tabs__header">Справочник контрагентов</h3>
                       <form>
                         <div class="settings__form__row">
                           <div class="settings__form__col">
@@ -76,19 +53,340 @@
                       </form>
                       <input type="submit" value="Сохранить" class="settings__form__submit">
                     </div>
-                    <div class="tab-pane settings__form__tab" id="administration">
-                      <form>
-                        <div class="settings__form__row">
-                          <div class="settings__form__col">
-                            <div><label class="settings__form__label">Логин</label><input type="text" class="settings__form__input"></input></div>
-                            <div><label class="settings__form__label">Пароль</label><input type="text"class="settings__form__input"></input></div>
-                            <div><label class="settings__form__label">Повторите пароль</label><input type="text" class="settings__form__input"></input></div>
-                          </div>
-                        </div>
-                      </form>
-                      <input type="submit" value="Сохранить" class="settings__form__submit">
+                    {# BANKS #}
+                    <div class="tab-pane settings__form__tab" id="banks">
+                      <h3 class="settings__header tabs__header">Справочник банков</h3>
+                      <input type="submit" value="Добавить валюту" class="settings__form__submit">
+                      <table class="settings__table">
+                        <tr>
+                          <td></td>
+                          <td class="settings__table__cell">RMB</td>
+                          <td class="settings__table__cell">RUB</td>
+                          <td class="settings__table__cell">DAS</td>
+                          <td class="settings__table__cell">LTC</td>
+                          <td class="settings__table__cell">BCC</td>
+                          <td class="settings__table__cell">USD</td>
+                          <td class="settings__table__cell">KZT</td>
+                          <td class="settings__table__cell">DOG</td>
+                          <td class="settings__table__cell">UAH</td>
+                          <td class="settings__table__cell">BTC</td>
+                          <td class="settings__table__cell">EUR</td>
+                        </tr>
+                        <tr class="settings__table__gray-row">
+                          <td>Sberbank</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr >
+                          <td>Exmo</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr class="settings__table__gray-row">
+                          <td>Yobit</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr >
+                          <td>AdvCash</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr class="settings__table__gray-row">
+                          <td>PerfectMoney</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr >
+                          <td>MoneyPolo</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr class="settings__table__gray-row">
+                          <td>YobitFull</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr >
+                          <td>DASH_Bot</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr class="settings__table__gray-row">
+                          <td>Kukuruza</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr >
+                          <td>LTC_Bot</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr class="settings__table__gray-row">
+                          <td>DOGE_Bot</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr >
+                          <td>BCC_Bot</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr class="settings__table__gray-row">
+                          <td>VR</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr >
+                          <td>localbitcoins</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr class="settings__table__gray-row">
+                          <td>BTC_Bot</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr >
+                          <td>VTB</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr class="settings__table__gray-row">
+                          <td>WebMoney</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr >
+                          <td>Yandex</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr class="settings__table__gray-row">
+                          <td>QIWI</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr >
+                          <td>Rocket</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr class="settings__table__gray-row">
+                          <td>Alfa</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+                        <tr >
+                          <td>Tinkoff</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell">+</td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                          <td class="settings__table__cell"></td>
+                        </tr>
+
+                      </table>
                     </div>
-                    <div class="tab-pane active settings__form__tab" id="currencies">
+                    {# CURRENCIES #}
+                    <div class="tab-pane settings__form__tab" id="currencies">
+                      <h3 class="settings__header tabs__header">Справочник валют</h3>
+                      <input type="submit" value="Добавить валюту" class="settings__form__submit">
                       <table class="settings__table">
                         <tr>
                           <td></td>
@@ -119,9 +417,11 @@
                           <td class="settings__table__cell"></td>
                         </tr>
                       </table>
-                      <input type="submit" value="Сохранить" class="settings__form__submit">
                     </div>
-                </div>
+                  </div>
+
+                {#}</div> #}
+
                 </section>
                 {#TODO move the script out of here to a new file#}
                 <script>
