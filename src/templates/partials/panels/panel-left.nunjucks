@@ -1,2 +1,8 @@
 {# left panel elements #}
-<section class="panel panel-sidebar">Side</section>
+<section class="panel panel-sidebar">
+    <a href="operations.html" class="sidebar-left__button sidebar-left__button_top sidebar-left__button_operations"></a>
+    <a href="handbook.html" class="sidebar-left__button sidebar-left__button_handbook"></a>
+    <a href="stats.html" class="sidebar-left__button sidebar-left__button_stats"></a>
+    <a href="journal.html" class="sidebar-left__button sidebar-left__button_journal"></a>
+    <a href="report.html" class="sidebar-left__button sidebar-left__button_report"></a>
+</section>

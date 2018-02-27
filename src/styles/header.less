@@ -53,6 +53,9 @@
 
 }
 .sidebar-top__button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-family: unset;
     font-size: 12pt;
     background-color: @background-white;
@@ -61,6 +64,7 @@
     text-decoration: none;
     margin-right: 30px;
     cursor: pointer;
+    white-space: nowrap;
 }
 .sidebar-top__button:hover {
     background-color: #fcfcfc;
@@ -75,7 +79,16 @@
     background-size: cover;
     background-position: center;
 }
-
+.sidebar-top__dropdown__icon {
+    width: 25px;
+    height: 25px;
+    background-size: 25px 25px;
+    background-repeat: no-repeat;
+    margin-right: 5px;
+}
+.sidebar-top__dropdown__icon_balance {
+    background-image: url('/images/icon-balance.svg');
+}
 //DROPDOWN SETTINGS
 .sidebar-top__dropdown {
     margin-top: 15px;
