@@ -25,11 +25,11 @@
                     <p class="chart__name">Название графика*</p>
                 </article>
                 <div class="main__buttons">
-                    <a href="#"><div class="main__button">Операции</div></a>
-                    <a href="#"><div class="main__button">Справочник</div></a>
-                    <a href="#"><div class="main__button">Статистика</div></a>
-                    <a href="#"><div class="main__button">Журнал операций</div></a>
-                    <a href="#"><div class="main__button">Отчет</div></a>
+                    <a href="operations.html"><div class="main__button">Операции</div></a>
+                    <a href="handbook.html"><div class="main__button">Справочник</div></a>
+                    <a href="stats.html"><div class="main__button">Статистика</div></a>
+                    <a href="operations.html"><div class="main__button">Журнал операций</div></a>
+                    <a href="report.html"><div class="main__button">Отчет</div></a>
                 </div>
                 <div class="main__forms">
                      <div class="main__row">

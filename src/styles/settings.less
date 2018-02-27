@@ -1,0 +1,138 @@
+//@@import "colors";
+
+.settings__top {
+}
+.settings__header {
+  margin-bottom: 30px;
+}
+//Summary settings
+.settings__summary {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin-left: 10px;
+  font-size: 11pt;
+}
+.settings__summary__avatar {
+  width: 120px;
+  height: 120px;
+  background-image: url('/images/userpic-mock-small.png');
+  background-size: 120px 120px;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+}
+.settings__summary__info {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+}
+.settings__summary__username {
+
+}
+.settings__summary__status {
+  display: flex;
+  align-items: center;
+  color: rgba(48, 48, 48, 0.7);
+}
+.settings__summary__status-indicator {
+  margin-left: 5px;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background-color: #70c3c8;
+  border-radius: 50%;
+}
+.settings_summary__operations-number {
+
+}
+
+//form settings
+
+.settings__form {
+}
+
+.settings__form__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: 12pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(48, 48, 48, 0.2);
+}
+.settings__form__user-header:hover {
+  color: #008786;
+}
+.settings__form__tab {
+  display: flex;
+  flex-direction: column;
+  font-size: 12pt;
+  margin-left: 40px;
+}
+.settings__form__row {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  //border-bottom: 1px solid rgba(48, 48, 48, 0.2);
+}
+.settings__form__col {
+  display: flex;
+  flex-direction: column;
+}
+.settings__form__label {
+  display: block;
+  margin: 0;
+  margin-bottom: 5px;
+}
+.settings__form__input {
+  display: block;
+  width: 240px;
+  height:30px;
+  margin-bottom: 20px;
+  border: 1px solid;
+  border-radius: 4px; /* Rounded borders */
+  border-color: rgba(151, 151, 151, 0.3);
+  box-sizing: border-box;;
+}
+.settings__form__input_textarea {
+  width: 630px;
+  height: 100%;
+
+}
+.settings__form__input:focus {
+  border-color: #008786;
+}
+.settings__form__submit {
+  width: 160px;
+  height: 30px;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  background-color: #008786;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  margin-left: auto;
+  float: right;
+  margin-right: 70px;
+}
+
+.settings__table {
+  margin-top: 20px;
+  width: 90%;
+  //border-top:1px solid #e5eff8;
+  //border-right:1px solid #e5eff8;
+  margin:1em auto;
+  border-collapse: collapse;
+}
+.settings__table__gray-row {
+  background-color: rgba(226, 226, 226, 0.27);
+}
+.settings__table__cell {
+  border-left:1px solid rgba(48, 48, 48, 0.27);
+  padding:.3em 1em;
+  text-align:center;
+}

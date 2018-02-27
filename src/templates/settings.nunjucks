@@ -1,0 +1,95 @@
+{% extends "layout.nunjucks" %}
+
+    {% block main %}
+    <main class="content">
+
+
+        {# side left panel goes here #}
+        {% include "partials/panels/panel-left.nunjucks" %}
+
+        {# second panel 'panel-finances' goes here #}
+        {% include "partials/panels/panel-finances.nunjucks" %}
+
+        {# all the main stuff gonna be here #}
+
+        <section class="panel panel-main">
+            <div class="panel-main__wrap">
+                <nav class="main__breadcrumbs">
+                    <ul class="main__breadcrumbs">
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="#">Настройки профиля</a></li>
+                    </ul>
+                </nav>
+                <h3 class="settings__header">Настройки профиля</h3>
+                <section class="settings__summary">
+                    <div class="settings__summary__avatar">&nbsp;</div>
+                    <div class="settings__summary__info">
+                       <div class="settings__summary__username"><h5>EGOR_2</h5></div>
+                       <div class="settings__summary__status">admin <div class="settings__summary__status-indicator">&nbsp;</div></div>
+                       <div class="settings_summary__operations-number">324 операции</div>
+                    </div>
+                </section>
+                <section class="settings__form">
+                  {# tabs menu #}
+                  <ul class="nav nav-tabs settings__form__header" role="tablist" id="settings_tab">
+                    <li class="active settings__form__user-header"><a href="#user-info" role="tab" data-toggle="tab" class="settings__form__user-header">настройки пользователя</a></li>
+                    <li class="settings__form__user-header"><a href="#password" role="tab" data-toggle="tab" class="settings__form__user-header">пароль</a></li>
+                    <li class="settings__form__user-header"><a href="#administration" role="tab" data-toggle="tab" class="settings__form__user-header">администрирование</a></li>
+                  </ul>
+                  {# tabs content #}
+                  <div class="tab-content">
+                    <div class="tab-pane active settings__form__tab" id="user-info">
+                      <form>
+                        <div class="settings__form__row">
+                          <div class="settings__form__col">
+                            <div><label class="settings__form__label">Имя</label><input type="text" class="settings__form__input"></input></div>
+                            <div><label class="settings__form__label">Фамилия</label><input type="text"class="settings__form__input"></input></div>
+                            <div><label class="settings__form__label">Сервисный сбор</label><input type="text" class="settings__form__input"></input></div>
+                          </div>
+                          <div class="settings__form__col">
+                            <div><label>Телефон</label><input type="text" class="settings__form__input"></input></div>
+                            <div><label>E-mail</label><input type="text" class="settings__form__input"></input></div>
+                          </div>
+                        </div>
+                      </form>
+                      <input type="submit" value="Сохранить" class="settings__form__submit">
+                    </div>
+                    <div class="tab-pane settings__form__tab" id="password">
+                      <form>
+                        <div class="settings__form__row">
+                          <div class="settings__form__col">
+                            <div><label class="settings__form__label">Новый пароль</label><input type="text" class="settings__form__input"></input></div>
+                            <div><label class="settings__form__label">Повторите пароль</label><input type="text"class="settings__form__input"></input></div>
+                          </div>
+                        </div>
+                      </form>
+                      <input type="submit" value="Сохранить" class="settings__form__submit">
+                    </div>
+                    <div class="tab-pane settings__form__tab" id="administration">
+                      <form>
+                        <div class="settings__form__row">
+                          <div class="settings__form__col">
+                            <div><label class="settings__form__label">Логин</label><input type="text" class="settings__form__input"></input></div>
+                            <div><label class="settings__form__label">Пароль</label><input type="text"class="settings__form__input"></input></div>
+                            <div><label class="settings__form__label">Повторите пароль</label><input type="text" class="settings__form__input"></input></div>
+                          </div>
+                        </div>
+                      </form>
+                      <input type="submit" value="Сохранить" class="settings__form__submit">
+                    </div>
+                </div>
+                </section>
+                {#TODO move the script out of here to a new file#}
+                <script>
+                  $(function () {
+                    $('#settings_tab a:last').tab ('show')
+                  })
+                </script>
+            </div>
+        </section>
+
+    {# right panel 'panel-finances' goes here #}
+    {% include "partials/panels/panel-info.nunjucks" %}
+
+    </main>
+    {% endblock %}

@@ -50,7 +50,7 @@
                   </div>
                 </div>
             </div>
-            <a href="#" class="btn sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_avatar"></div>&nbsp;Hello, {{username}}!</a>
+            <a href="settings.html" class="btn sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_avatar"></div>&nbsp;Hello, {{username}}!</a>
             <a href="#" class="btn sidebar-top__button"><div class="sidebar-top__image sidebar-top__image_logout"></div></a>
           </div>
 </div>

@@ -1,0 +1,31 @@
+{% extends "layout.nunjucks" %}
+
+    {% block main %}
+    <main class="content">
+
+
+        {# side left panel goes here #}
+        {% include "partials/panels/panel-left.nunjucks" %}
+
+        {# second panel 'panel-finances' goes here #}
+        {% include "partials/panels/panel-finances.nunjucks" %}
+
+        {# all the main stuff gonna be here #}
+
+        <section class="panel panel-main">
+            <div class="panel-main__wrap">
+                <nav class="main__breadcrumbs">
+                    <ul class="main__breadcrumbs">
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="#">Настройки профиля</a></li>
+                    </ul>
+                </nav>
+
+            </div>
+        </section>
+
+    {# right panel 'panel-finances' goes here #}
+    {% include "partials/panels/panel-info.nunjucks" %}
+
+    </main>
+    {% endblock %}
