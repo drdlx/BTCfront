@@ -1,327 +1,332 @@
 <div class="tab-pane settings__form__tab" id="banks">
   <h3 class="settings__header tabs__header">Справочник банков</h3>
-  <input type="submit" value="Добавить валюту" class="settings__form__submit">
-  <table class="settings__table">
+  <div class="row">
+    <div class="col-lg-8"></div>
+    <div class="col-lg-4">
+      <button type="button" class="btn btn-outline-info">Добавить банк</button>
+    </div>
+  </div>
+  <table class="handbook__table">
     <tr>
       <td></td>
-      <td class="settings__table__cell">RMB</td>
-      <td class="settings__table__cell">RUB</td>
-      <td class="settings__table__cell">DAS</td>
-      <td class="settings__table__cell">LTC</td>
-      <td class="settings__table__cell">BCC</td>
-      <td class="settings__table__cell">USD</td>
-      <td class="settings__table__cell">KZT</td>
-      <td class="settings__table__cell">DOG</td>
-      <td class="settings__table__cell">UAH</td>
-      <td class="settings__table__cell">BTC</td>
-      <td class="settings__table__cell">EUR</td>
+      <td class="handbook__table__cell">RMB</td>
+      <td class="handbook__table__cell">RUB</td>
+      <td class="handbook__table__cell">DAS</td>
+      <td class="handbook__table__cell">LTC</td>
+      <td class="handbook__table__cell">BCC</td>
+      <td class="handbook__table__cell">USD</td>
+      <td class="handbook__table__cell">KZT</td>
+      <td class="handbook__table__cell">DOG</td>
+      <td class="handbook__table__cell">UAH</td>
+      <td class="handbook__table__cell">BTC</td>
+      <td class="handbook__table__cell">EUR</td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>Sberbank</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
     <tr >
       <td>Exmo</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>Yobit</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
     <tr >
       <td>AdvCash</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>PerfectMoney</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
     <tr >
       <td>MoneyPolo</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>YobitFull</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
     <tr >
       <td>DASH_Bot</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>Kukuruza</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
     <tr >
       <td>LTC_Bot</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>DOGE_Bot</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
     <tr >
       <td>BCC_Bot</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>VR</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
     <tr >
       <td>localbitcoins</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>BTC_Bot</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
     <tr >
       <td>VTB</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>WebMoney</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
     <tr >
       <td>Yandex</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>QIWI</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
     <tr >
       <td>Rocket</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>Alfa</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
     <tr >
       <td>Tinkoff</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
       <td class="settings__table__cell"></td>
     </tr>
 

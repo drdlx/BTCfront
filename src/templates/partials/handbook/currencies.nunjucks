@@ -1,34 +1,39 @@
 <div class="tab-pane settings__form__tab" id="currencies">
   <h3 class="settings__header tabs__header">Справочник валют</h3>
-  <input type="submit" value="Добавить валюту" class="settings__form__submit">
-  <table class="settings__table">
+  <div class="row">
+    <div class="col-lg-8"></div>
+    <div class="col-lg-4">
+      <button type="button" class="btn btn-outline-info">Добавить валюту</button>
+    </div>
+  </div>
+  <table class="handbook__table">
     <tr>
       <td></td>
-      <td class="settings__table__cell">RMB</td>
-      <td class="settings__table__cell">RUB</td>
-      <td class="settings__table__cell">DAS</td>
-      <td class="settings__table__cell">LTC</td>
-      <td class="settings__table__cell">BCC</td>
-      <td class="settings__table__cell">USD</td>
-      <td class="settings__table__cell">KZT</td>
-      <td class="settings__table__cell">DOG</td>
-      <td class="settings__table__cell">UAH</td>
-      <td class="settings__table__cell">BTC</td>
-      <td class="settings__table__cell">RUB</td>
+      <td class="handbook__table__cell">RMB</td>
+      <td class="handbook__table__cell">RUB</td>
+      <td class="handbook__table__cell">DAS</td>
+      <td class="handbook__table__cell">LTC</td>
+      <td class="handbook__table__cell">BCC</td>
+      <td class="handbook__table__cell">USD</td>
+      <td class="handbook__table__cell">KZT</td>
+      <td class="handbook__table__cell">DOG</td>
+      <td class="handbook__table__cell">UAH</td>
+      <td class="handbook__table__cell">BTC</td>
+      <td class="handbook__table__cell">RUB</td>
     </tr>
-    <tr class="settings__table__gray-row">
+    <tr class="handbook__table__gray-row">
       <td>Крипто</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell">+</td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
+      <td class="handbook__table__cell"></td>
     </tr>
   </table>
 </div>

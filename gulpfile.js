@@ -27,7 +27,10 @@ var path = {
     img: 'src/images/*.*',
     mock: 'src/mockapi/*.json',
     js: 'src/scripts/*.js',
-    partials: 'src/templates/partials/*.*',
+    partials: [
+      'src/templates/partials/*.*',
+      'src/templates/partials/**/*.*'
+    ],
     dist: {
       img: 'dist/images/',
       css:  'dist/styles/',

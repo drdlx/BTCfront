@@ -2,35 +2,59 @@
 
 <div class="tab-pane active settings__form__tab" id="reserves">
   <h3 class="settings__header tabs__header">Справочник резервов</h3>
-  <table class="settings__table">
+  <div class="row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+      <button type="button" class="btn btn-outline-secondary">Передать ответственность</button>
+    </div>
+    <div class="col-lg-2">
+      <button type="button" class="btn btn-outline-info">Добавить резерв</button>
+    </div>
+</div>
+  <table class="handbook__table handbook__table_small-text">
+    <tr class="handbook__table_header">
+      <th class="handbook__table__cell handbook__table__cell_header"></th>
+      <th class="handbook__table__cell handbook__table__cell_header">Имя</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Банк</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Валюта</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Владелец</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Ответственный</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Держатель</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Номер</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Срок действия</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Оплачиваемая</th>
+      <th class="handbook__table__cell handbook__table__cell_header"></th>
+      <th class="handbook__table__cell handbook__table__cell_header"></th>
+      {#}<th></th>
+      <th></th> #}
+    </tr>
     <tr>
-      <td></td>
-      <td class="settings__table__cell">RMB</td>
-      <td class="settings__table__cell">RUB</td>
-      <td class="settings__table__cell">DAS</td>
-      <td class="settings__table__cell">LTC</td>
-      <td class="settings__table__cell">BCC</td>
-      <td class="settings__table__cell">USD</td>
-      <td class="settings__table__cell">KZT</td>
-      <td class="settings__table__cell">DOG</td>
-      <td class="settings__table__cell">UAH</td>
-      <td class="settings__table__cell">BTC</td>
-      <td class="settings__table__cell">RUB</td>
+      <td><div style="height:8px;"></div></td> {#spacing between table header and main cells#}
     </tr>
-    <tr class="settings__table__gray-row">
-      <td>Крипто</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell">+</td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
-      <td class="settings__table__cell"></td>
+    {#TODO make a foreach loop here  #}
+    <tr>
+      <td><input type="checkbox" value=""></td>
+      <td class="handbook__table__cell handbook__table__cell_header">Egor2</td>
+      <td class="handbook__table__cell handbook__table__cell_header">Rocket</td>
+      <td class="handbook__table__cell handbook__table__cell_header">RUB</td>
+      <td class="handbook__table__cell handbook__table__cell_header">Egor2</td>
+      <td class="handbook__table__cell handbook__table__cell_header">Egor2</td>
+      <td class="handbook__table__cell handbook__table__cell_header">-</td>
+      <td class="handbook__table__cell handbook__table__cell_header">-</td>
+      <td class="handbook__table__cell handbook__table__cell_header">-</td>
+      <td class="handbook__table__cell handbook__table__cell_header">Нет</td>
+      <td class="handbook__table__cell handbook__table__cell_header"><a href="#">v</a></td>
+      <td class="handbook__table__cell handbook__table__cell_header"><a href="#">v</a></td>
+    </tr>{#}
+    <tr class="handbook__table__gray-row">
+      <td><input type="checkbox" value=""></td>
+      <td class="handbook__table__cell handbook__table__cell_header">Egor</td>
+      <td class="handbook__table__cell">admin</td>
+      <td class="handbook__table__cell">Егор</td>
+      <td class="handbook__table__cell">Шароха</td>
+      <td class="handbook__table__cell">79990123</td>
+      <td class="handbook__table__cell">mail@mail.com</td>
     </tr>
+    {#TODO foreach loop ends here #}
   </table>
-  <input type="submit" value="Сохранить" class="settings__form__submit">
 </div>

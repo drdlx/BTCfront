@@ -1,0 +1,71 @@
+{% extends "layout.nunjucks" %}
+
+    {% block main %}
+    <main class="content">
+
+
+        {# side left panel goes here #}
+        {% include "partials/panels/panel-left.nunjucks" %}
+
+        {# second panel 'panel-finances' goes here #}
+        {% include "partials/panels/panel-finances.nunjucks" %}
+
+        {# all the main stuff gonna be here #}
+
+{#
+########
+  HANDBOOK
+########
+#}
+
+        <section class="panel panel-main">
+            <div class="panel-main__wrap">
+                <nav class="main__breadcrumbs">
+                    <ul class="main__breadcrumbs">
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="#">Справочник</a></li>
+                    </ul>
+                </nav>
+                <section class="settings__form">
+                  {# tabs menu #}
+                  <ul class="nav nav-tabs settings__form__header" role="tablist" id="settings_tab">
+                    <li class="active settings__form__user-header"><a href="#reserves" role="tab" data-toggle="tab" class="settings__form__user-header">резервы</a></li>
+                    <li class="settings__form__user-header"><a href="#contragents" role="tab" data-toggle="tab" class="settings__form__user-header">контрагенты</a></li>
+                    <li class="settings__form__user-header"><a href="#banks" role="tab" data-toggle="tab" class="settings__form__user-header">банки</a></li>
+                    <li class="settings__form__user-header"><a href="#currencies" role="tab" data-toggle="tab" class="settings__form__user-header">валюты</a></li>
+                  </ul>
+                  {# tabs content #}
+                  <div class="tab-content">
+                    {# RESERVES #}
+
+                    {% include "partials/handbook/reserves.nunjucks" %}
+
+                    {# CONTRAGENTS #}
+
+                    {% include "partials/handbook/contragents.nunjucks" %}
+
+                    {# BANKS #}
+
+                    {% include "partials/handbook/banks.nunjucks" %}
+
+                    {# CURRENCIES #}
+
+                    {% include "partials/handbook/currencies.nunjucks" %}
+
+                {#}</div> #}
+
+                </section>
+                {#TODO move the script out of here to a new file#}
+                <script>
+                  $(function () {
+                    $('#settings_tab a:last').tab ('show')
+                  })
+                </script>
+            </div>
+        </section>
+
+    {# right panel 'panel-finances' goes here #}
+    {% include "partials/panels/panel-info.nunjucks" %}
+
+    </main>
+    {% endblock %}

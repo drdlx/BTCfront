@@ -1,12 +1,55 @@
 <div class="tab-pane settings__form__tab" id="contragents">
   <h3 class="settings__header tabs__header">Справочник контрагентов</h3>
-  <form>
-    <div class="settings__form__row">
-      <div class="settings__form__col">
-        <div><label class="settings__form__label">Новый пароль</label><input type="text" class="settings__form__input"></input></div>
-        <div><label class="settings__form__label">Повторите пароль</label><input type="text"class="settings__form__input"></input></div>
+  <div class="row">
+    <div class="col-lg-1">
+    </div>
+    <div class="col-lg-3">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Поиск...">
+        <span class="input-group-btn">
+          <button class="btn btn-outline-info" type="button">#</button>
+        </span>
       </div>
     </div>
-  </form>
-  <input type="submit" value="Сохранить" class="settings__form__submit">
+    <div class="col-lg-4">
+    </div>
+    <div class="col-lg-4">
+      <button type="button" class="btn btn-outline-info">Добавить</button>
+      <button type="button" class="btn btn-outline-danger">Удалить</button>
+    </div>
+</div>
+  <table class="handbook__table">
+    <tr class="handbook__table_header">
+      <th>{#<input type="checkbox" value="">#}</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Логин</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Статус</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Имя</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Фамилия</th>
+      <th class="handbook__table__cell handbook__table__cell_header">Телефон</th>
+      <th class="handbook__table__cell handbook__table__cell_header">E-mail</th>
+    </tr>
+    <tr>
+      <td><div style="height:8px;"></div></td> {#spacing between table header and main cells#}
+    </tr>
+    {#TODO make a foreach loop here#}
+    <tr>
+      <td><input type="checkbox" value=""></td>
+      <td class="handbook__table__cell handbook__table__cell_header">Egor</td>
+      <td class="handbook__table__cell">admin</td>
+      <td class="handbook__table__cell">Егор</td>
+      <td class="handbook__table__cell">Шароха</td>
+      <td class="handbook__table__cell">79990123</td>
+      <td class="handbook__table__cell">mail@mail.com</td>
+    </tr>
+    <tr class="handbook__table__gray-row">
+      <td><input type="checkbox" value=""></td>
+      <td class="handbook__table__cell handbook__table__cell_header">Egor</td>
+      <td class="handbook__table__cell">admin</td>
+      <td class="handbook__table__cell">Егор</td>
+      <td class="handbook__table__cell">Шароха</td>
+      <td class="handbook__table__cell">79990123</td>
+      <td class="handbook__table__cell">mail@mail.com</td>
+    </tr>
+    {#TODO foreach loop ends here #}
+  </table>
 </div>
