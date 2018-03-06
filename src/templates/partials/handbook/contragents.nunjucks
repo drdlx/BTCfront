@@ -14,11 +14,11 @@
     <div class="col-lg-4">
     </div>
     <div class="col-lg-4">
-      <button type="button" class="btn btn-outline-info">Добавить</button>
-      <button type="button" class="btn btn-outline-danger">Удалить</button>
+      <button type="button" class="btn btn-outline-info" id="buttonClick">Добавить</button>
+      <button type="button" class="btn btn-outline-danger" id="buttonClick1">Удалить</button>
     </div>
 </div>
-  <table class="handbook__table">
+  <table class="handbook__table contragents__table-body">
     <tr class="handbook__table_header">
       <th>{#<input type="checkbox" value="">#}</th>
       <th class="handbook__table__cell handbook__table__cell_header">Логин</th>
@@ -31,25 +31,7 @@
     <tr>
       <td><div style="height:8px;"></div></td> {#spacing between table header and main cells#}
     </tr>
-    {#TODO make a foreach loop here#}
-    <tr>
-      <td><input type="checkbox" value=""></td>
-      <td class="handbook__table__cell handbook__table__cell_header">Egor</td>
-      <td class="handbook__table__cell">admin</td>
-      <td class="handbook__table__cell">Егор</td>
-      <td class="handbook__table__cell">Шароха</td>
-      <td class="handbook__table__cell">79990123</td>
-      <td class="handbook__table__cell">mail@mail.com</td>
-    </tr>
-    <tr class="handbook__table__gray-row">
-      <td><input type="checkbox" value=""></td>
-      <td class="handbook__table__cell handbook__table__cell_header">Egor</td>
-      <td class="handbook__table__cell">admin</td>
-      <td class="handbook__table__cell">Егор</td>
-      <td class="handbook__table__cell">Шароха</td>
-      <td class="handbook__table__cell">79990123</td>
-      <td class="handbook__table__cell">mail@mail.com</td>
-    </tr>
-    {#TODO foreach loop ends here #}
+    {# foreach loop described in handbook_contragents.js makes all the job on adding new records to the table #}
   </table>
+
 </div>

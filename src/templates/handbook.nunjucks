@@ -55,12 +55,7 @@
                 {#}</div> #}
 
                 </section>
-                {#TODO move the script out of here to a new file#}
-                <script>
-                  $(function () {
-                    $('#settings_tab a:last').tab ('show')
-                  })
-                </script>
+                <noscript>Sorry, your browser does not support JavaScript!</noscript>
             </div>
         </section>
 

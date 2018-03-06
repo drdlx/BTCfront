@@ -1,0 +1,31 @@
+{
+  "contragents": [
+    {
+      "id": 1,
+      "login": "egor2",
+      "status": "admin",
+      "firstName": "Егор",
+      "lastName": "Шароха",
+      "phone": "79991234",
+      "email": "mail@mail.com"
+    },
+    {
+      "id": 2,
+      "login": "egor3",
+      "status": "admin",
+      "firstName": "Егор",
+      "lastName": "Шароха",
+      "phone": "79991234",
+      "email": "mail@mail.com"
+    },
+    {
+      "id": 3,
+      "login": "egor3",
+      "status": "admin",
+      "firstName": "Егор",
+      "lastName": "Шароха",
+      "phone": "79991234",
+      "email": "mail@mail.com"
+    }
+  ]
+}

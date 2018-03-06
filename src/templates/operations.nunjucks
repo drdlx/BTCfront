@@ -130,9 +130,14 @@
               </section>
               {#TODO move the script out of here to a new file#}
               <script>
+              $(document).ready(function(){
                 $(function () {
                   $('#settings_tab a:last').tab ('show')
-                })
+                });
+                /*$(function () {
+                  $()
+                })*/
+              });
               </script>
             </div>
         </section>
